@@ -3,196 +3,252 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Donna Prata — Catálogo</title>
+  <title>Donna Prata — Joias em Prata 925 e Aço Inox</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --cream: #F0EDE8;
-      --black: #1A1A1A;
-      --gray:  #888;
-      --lgray: #C8C8C8;
-      --white: #fff;
+      --bg:     #111010;
+      --surface:#1A1A1A;
+      --card:   #1E1E1E;
+      --gold:   #C9A96E;
+      --gold2:  #E8D5A3;
+      --white:  #F5F3EE;
+      --muted:  #888;
+      --border: #2A2A2A;
+      --red:    #c62828;
     }
 
+    html { scroll-behavior: smooth; }
+
     body {
-      background: var(--cream);
-      color: var(--black);
+      background: var(--bg);
+      color: var(--white);
       font-family: 'Inter', sans-serif;
+      font-weight: 300;
       min-height: 100vh;
     }
 
     /* ── HEADER ── */
     header {
-      background: var(--cream);
-      text-align: center;
-      padding: 32px 20px 20px;
-      border-bottom: 1.5px solid var(--lgray);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 24px;
+      height: 80px;
     }
 
     .logo-img {
-      max-width: 320px;
-      width: 80%;
-      height: auto;
+      height: 48px;
+      width: auto;
       display: block;
-      margin: 0 auto;
+      filter: brightness(0) invert(1);
     }
 
-    .header-sub {
-      margin-top: 12px;
-      font-size: 0.82rem;
-      color: var(--gray);
-      letter-spacing: 1px;
+    /* ── HERO ── */
+    .hero {
+      text-align: center;
+      padding: 80px 24px 64px;
+      border-bottom: 1px solid var(--border);
     }
 
-    /* ── NAV FILTROS ── */
+    .hero-label {
+      font-size: 0.7rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 6vw, 4rem);
+      font-weight: 400;
+      line-height: 1.15;
+      color: var(--white);
+      max-width: 700px;
+      margin: 0 auto 20px;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .hero-sub {
+      font-size: 0.85rem;
+      color: var(--muted);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    /* ── FILTROS ── */
+    .filters-wrap {
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .filters-wrap::-webkit-scrollbar { display: none; }
+
     .filters {
       display: flex;
-      gap: 8px;
+      gap: 0;
       justify-content: center;
-      flex-wrap: wrap;
-      padding: 28px 20px 0;
+      min-width: max-content;
+      margin: 0 auto;
     }
 
     .filter-btn {
       background: none;
-      border: 1.5px solid var(--lgray);
-      color: var(--black);
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: var(--muted);
       font-family: 'Inter', sans-serif;
-      font-size: 0.78rem;
-      letter-spacing: 1.5px;
-      padding: 8px 20px;
+      font-size: 0.7rem;
+      font-weight: 400;
+      letter-spacing: 2.5px;
+      padding: 18px 24px;
       cursor: pointer;
       transition: all .2s;
       text-transform: uppercase;
+      white-space: nowrap;
     }
 
-    .filter-btn:hover,
+    .filter-btn:hover { color: var(--white); }
+
     .filter-btn.active {
-      background: var(--black);
-      border-color: var(--black);
       color: var(--white);
+      border-bottom-color: var(--gold);
     }
+
+    .filter-btn.outlet-btn { color: #e57373; }
+    .filter-btn.outlet-btn.active,
+    .filter-btn.outlet-btn:hover { color: var(--red); border-bottom-color: var(--red); }
 
     /* ── GRID ── */
     .catalog {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 2px;
-      padding: 28px 20px 60px;
-      max-width: 1100px;
-      margin: 0 auto;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      margin: 40px 0;
     }
 
     /* ── CARD ── */
     .card {
-      background: var(--white);
+      background: var(--bg);
       cursor: pointer;
-      transition: transform .2s;
       position: relative;
+      overflow: hidden;
     }
 
-    .card:hover { transform: translateY(-3px); }
+    .card-img-wrap {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 1;
+    }
 
     .card-img {
       width: 100%;
-      aspect-ratio: 1;
+      height: 100%;
       object-fit: cover;
       display: block;
-      background: #f5f5f5;
+      background: var(--surface);
+      transition: transform .5s ease;
     }
+
+    .card:hover .card-img { transform: scale(1.04); }
 
     .card-img-placeholder {
       width: 100%;
       aspect-ratio: 1;
-      background: #f0f0f0;
+      background: var(--surface);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--lgray);
-      font-size: 0.75rem;
-      letter-spacing: 1px;
-    }
-
-    .card-body {
-      padding: 20px;
-    }
-
-    .card-tag {
+      color: var(--border);
       font-size: 0.65rem;
       letter-spacing: 2px;
       text-transform: uppercase;
-      color: var(--gray);
-      margin-bottom: 6px;
+    }
+
+    .outlet-ribbon {
+      position: absolute;
+      top: 16px;
+      left: 0;
+      background: var(--red);
+      color: #fff;
+      font-size: 0.6rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 4px 12px;
+    }
+
+    .card-body {
+      padding: 20px 22px 24px;
+    }
+
+    .card-tag {
+      font-size: 0.6rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
     }
 
     .card-name {
       font-family: 'Playfair Display', serif;
-      font-size: 1.15rem;
-      font-weight: 600;
+      font-size: 1.05rem;
+      font-weight: 400;
+      color: var(--white);
       margin-bottom: 6px;
-      line-height: 1.3;
+      line-height: 1.35;
     }
 
     .card-material {
-      font-size: 0.78rem;
-      color: var(--gray);
-      margin-bottom: 12px;
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 1px;
+      margin-bottom: 16px;
     }
 
     .card-footer {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 8px;
-      flex-wrap: wrap;
     }
 
     .card-price {
       font-family: 'Playfair Display', serif;
-      font-size: 1.3rem;
-      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--white);
     }
 
     .card-stock {
-      font-size: 0.7rem;
-      letter-spacing: 1px;
+      font-size: 0.6rem;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
       padding: 4px 10px;
-      border-radius: 2px;
     }
 
-    .stock-ok   { background: #f0f0f0; color: var(--gray); }
-    .stock-low  { background: #fff3e0; color: #e65100; }
-    .stock-out  { background: #fce4e4; color: #c62828; }
-
-    .outlet-btn { border-color: #c62828; color: #c62828; }
-    .outlet-btn:hover, .outlet-btn.active { background: #c62828; border-color: #c62828; color: white; }
-    .outlet-tag { background: #c62828; color: white; font-size: 0.65rem; padding: 2px 8px; letter-spacing: 1px; text-transform: uppercase; display: inline-block; margin-bottom: 6px; }
-
-    /* tamanhos */
-    .card-sizes {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-      margin-top: 12px;
-    }
-
-    .size-tag {
-      font-size: 0.7rem;
-      border: 1px solid var(--lgray);
-      padding: 3px 9px;
-      color: var(--black);
-    }
+    .stock-ok  { background: transparent; border: 1px solid var(--border); color: var(--muted); }
+    .stock-low { background: rgba(198,40,40,.12); border: 1px solid rgba(198,40,40,.3); color: #e57373; }
+    .stock-out { background: rgba(198,40,40,.2); border: 1px solid rgba(198,40,40,.4); color: #e57373; }
 
     /* ── MODAL ── */
     .modal-bg {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,.6);
+      background: rgba(0,0,0,.85);
       z-index: 100;
       align-items: center;
       justify-content: center;
@@ -202,71 +258,91 @@
     .modal-bg.open { display: flex; }
 
     .modal {
-      background: var(--white);
-      max-width: 520px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      max-width: 860px;
       width: 100%;
-      max-height: 90vh;
+      max-height: 92vh;
       overflow-y: auto;
       position: relative;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    @media (max-width: 640px) {
+      .modal { grid-template-columns: 1fr; }
     }
 
     .modal-img {
       width: 100%;
-      aspect-ratio: 1;
+      height: 100%;
+      min-height: 320px;
       object-fit: cover;
       display: block;
-      background: #f5f5f5;
+      background: var(--surface);
     }
 
     .modal-img-placeholder {
       width: 100%;
-      aspect-ratio: 1;
-      background: #f0f0f0;
+      min-height: 320px;
+      background: var(--surface);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--lgray);
+      color: var(--muted);
     }
 
-    .modal-body { padding: 28px; }
+    .modal-body {
+      padding: 40px 36px;
+      display: flex;
+      flex-direction: column;
+    }
 
     .modal-tag {
-      font-size: 0.65rem;
-      letter-spacing: 2px;
+      font-size: 0.62rem;
+      letter-spacing: 3px;
       text-transform: uppercase;
-      color: var(--gray);
-      margin-bottom: 8px;
+      color: var(--gold);
+      margin-bottom: 12px;
     }
 
     .modal-name {
       font-family: 'Playfair Display', serif;
-      font-size: 1.6rem;
-      font-weight: 700;
-      margin-bottom: 8px;
+      font-size: 1.7rem;
+      font-weight: 400;
+      color: var(--white);
+      margin-bottom: 6px;
       line-height: 1.2;
     }
 
     .modal-price {
       font-family: 'Playfair Display', serif;
-      font-size: 1.8rem;
-      font-weight: 700;
-      margin-bottom: 16px;
+      font-size: 2rem;
+      color: var(--gold);
+      margin-bottom: 24px;
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin-bottom: 20px;
     }
 
     .modal-desc {
-      font-size: 0.9rem;
-      color: #444;
-      line-height: 1.7;
-      margin-bottom: 16px;
+      font-size: 0.85rem;
+      color: #aaa;
+      line-height: 1.8;
+      margin-bottom: 20px;
+      flex: 1;
     }
 
     .modal-info {
-      font-size: 0.8rem;
-      color: var(--gray);
+      font-size: 0.78rem;
+      color: var(--muted);
       margin-bottom: 6px;
     }
 
-    .modal-info strong { color: var(--black); }
+    .modal-info strong { color: var(--white); font-weight: 500; }
 
     .modal-sizes {
       display: flex;
@@ -276,80 +352,112 @@
     }
 
     .modal-size {
-      border: 1.5px solid var(--lgray);
-      padding: 6px 14px;
-      font-size: 0.8rem;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 8px 16px;
+      font-size: 0.78rem;
       cursor: pointer;
       transition: all .2s;
+      font-family: 'Inter', sans-serif;
     }
 
     .modal-size:hover,
     .modal-size.selected {
-      border-color: var(--black);
-      background: var(--black);
-      color: var(--white);
+      border-color: var(--gold);
+      color: var(--gold);
     }
 
     .btn-whatsapp {
       display: block;
       width: 100%;
-      background: var(--black);
-      color: var(--white);
+      background: var(--gold);
+      color: #111;
       text-align: center;
       padding: 16px;
       font-family: 'Inter', sans-serif;
-      font-size: 0.85rem;
-      letter-spacing: 2px;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 3px;
       text-transform: uppercase;
       text-decoration: none;
-      margin-top: 20px;
+      margin-top: 24px;
       transition: background .2s;
-      border: none;
-      cursor: pointer;
     }
 
-    .btn-whatsapp:hover { background: #333; }
+    .btn-whatsapp:hover { background: var(--gold2); }
 
     .modal-close {
       position: absolute;
       top: 14px;
-      right: 18px;
-      font-size: 1.6rem;
+      right: 16px;
+      font-size: 1.4rem;
       cursor: pointer;
-      color: var(--white);
+      color: var(--muted);
       z-index: 10;
       line-height: 1;
-      background: rgba(0,0,0,.3);
-      width: 36px;
-      height: 36px;
+      width: 32px;
+      height: 32px;
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 50%;
+      transition: color .2s;
     }
+
+    .modal-close:hover { color: var(--white); }
 
     /* ── FOOTER ── */
     footer {
-      background: var(--black);
-      color: var(--lgray);
+      border-top: 1px solid var(--border);
       text-align: center;
-      padding: 32px 20px;
-      font-size: 0.78rem;
-      letter-spacing: 1px;
-      margin-top: 40px;
+      padding: 60px 24px;
     }
 
-    footer a {
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      color: var(--white);
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .footer-tag {
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+
+    .footer-info {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 2;
+    }
+
+    .footer-info a {
       color: var(--white);
       text-decoration: none;
+      transition: color .2s;
+    }
+
+    .footer-info a:hover { color: var(--gold); }
+
+    .footer-slogan {
+      margin-top: 36px;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      color: var(--muted);
     }
 
     .empty {
       grid-column: 1/-1;
       text-align: center;
-      padding: 60px 20px;
-      color: var(--gray);
+      padding: 80px 24px;
+      color: var(--muted);
       font-size: 0.9rem;
+      background: var(--bg);
     }
   </style>
 </head>
@@ -358,18 +466,26 @@
 <!-- HEADER -->
 <header>
   <img src="logo.png" alt="Donna Prata" class="logo-img">
-  <div class="header-sub">Aço Inox · Prata 925 · Semijoias &nbsp;|&nbsp; Ibiúna-SP</div>
 </header>
 
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-label">Nova Coleção · Aço Inox 316L</div>
+  <h1>A peça que faltava<br>no seu <em>look</em></h1>
+  <div class="hero-sub">Prata 925 &nbsp;·&nbsp; Aço Inox &nbsp;·&nbsp; Semijoias</div>
+</section>
+
 <!-- FILTROS -->
-<div class="filters">
-  <button class="filter-btn active" onclick="filterCat('todos')">Todos</button>
-  <button class="filter-btn" onclick="filterCat('bracelet')">Braceletes</button>
-  <button class="filter-btn" onclick="filterCat('anel')">Anéis</button>
-  <button class="filter-btn" onclick="filterCat('pulseira')">Pulseiras</button>
-  <button class="filter-btn" onclick="filterCat('brinco')">Brincos</button>
-  <button class="filter-btn" onclick="filterCat('colar')">Colares</button>
-  <button class="filter-btn outlet-btn" onclick="filterCat('outlet')">🔖 Outlet</button>
+<div class="filters-wrap">
+  <div class="filters">
+    <button class="filter-btn active" data-cat="todos">Todos</button>
+    <button class="filter-btn" data-cat="bracelet">Braceletes</button>
+    <button class="filter-btn" data-cat="anel">Anéis</button>
+    <button class="filter-btn" data-cat="pulseira">Pulseiras</button>
+    <button class="filter-btn" data-cat="brinco">Brincos</button>
+    <button class="filter-btn" data-cat="colar">Colares</button>
+    <button class="filter-btn outlet-btn" data-cat="outlet">Outlet</button>
+  </div>
 </div>
 
 <!-- CATÁLOGO -->
@@ -378,42 +494,43 @@
 <!-- MODAL -->
 <div class="modal-bg" id="modal" onclick="closeModal(event)">
   <div class="modal" id="modal-box">
-    <span class="modal-close" onclick="closeModalDirect()">×</span>
+    <span class="modal-close" onclick="closeModalDirect()">✕</span>
     <div id="modal-img-wrap"></div>
     <div class="modal-body">
       <div class="modal-tag" id="modal-tag"></div>
       <div class="modal-name" id="modal-name"></div>
       <div class="modal-price" id="modal-price"></div>
+      <div class="divider"></div>
       <div class="modal-desc" id="modal-desc"></div>
       <div class="modal-info" id="modal-material"></div>
       <div class="modal-info" id="modal-stock-info"></div>
       <div class="modal-sizes" id="modal-sizes"></div>
-      <a class="btn-whatsapp" id="modal-cta" href="#" target="_blank">
-        💬 QUERO ESSA PEÇA
-      </a>
+      <a class="btn-whatsapp" id="modal-cta" href="#" target="_blank">Quero essa peça</a>
     </div>
   </div>
 </div>
 
 <!-- FOOTER -->
 <footer>
-  <p style="margin-bottom:8px">
-    <strong style="color:white;font-family:'Playfair Display',serif;font-size:1.1rem">DONNA PRATA</strong>
-  </p>
-  <p>📍 Ibiúna-SP &nbsp;|&nbsp; Entregas locais e envios para todo o Brasil</p>
-  <p style="margin-top:8px">
-    <a href="https://wa.me/5515996500066">WhatsApp</a> &nbsp;·&nbsp;
-    <a href="https://instagram.com/a.donnaprata">@a.donnaprata</a>
-  </p>
-  <p style="margin-top:16px;font-size:0.7rem;color:#555">Seja Donna Prata ✨</p>
+  <div class="footer-logo">Donna Prata</div>
+  <div class="footer-tag">Joias em Prata 925 &amp; Aço Inox</div>
+  <div class="footer-info">
+    <div>📍 Ibiúna, SP &nbsp;·&nbsp; Entregas locais e envios para todo o Brasil</div>
+    <div>
+      <a href="https://wa.me/5515996500066">WhatsApp</a>
+      &nbsp;·&nbsp;
+      <a href="https://instagram.com/a.donnaprata">Instagram @a.donnaprata</a>
+    </div>
+  </div>
+  <div class="footer-slogan">Seja Donna Prata ✨</div>
 </footer>
 
 <script>
 const WA = "5515996500066";
 let produtos = [];
 let currentFilter = "todos";
+let selectedSizes = {};
 
-// ── CARREGAR PRODUTOS DO JSON ─────────────────────────────────────────────────
 async function carregarProdutos() {
   try {
     const r = await fetch(`produtos.json?t=${Date.now()}`);
@@ -423,23 +540,23 @@ async function carregarProdutos() {
   }
   renderCatalog();
 }
-carregarProdutos();
-let selectedSizes  = {};
 
 function stockLabel(n) {
-  if (n === 0) return { text: "Esgotado",        cls: "stock-out" };
-  if (n === 1) return { text: "Última unidade",  cls: "stock-low" };
-  if (n <= 3)  return { text: `${n} unidades`,   cls: "stock-low" };
+  if (n === 0) return { text: "Esgotado",         cls: "stock-out" };
+  if (n === 1) return { text: "Última unidade",   cls: "stock-low" };
+  if (n <= 3)  return { text: `${n} unid.`,       cls: "stock-low" };
   return               { text: `${n} disponíveis`, cls: "stock-ok" };
 }
 
+function catLabel(c) {
+  return { bracelet:"Bracelet", anel:"Anel", pulseira:"Pulseira", brinco:"Brinco", colar:"Colar", outlet:"Outlet" }[c] || c;
+}
+
 function renderCatalog() {
-  const list = produtos.filter(p =>
-    currentFilter === "todos" || p.categoria === currentFilter
-  );
+  const list = produtos.filter(p => currentFilter === "todos" || p.categoria === currentFilter);
   const el = document.getElementById("catalog");
 
-  if (list.length === 0) {
+  if (!list.length) {
     el.innerHTML = '<div class="empty">Nenhuma peça nessa categoria por enquanto.</div>';
     return;
   }
@@ -448,13 +565,14 @@ function renderCatalog() {
     const s = stockLabel(p.estoque);
     const imgTag = p.foto
       ? `<img class="card-img" src="${p.foto}" alt="${p.nome}" loading="lazy">`
-      : `<div class="card-img-placeholder">SEM FOTO</div>`;
-    const sizesTag = p.tamanhos.length
-      ? `<div class="card-sizes">${p.tamanhos.map(t => `<span class="size-tag">${t}</span>`).join('')}</div>`
-      : '';
+      : `<div class="card-img-placeholder">sem foto</div>`;
+    const outlet = p.categoria === 'outlet' ? `<div class="outlet-ribbon">Outlet</div>` : '';
     return `
       <div class="card" onclick="openModal(${p.id})">
-        ${imgTag}
+        <div class="card-img-wrap">
+          ${imgTag}
+          ${outlet}
+        </div>
         <div class="card-body">
           <div class="card-tag">${catLabel(p.categoria)}</div>
           <div class="card-name">${p.nome}</div>
@@ -463,23 +581,19 @@ function renderCatalog() {
             <span class="card-price">${p.preco}</span>
             <span class="card-stock ${s.cls}">${s.text}</span>
           </div>
-          ${sizesTag}
         </div>
       </div>`;
   }).join('');
 }
 
-function catLabel(c) {
-  const map = { bracelet:"Bracelet", anel:"Anel", pulseira:"Pulseira", brinco:"Brinco", colar:"Colar", outlet:"Outlet" };
-  return map[c] || c;
-}
-
-function filterCat(cat) {
-  currentFilter = cat;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
-  renderCatalog();
-}
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    currentFilter = btn.dataset.cat;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderCatalog();
+  });
+});
 
 // ── MODAL ─────────────────────────────────────────────────────────────────────
 function openModal(id) {
@@ -487,22 +601,21 @@ function openModal(id) {
   if (!p) return;
 
   const s = stockLabel(p.estoque);
-  const imgWrap = document.getElementById('modal-img-wrap');
-  imgWrap.innerHTML = p.foto
+  document.getElementById('modal-img-wrap').innerHTML = p.foto
     ? `<img class="modal-img" src="${p.foto}" alt="${p.nome}">`
-    : `<div class="modal-img-placeholder">SEM FOTO</div>`;
+    : `<div class="modal-img-placeholder">—</div>`;
 
-  document.getElementById('modal-tag').textContent       = catLabel(p.categoria);
-  document.getElementById('modal-name').textContent      = p.nome;
-  document.getElementById('modal-price').textContent     = p.preco;
-  document.getElementById('modal-desc').textContent      = p.descricao;
-  document.getElementById('modal-material').innerHTML    = `<strong>Material:</strong> ${p.material}`;
-  document.getElementById('modal-stock-info').innerHTML  = `<strong>Estoque:</strong> <span class="card-stock ${s.cls}" style="display:inline">${s.text}</span>`;
+  document.getElementById('modal-tag').textContent      = catLabel(p.categoria);
+  document.getElementById('modal-name').textContent     = p.nome;
+  document.getElementById('modal-price').textContent    = p.preco;
+  document.getElementById('modal-desc').textContent     = p.descricao;
+  document.getElementById('modal-material').innerHTML   = `<strong>Material:</strong> ${p.material}`;
+  document.getElementById('modal-stock-info').innerHTML = `<strong>Estoque:</strong> ${s.text}`;
 
   const sizesEl = document.getElementById('modal-sizes');
-  if (p.tamanhos.length) {
+  if (p.tamanhos && p.tamanhos.length) {
     sizesEl.style.display = 'flex';
-    sizesEl.innerHTML = `<div style="font-size:.75rem;letter-spacing:1px;text-transform:uppercase;color:var(--gray);width:100%;margin-bottom:4px">Tamanho:</div>` +
+    sizesEl.innerHTML = `<div style="font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);width:100%;margin-bottom:6px">Tamanho:</div>` +
       p.tamanhos.map(t =>
         `<div class="modal-size ${selectedSizes[id]===t?'selected':''}" onclick="selectSize(${id},'${t}',this)">${t}</div>`
       ).join('');
@@ -520,8 +633,7 @@ function selectSize(id, size, el) {
   selectedSizes[id] = size;
   document.querySelectorAll('.modal-size').forEach(e => e.classList.remove('selected'));
   el.classList.add('selected');
-  const p = produtos.find(x => x.id === id);
-  updateCTA(p);
+  updateCTA(produtos.find(x => x.id === id));
 }
 
 function updateCTA(p) {
@@ -529,20 +641,21 @@ function updateCTA(p) {
   const size = selectedSizes[p.id] ? ` — Tamanho ${selectedSizes[p.id]}` : '';
   const msg  = encodeURIComponent(`Olá! Vi o catálogo da Donna Prata e quero: ${p.nome}${size} (${p.preco}) 💎`);
   if (p.estoque === 0) {
-    cta.textContent = 'ESGOTADO';
-    cta.style.background = '#ccc';
+    cta.textContent = 'Produto esgotado';
+    cta.style.background = 'var(--border)';
+    cta.style.color = 'var(--muted)';
+    cta.style.cursor = 'default';
     cta.href = '#';
   } else {
-    cta.textContent = '💬 QUERO ESSA PEÇA';
-    cta.style.background = 'var(--black)';
+    cta.textContent = 'Quero essa peça';
+    cta.style.background = 'var(--gold)';
+    cta.style.color = '#111';
+    cta.style.cursor = 'pointer';
     cta.href = `https://wa.me/${WA}?text=${msg}`;
   }
 }
 
-function closeModal(e) {
-  if (e.target.id === 'modal') closeModalDirect();
-}
-
+function closeModal(e) { if (e.target.id === 'modal') closeModalDirect(); }
 function closeModalDirect() {
   document.getElementById('modal').classList.remove('open');
   document.body.style.overflow = '';
@@ -550,7 +663,7 @@ function closeModalDirect() {
 
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalDirect(); });
 
-renderCatalog();
+carregarProdutos();
 </script>
 </body>
 </html>

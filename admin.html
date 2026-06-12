@@ -271,10 +271,27 @@ let fotoBase64 = null;
 let fotoNome   = null;
 
 // ── AUTH ──────────────────────────────────────────────────────────────────────
-function login() {
+async function login() {
   const t = document.getElementById('token-input').value.trim();
-  if (!t) return;
+  const errEl = document.getElementById('login-err');
+  if (!t) { errEl.textContent = 'Cole o token antes de entrar.'; errEl.style.display='block'; return; }
+
+  errEl.style.display = 'none';
   TOKEN = t;
+
+  // Valida token antes de prosseguir
+  try {
+    const r = await fetch(`https://api.github.com/repos/${REPO}`, {
+      headers: { Authorization: `token ${TOKEN}` }
+    });
+    if (!r.ok) throw new Error('Token inválido ou sem permissão no repositório.');
+  } catch(e) {
+    errEl.textContent = e.message;
+    errEl.style.display = 'block';
+    TOKEN = '';
+    return;
+  }
+
   localStorage.setItem('dp_token', t);
   iniciar();
 }
@@ -340,11 +357,15 @@ async function carregarProdutos() {
   try {
     status('info', 'Carregando produtos...');
     const data = await ghGet('produtos.json');
-    produtos = JSON.parse(decodeURIComponent(escape(atob(data.content.replace(/\n/g, '')))));
+    const raw = atob(data.content.replace(/\n/g, ''));
+    const bytes = Uint8Array.from(raw, c => c.charCodeAt(0));
+    produtos = JSON.parse(new TextDecoder('utf-8').decode(bytes));
     renderLista();
     status('', '');
   } catch(e) {
-    status('err', 'Erro ao carregar produtos: ' + e.message);
+    const msg = 'Erro ao carregar produtos: ' + e.message;
+    status('err', msg);
+    alert(msg);
   }
 }
 
@@ -530,8 +551,25 @@ function setLoading(on) {
 }
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
-const saved = localStorage.getItem('dp_token');
-if (saved) { TOKEN = saved; iniciar(); }
+(async () => {
+  const saved = localStorage.getItem('dp_token');
+  if (!saved) return;
+  TOKEN = saved;
+  // Re-valida token salvo antes de entrar
+  try {
+    const r = await fetch(`https://api.github.com/repos/${REPO}`, {
+      headers: { Authorization: `token ${TOKEN}` }
+    });
+    if (!r.ok) throw new Error('expirado');
+    iniciar();
+  } catch {
+    localStorage.removeItem('dp_token');
+    TOKEN = '';
+    const err = document.getElementById('login-err');
+    err.textContent = 'Sessão expirada. Entre novamente.';
+    err.style.display = 'block';
+  }
+})();
 </script>
 </body>
 </html>
