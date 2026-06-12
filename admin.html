@@ -142,7 +142,7 @@
     <p>Painel de gerenciamento do catálogo</p>
     <div style="margin-bottom:16px">
       <label>GitHub Token</label>
-      <input type="password" id="token-input" placeholder="ghp_..." autocomplete="off">
+      <input type="password" id="token-input" placeholder="ghp_..." autocomplete="off" onkeydown="if(event.key==='Enter')login()">
     </div>
     <p style="font-size:0.75rem;color:var(--gray);margin-bottom:20px;line-height:1.6">
       Acesse <strong>github.com → Settings → Developer settings → Personal access tokens → Tokens (classic)</strong> e gere um token com permissão <strong>repo</strong>.
@@ -271,27 +271,12 @@ let fotoBase64 = null;
 let fotoNome   = null;
 
 // ── AUTH ──────────────────────────────────────────────────────────────────────
-async function login() {
+function login() {
   const t = document.getElementById('token-input').value.trim();
   const errEl = document.getElementById('login-err');
   if (!t) { errEl.textContent = 'Cole o token antes de entrar.'; errEl.style.display='block'; return; }
-
   errEl.style.display = 'none';
   TOKEN = t;
-
-  // Valida token antes de prosseguir
-  try {
-    const r = await fetch(`https://api.github.com/repos/${REPO}`, {
-      headers: { Authorization: `token ${TOKEN}` }
-    });
-    if (!r.ok) throw new Error('Token inválido ou sem permissão no repositório.');
-  } catch(e) {
-    errEl.textContent = e.message;
-    errEl.style.display = 'block';
-    TOKEN = '';
-    return;
-  }
-
   localStorage.setItem('dp_token', t);
   iniciar();
 }
@@ -551,25 +536,8 @@ function setLoading(on) {
 }
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
-(async () => {
-  const saved = localStorage.getItem('dp_token');
-  if (!saved) return;
-  TOKEN = saved;
-  // Re-valida token salvo antes de entrar
-  try {
-    const r = await fetch(`https://api.github.com/repos/${REPO}`, {
-      headers: { Authorization: `token ${TOKEN}` }
-    });
-    if (!r.ok) throw new Error('expirado');
-    iniciar();
-  } catch {
-    localStorage.removeItem('dp_token');
-    TOKEN = '';
-    const err = document.getElementById('login-err');
-    err.textContent = 'Sessão expirada. Entre novamente.';
-    err.style.display = 'block';
-  }
-})();
+const saved = localStorage.getItem('dp_token');
+if (saved) { TOKEN = saved; iniciar(); }
 </script>
 </body>
 </html>
