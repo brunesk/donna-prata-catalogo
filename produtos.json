@@ -9,7 +9,8 @@
     "precoNum": 79.99,
     "foto": "fotos/bracelet-love-prata.jpg",
     "tamanhos": [],
-    "estoque": 1
+    "estoque": 1,
+    "destaque": true
   },
   {
     "id": 2,

@@ -386,6 +386,47 @@
     }
     .empty p { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-style: italic; }
 
+    /* ── HERO TAG ── */
+    .hero-tag {
+      font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 10px; font-weight: 600;
+    }
+
+    /* ── CATEGORY SECTIONS ── */
+    .cat-section { width: 100%; }
+
+    .cat-header {
+      display: flex; align-items: center; gap: 16px;
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid var(--lgray);
+      border-top: 1px solid var(--lgray);
+      background: var(--offwht);
+    }
+
+    .cat-header-name {
+      font-size: 10px; letter-spacing: 3.5px; text-transform: uppercase;
+      color: var(--black); font-weight: 600;
+    }
+
+    .cat-header-line { flex: 1; height: 1px; background: var(--lgray); }
+    .cat-header-count { font-size: 10px; color: var(--gray); letter-spacing: 1px; }
+
+    .cat-header.destaque-header {
+      background: var(--black);
+      border-color: var(--black);
+    }
+    .cat-header.destaque-header .cat-header-name { color: #fff; }
+    .cat-header.destaque-header .cat-header-line { background: rgba(255,255,255,.2); }
+    .cat-header.destaque-header .cat-header-count { color: rgba(255,255,255,.4); }
+
+    .cat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+    @media (max-width: 600px) {
+      .cat-grid { grid-template-columns: 1fr 1fr; }
+    }
+
     /* ── SELO PRATA ── */
     .selos {
       display: flex; justify-content: center; gap: 32px;
@@ -406,7 +447,7 @@
 <body>
 
 <!-- TOP BAR -->
-<div class="top-bar">Entrega para todo o Brasil &nbsp;·&nbsp; Prata 925 Garantida &nbsp;·&nbsp; Frete Grátis acima de R$150</div>
+<div class="top-bar">Entrega para todo o Brasil &nbsp;·&nbsp; Prata 925 &amp; Aço Inox 316L &nbsp;·&nbsp; Frete Grátis acima de R$150</div>
 
 <!-- HEADER -->
 <header>
@@ -430,8 +471,9 @@
 
 <!-- HERO STRIP -->
 <div class="hero-strip">
-  <div class="hero-title">Nova <em>Coleção</em><br>Prata 925</div>
-  <div class="hero-sub">36 peças · Preços a partir de R$27</div>
+  <div class="hero-tag">Em destaque</div>
+  <div class="hero-title">Nova <em>Coleção</em><br>Aço Inox 316L &amp; PVD</div>
+  <div class="hero-sub">Resistente · Antialérgico · Elegante</div>
 </div>
 
 <!-- SELOS -->
@@ -505,38 +547,86 @@ function stockLabel(n) {
 }
 
 function catLabel(c) {
-  return { bracelet:"Bracelet", anel:"Anel", pulseira:"Pulseira", brinco:"Brinco", colar:"Colar", piercing:"Piercing", outlet:"Outlet" }[c] || c;
+  return { destaque:"Nova Coleção — Aço Inox 316L / PVD", bracelet:"Braceletes", anel:"Anéis", pulseira:"Pulseiras", brinco:"Brincos", colar:"Colares", piercing:"Piercings", outlet:"Outlet" }[c] || c;
+}
+
+function renderCard(p) {
+  const s = stockLabel(p.estoque);
+  const imgTag = p.foto
+    ? `<img class="card-img" src="${p.foto}" alt="${p.nome}" loading="lazy">`
+    : `<div class="card-img-placeholder">—</div>`;
+  const ribbon = p.categoria === 'outlet' ? `<div class="outlet-ribbon">Outlet</div>` : '';
+  return `
+    <div class="card" onclick="openModal(${p.id})">
+      <div class="card-img-wrap">${imgTag}${ribbon}</div>
+      <div class="card-body">
+        <div class="card-tag">${catLabel(p.categoria)}</div>
+        <div class="card-name">${p.nome}</div>
+        <div class="card-material">${p.material}</div>
+        <div class="card-footer">
+          <span class="card-price">${p.preco}</span>
+          <span class="card-stock ${s.cls}">${s.text}</span>
+        </div>
+      </div>
+    </div>`;
 }
 
 function renderCatalog() {
-  const list = produtos.filter(p => currentFilter === "todos" || p.categoria === currentFilter);
   const el = document.getElementById("catalog");
 
-  if (!list.length) {
-    el.innerHTML = '<div class="empty"><p>Nenhuma peça nessa categoria por enquanto.</p></div>';
+  if (currentFilter !== "todos") {
+    const list = produtos.filter(p => p.categoria === currentFilter);
+    if (!list.length) {
+      el.innerHTML = '<div class="empty"><p>Nenhuma peça nessa categoria por enquanto.</p></div>';
+      return;
+    }
+    el.innerHTML = `
+      <div class="cat-section">
+        <div class="cat-header">
+          <span class="cat-header-name">${catLabel(currentFilter)}</span>
+          <span class="cat-header-line"></span>
+          <span class="cat-header-count">${list.length} peças</span>
+        </div>
+        <div class="cat-grid">${list.map(renderCard).join('')}</div>
+      </div>`;
     return;
   }
 
-  el.innerHTML = list.map(p => {
-    const s = stockLabel(p.estoque);
-    const imgTag = p.foto
-      ? `<img class="card-img" src="${p.foto}" alt="${p.nome}" loading="lazy">`
-      : `<div class="card-img-placeholder">—</div>`;
-    const outlet = p.categoria === 'outlet' ? `<div class="outlet-ribbon">Outlet</div>` : '';
-    return `
-      <div class="card" onclick="openModal(${p.id})">
-        <div class="card-img-wrap">${imgTag}${outlet}</div>
-        <div class="card-body">
-          <div class="card-tag">${catLabel(p.categoria)}</div>
-          <div class="card-name">${p.nome}</div>
-          <div class="card-material">${p.material}</div>
-          <div class="card-footer">
-            <span class="card-price">${p.preco}</span>
-            <span class="card-stock ${s.cls}">${s.text}</span>
-          </div>
+  // Todos: agrupar por categoria
+  const ordem = ['destaque','bracelet','anel','pulseira','brinco','colar','piercing','outlet'];
+  let html = '';
+
+  // Destaque (aço inox)
+  const destaque = produtos.filter(p => p.destaque);
+  if (destaque.length) {
+    html += `
+      <div class="cat-section">
+        <div class="cat-header destaque-header">
+          <span class="cat-header-name">✦ Nova Coleção — Aço Inox 316L &amp; PVD</span>
+          <span class="cat-header-line"></span>
+          <span class="cat-header-count">${destaque.length} peças</span>
         </div>
+        <div class="cat-grid">${destaque.map(renderCard).join('')}</div>
       </div>`;
-  }).join('');
+  }
+
+  // Demais categorias
+  const cats = ['bracelet','anel','pulseira','brinco','colar','piercing','outlet'];
+  for (const cat of cats) {
+    const list = produtos.filter(p => p.categoria === cat && !p.destaque);
+    if (!list.length) continue;
+    html += `
+      <div class="cat-section" id="sec-${cat}">
+        <div class="cat-header">
+          <span class="cat-header-name">${catLabel(cat)}</span>
+          <span class="cat-header-line"></span>
+          <span class="cat-header-count">${list.length} peças</span>
+        </div>
+        <div class="cat-grid">${list.map(renderCard).join('')}</div>
+      </div>`;
+  }
+
+  el.innerHTML = html || '<div class="empty"><p>Nenhuma peça por enquanto.</p></div>';
 }
 
 document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -545,7 +635,9 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     renderCatalog();
-    document.getElementById('catalog').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const sec = document.getElementById('sec-' + btn.dataset.cat);
+    const target = sec || document.getElementById('catalog');
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 });
 
