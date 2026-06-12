@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "categoria": "bracelet",
+    "nome": "Bracelet Love Prateado",
+    "descricao": "O clássico que nunca sai de moda. Design inspirado nas grandes joalherias, feito em aço inox de alta qualidade. Não mancha, não oxida e dura anos.",
+    "material": "Aço Inox 316L",
+    "preco": "R$79,99",
+    "precoNum": 79.99,
+    "foto": "fotos/bracelet-love-prata.jpg",
+    "tamanhos": [],
+    "estoque": 1
+  },
+  {
+    "id": 2,
+    "categoria": "brinco",
+    "nome": "Brinco Coração Cravejado",
+    "descricao": "Brinco delicado com pingente de coração cravejado em zircônias. Design elegante com corrente fina — perfeito para o dia a dia ou ocasiões especiais.",
+    "material": "Prata 925",
+    "preco": "R$84,00",
+    "precoNum": 84.00,
+    "foto": "fotos/brinco-coracao-cravejado.jpg",
+    "tamanhos": [],
+    "estoque": 1
+  }
+]

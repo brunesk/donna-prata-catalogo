@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Donna Prata — Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cream: #F0EDE8; --black: #1A1A1A; --gray: #888;
+      --lgray: #C8C8C8; --white: #fff; --red: #c62828; --green: #2e7d32;
+    }
+    body { background: var(--cream); font-family: 'Inter', sans-serif; color: var(--black); }
+
+    /* LOGIN */
+    #login-screen {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px;
+    }
+    .login-box {
+      background: var(--white); padding: 48px 40px; max-width: 420px; width: 100%;
+      border: 1px solid var(--lgray);
+    }
+    .login-box h1 { font-family: 'Playfair Display', serif; font-size: 1.8rem; margin-bottom: 6px; }
+    .login-box p  { color: var(--gray); font-size: 0.85rem; margin-bottom: 28px; }
+
+    /* ADMIN HEADER */
+    header {
+      background: var(--cream); border-bottom: 1.5px solid var(--lgray);
+      padding: 20px 28px; display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 50;
+    }
+    .header-left { display: flex; align-items: center; gap: 12px; }
+    .header-left h1 { font-family: 'Playfair Display', serif; font-size: 1.3rem; }
+    .header-left span { font-size: 0.7rem; background: var(--black); color: var(--white); padding: 3px 10px; letter-spacing: 1px; }
+
+    /* MAIN */
+    main { max-width: 960px; margin: 0 auto; padding: 32px 20px 80px; }
+
+    /* STATUS BAR */
+    #status-bar {
+      padding: 12px 16px; margin-bottom: 24px; font-size: 0.82rem;
+      display: none; border-left: 3px solid;
+    }
+    #status-bar.ok   { background: #e8f5e9; border-color: var(--green); color: var(--green); display: block; }
+    #status-bar.err  { background: #fce4e4; border-color: var(--red);   color: var(--red);   display: block; }
+    #status-bar.info { background: #e3f2fd; border-color: #1565c0;      color: #1565c0;       display: block; }
+
+    /* SECTION TITLE */
+    .section-title {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--lgray);
+    }
+    .section-title h2 { font-family: 'Playfair Display', serif; font-size: 1.3rem; }
+
+    /* PRODUCT LIST */
+    .product-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 48px; }
+    .product-row {
+      background: var(--white); display: flex; align-items: center; gap: 16px;
+      padding: 16px; border: 1px solid transparent; transition: border-color .2s;
+    }
+    .product-row:hover { border-color: var(--lgray); }
+    .product-row img { width: 68px; height: 68px; object-fit: cover; background: #f5f5f5; flex-shrink: 0; }
+    .product-row .no-img {
+      width: 68px; height: 68px; background: #f0f0f0; display: flex;
+      align-items: center; justify-content: center; font-size: 0.6rem;
+      color: var(--lgray); flex-shrink: 0; text-align: center;
+    }
+    .product-info { flex: 1; min-width: 0; }
+    .product-info .pname  { font-weight: 600; font-size: 0.95rem; margin-bottom: 3px; }
+    .product-info .pmeta  { font-size: 0.75rem; color: var(--gray); }
+    .product-info .pprice { font-family: 'Playfair Display', serif; font-size: 1.1rem; margin-top: 4px; }
+    .stock-badge {
+      font-size: 0.65rem; padding: 3px 8px; letter-spacing: 1px; text-transform: uppercase; flex-shrink: 0;
+    }
+    .s-ok  { background: #f0f0f0; color: var(--gray); }
+    .s-low { background: #fff3e0; color: #e65100; }
+    .s-out { background: #fce4e4; color: var(--red); }
+
+    .row-actions { display: flex; gap: 8px; flex-shrink: 0; }
+
+    /* FORM */
+    .form-card { background: var(--white); padding: 32px; border: 1px solid var(--lgray); }
+    .form-card h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; margin-bottom: 24px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-grid .full { grid-column: 1/-1; }
+    label { display: block; font-size: 0.75rem; letter-spacing: 1px; text-transform: uppercase; color: var(--gray); margin-bottom: 6px; }
+    input, select, textarea {
+      width: 100%; border: 1.5px solid var(--lgray); padding: 10px 14px;
+      font-family: 'Inter', sans-serif; font-size: 0.9rem; color: var(--black);
+      background: var(--white); transition: border-color .2s; outline: none;
+    }
+    input:focus, select:focus, textarea:focus { border-color: var(--black); }
+    textarea { resize: vertical; min-height: 80px; }
+
+    /* FOTO UPLOAD */
+    .foto-wrap { position: relative; }
+    .foto-preview {
+      width: 100%; aspect-ratio: 1; background: #f5f5f5; border: 2px dashed var(--lgray);
+      display: flex; align-items: center; justify-content: center; cursor: pointer;
+      overflow: hidden; transition: border-color .2s; margin-bottom: 8px;
+    }
+    .foto-preview:hover { border-color: var(--black); }
+    .foto-preview img { width: 100%; height: 100%; object-fit: cover; }
+    .foto-preview .foto-placeholder { text-align: center; color: var(--gray); font-size: 0.8rem; padding: 20px; }
+    .foto-preview .foto-placeholder svg { display: block; margin: 0 auto 8px; }
+    #foto-input { display: none; }
+    .foto-hint { font-size: 0.72rem; color: var(--gray); }
+
+    /* BUTTONS */
+    .btn { padding: 10px 22px; font-size: 0.78rem; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; border: none; font-family: 'Inter', sans-serif; transition: all .2s; }
+    .btn-primary { background: var(--black); color: var(--white); }
+    .btn-primary:hover { background: #333; }
+    .btn-secondary { background: none; border: 1.5px solid var(--lgray); color: var(--black); }
+    .btn-secondary:hover { border-color: var(--black); }
+    .btn-danger { background: none; border: 1.5px solid var(--red); color: var(--red); }
+    .btn-danger:hover { background: var(--red); color: var(--white); }
+    .btn-sm { padding: 6px 14px; font-size: 0.7rem; }
+
+    .form-actions { display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap; }
+
+    /* LINK DO CATÁLOGO */
+    .catalog-link {
+      background: var(--white); padding: 16px 20px; border: 1px solid var(--lgray);
+      display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .catalog-link span { font-size: 0.82rem; color: var(--gray); }
+    .catalog-link a { font-size: 0.85rem; font-weight: 500; color: var(--black); }
+
+    .hidden { display: none !important; }
+    #spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid #ccc; border-top-color: var(--black); border-radius: 50%; animation: spin .6s linear infinite; vertical-align: middle; margin-right: 6px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <h1>Donna Prata</h1>
+    <p>Painel de gerenciamento do catálogo</p>
+    <div style="margin-bottom:16px">
+      <label>GitHub Token</label>
+      <input type="password" id="token-input" placeholder="ghp_..." autocomplete="off">
+    </div>
+    <p style="font-size:0.75rem;color:var(--gray);margin-bottom:20px;line-height:1.6">
+      Acesse <strong>github.com → Settings → Developer settings → Personal access tokens → Tokens (classic)</strong> e gere um token com permissão <strong>repo</strong>.
+    </p>
+    <button class="btn btn-primary" style="width:100%" onclick="login()">Entrar</button>
+    <div id="login-err" style="margin-top:12px;font-size:0.8rem;color:var(--red);display:none"></div>
+  </div>
+</div>
+
+<!-- PAINEL ADMIN -->
+<div id="admin-panel" class="hidden">
+
+  <header>
+    <div class="header-left">
+      <svg width="28" height="28" viewBox="0 0 100 100" fill="none">
+        <polygon points="50,5 85,50 50,95 15,50" stroke="#1A1A1A" stroke-width="5" fill="none"/>
+        <line x1="15" y1="50" x2="85" y2="50" stroke="#1A1A1A" stroke-width="4"/>
+        <line x1="50" y1="5" x2="35" y2="50" stroke="#1A1A1A" stroke-width="4"/>
+        <line x1="50" y1="5" x2="65" y2="50" stroke="#1A1A1A" stroke-width="4"/>
+        <line x1="35" y1="50" x2="50" y2="95" stroke="#1A1A1A" stroke-width="4"/>
+        <line x1="65" y1="50" x2="50" y2="95" stroke="#1A1A1A" stroke-width="4"/>
+      </svg>
+      <h1>Donna Prata</h1>
+      <span>ADMIN</span>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <a href="index.html" target="_blank" class="btn btn-secondary btn-sm">Ver catálogo ↗</a>
+      <button class="btn btn-secondary btn-sm" onclick="logout()">Sair</button>
+    </div>
+  </header>
+
+  <main>
+    <div id="status-bar"></div>
+
+    <!-- Link do catálogo -->
+    <div class="catalog-link">
+      <span>Link público do catálogo:</span>
+      <a id="catalog-url" href="#" target="_blank"></a>
+    </div>
+
+    <!-- Lista de peças -->
+    <div class="section-title">
+      <h2>Peças cadastradas</h2>
+      <button class="btn btn-primary btn-sm" onclick="showForm()">+ Nova peça</button>
+    </div>
+    <div class="product-list" id="product-list"></div>
+
+    <!-- Formulário -->
+    <div class="form-card hidden" id="form-section">
+      <h3 id="form-title">Nova peça</h3>
+      <input type="hidden" id="f-id">
+
+      <div style="display:grid;grid-template-columns:200px 1fr;gap:24px;align-items:start">
+        <!-- Foto -->
+        <div class="foto-wrap">
+          <label>Foto da peça</label>
+          <div class="foto-preview" id="foto-preview" onclick="document.getElementById('foto-input').click()">
+            <div class="foto-placeholder">
+              <svg width="32" height="32" fill="none" stroke="#ccc" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+              Clique para<br>adicionar foto
+            </div>
+          </div>
+          <input type="file" id="foto-input" accept="image/*" onchange="previewFoto(this)">
+          <div class="foto-hint">JPG ou PNG. Será salva automaticamente.</div>
+          <input type="hidden" id="f-foto-atual">
+        </div>
+
+        <!-- Campos -->
+        <div class="form-grid">
+          <div>
+            <label>Nome da peça *</label>
+            <input type="text" id="f-nome" placeholder="Ex: Anel Minimalista">
+          </div>
+          <div>
+            <label>Categoria *</label>
+            <select id="f-cat">
+              <option value="bracelet">Bracelet</option>
+              <option value="anel">Anel</option>
+              <option value="pulseira">Pulseira</option>
+              <option value="brinco">Brinco</option>
+              <option value="colar">Colar</option>
+              <option value="outlet">Outlet</option>
+            </select>
+          </div>
+          <div>
+            <label>Preço *</label>
+            <input type="text" id="f-preco" placeholder="R$39,99">
+          </div>
+          <div>
+            <label>Estoque (unidades) *</label>
+            <input type="number" id="f-estoque" min="0" placeholder="5">
+          </div>
+          <div>
+            <label>Material *</label>
+            <input type="text" id="f-material" placeholder="Aço Inox 316L">
+          </div>
+          <div>
+            <label>Tamanhos (anéis)</label>
+            <input type="text" id="f-tamanhos" placeholder="14, 15, 16, 17, 18 (separados por vírgula)">
+          </div>
+          <div class="full">
+            <label>Descrição</label>
+            <textarea id="f-desc" placeholder="Descreva a peça..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button class="btn btn-primary" onclick="salvarPeca()">
+          <span id="spinner" class="hidden"></span>
+          Salvar peça
+        </button>
+        <button class="btn btn-secondary" onclick="cancelarForm()">Cancelar</button>
+        <button class="btn btn-danger hidden" id="btn-deletar" onclick="deletarPeca()">Excluir peça</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+const REPO  = "brunesk/donna-prata-catalogo";
+const BRANCH = "main";
+let TOKEN = "";
+let produtos = [];
+let fotoBase64 = null;
+let fotoNome   = null;
+
+// ── AUTH ──────────────────────────────────────────────────────────────────────
+function login() {
+  const t = document.getElementById('token-input').value.trim();
+  if (!t) return;
+  TOKEN = t;
+  localStorage.setItem('dp_token', t);
+  iniciar();
+}
+
+function logout() {
+  localStorage.removeItem('dp_token');
+  location.reload();
+}
+
+async function iniciar() {
+  document.getElementById('login-screen').classList.add('hidden');
+  document.getElementById('admin-panel').classList.remove('hidden');
+  const url = `https://${REPO.split('/')[0]}.github.io/${REPO.split('/')[1]}/`;
+  const a = document.getElementById('catalog-url');
+  a.href = url; a.textContent = url;
+  await carregarProdutos();
+}
+
+// ── API GITHUB ─────────────────────────────────────────────────────────────────
+async function ghGet(path) {
+  const r = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
+    headers: { Authorization: `token ${TOKEN}`, Accept: 'application/vnd.github.v3+json' }
+  });
+  if (!r.ok) throw new Error(await r.text());
+  return r.json();
+}
+
+async function ghPut(path, content, message, sha = null) {
+  const body = { message, content: btoa(unescape(encodeURIComponent(content))), branch: BRANCH };
+  if (sha) body.sha = sha;
+  const r = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
+    method: 'PUT',
+    headers: { Authorization: `token ${TOKEN}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  if (!r.ok) throw new Error(await r.text());
+  return r.json();
+}
+
+async function ghPutBinary(path, base64content, message, sha = null) {
+  const body = { message, content: base64content, branch: BRANCH };
+  if (sha) body.sha = sha;
+  const r = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
+    method: 'PUT',
+    headers: { Authorization: `token ${TOKEN}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  if (!r.ok) throw new Error(await r.text());
+  return r.json();
+}
+
+async function ghDelete(path, message, sha) {
+  const r = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
+    method: 'DELETE',
+    headers: { Authorization: `token ${TOKEN}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message, sha, branch: BRANCH })
+  });
+  if (!r.ok) throw new Error(await r.text());
+}
+
+// ── PRODUTOS ──────────────────────────────────────────────────────────────────
+async function carregarProdutos() {
+  try {
+    status('info', 'Carregando produtos...');
+    const data = await ghGet('produtos.json');
+    produtos = JSON.parse(decodeURIComponent(escape(atob(data.content.replace(/\n/g, '')))));
+    renderLista();
+    status('', '');
+  } catch(e) {
+    status('err', 'Erro ao carregar produtos: ' + e.message);
+  }
+}
+
+async function salvarJSON() {
+  const data = await ghGet('produtos.json');
+  await ghPut('produtos.json', JSON.stringify(produtos, null, 2),
+    'admin: atualizar produtos', data.sha);
+}
+
+// ── RENDER ────────────────────────────────────────────────────────────────────
+function renderLista() {
+  const el = document.getElementById('product-list');
+  if (!produtos.length) {
+    el.innerHTML = '<div style="color:var(--gray);font-size:.85rem;padding:20px 0">Nenhuma peça cadastrada ainda.</div>';
+    return;
+  }
+  el.innerHTML = produtos.map(p => {
+    const s = stockBadge(p.estoque);
+    const imgTag = p.foto
+      ? `<img src="${p.foto}?t=${Date.now()}" onerror="this.style.display='none'">`
+      : `<div class="no-img">SEM FOTO</div>`;
+    return `
+      <div class="product-row">
+        ${imgTag}
+        <div class="product-info">
+          <div class="pname">${p.nome}</div>
+          <div class="pmeta">${catLabel(p.categoria)} · ${p.material}</div>
+          <div class="pprice">${p.preco}</div>
+        </div>
+        <span class="stock-badge ${s.cls}">${s.text}</span>
+        <div class="row-actions">
+          <button class="btn btn-secondary btn-sm" onclick="editarPeca(${p.id})">Editar</button>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function stockBadge(n) {
+  if (n === 0) return { text: 'Esgotado',       cls: 's-out' };
+  if (n === 1) return { text: 'Última unidade', cls: 's-low' };
+  if (n <= 3)  return { text: `${n} unidades`,  cls: 's-low' };
+  return               { text: `${n} em estoque`, cls: 's-ok' };
+}
+
+function catLabel(c) {
+  return { bracelet:'Bracelet', anel:'Anel', pulseira:'Pulseira', brinco:'Brinco', colar:'Colar', outlet:'Outlet' }[c] || c;
+}
+
+// ── FORM ──────────────────────────────────────────────────────────────────────
+function showForm(p = null) {
+  document.getElementById('form-section').classList.remove('hidden');
+  document.getElementById('form-title').textContent = p ? 'Editar peça' : 'Nova peça';
+  document.getElementById('btn-deletar').classList.toggle('hidden', !p);
+  fotoBase64 = null; fotoNome = null;
+
+  document.getElementById('f-id').value       = p ? p.id : '';
+  document.getElementById('f-nome').value     = p ? p.nome : '';
+  document.getElementById('f-cat').value      = p ? p.categoria : 'bracelet';
+  document.getElementById('f-preco').value    = p ? p.preco : '';
+  document.getElementById('f-estoque').value  = p ? p.estoque : '';
+  document.getElementById('f-material').value = p ? p.material : '';
+  document.getElementById('f-tamanhos').value = p ? (p.tamanhos||[]).join(', ') : '';
+  document.getElementById('f-desc').value     = p ? p.descricao : '';
+  document.getElementById('f-foto-atual').value = p ? (p.foto||'') : '';
+
+  const prev = document.getElementById('foto-preview');
+  if (p && p.foto) {
+    prev.innerHTML = `<img src="${p.foto}?t=${Date.now()}" style="width:100%;height:100%;object-fit:cover">`;
+  } else {
+    prev.innerHTML = `<div class="foto-placeholder"><svg width="32" height="32" fill="none" stroke="#ccc" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>Clique para<br>adicionar foto</div>`;
+  }
+
+  document.getElementById('form-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function editarPeca(id) {
+  const p = produtos.find(x => x.id === id);
+  if (p) showForm(p);
+}
+
+function cancelarForm() {
+  document.getElementById('form-section').classList.add('hidden');
+  fotoBase64 = null; fotoNome = null;
+}
+
+function previewFoto(input) {
+  const file = input.files[0];
+  if (!file) return;
+  fotoNome = 'fotos/' + file.name.replace(/\s+/g, '-').toLowerCase();
+  const reader = new FileReader();
+  reader.onload = e => {
+    fotoBase64 = e.target.result.split(',')[1];
+    document.getElementById('foto-preview').innerHTML =
+      `<img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover">`;
+  };
+  reader.readAsDataURL(file);
+}
+
+async function salvarPeca() {
+  const nome     = document.getElementById('f-nome').value.trim();
+  const cat      = document.getElementById('f-cat').value;
+  const preco    = document.getElementById('f-preco').value.trim();
+  const estoque  = parseInt(document.getElementById('f-estoque').value) || 0;
+  const material = document.getElementById('f-material').value.trim();
+  const desc     = document.getElementById('f-desc').value.trim();
+  const tamStr   = document.getElementById('f-tamanhos').value.trim();
+  const tamanhos = tamStr ? tamStr.split(',').map(s => s.trim()).filter(Boolean) : [];
+  const idVal    = document.getElementById('f-id').value;
+  const fotoAtual = document.getElementById('f-foto-atual').value;
+
+  if (!nome || !preco || !material) {
+    status('err', 'Preencha nome, preço e material.'); return;
+  }
+
+  setLoading(true);
+  status('info', 'Salvando...');
+
+  try {
+    let fotoPath = fotoAtual;
+
+    // Upload da foto se tiver nova
+    if (fotoBase64 && fotoNome) {
+      status('info', 'Enviando foto...');
+      try {
+        const existing = await ghGet(fotoNome);
+        await ghPutBinary(fotoNome, fotoBase64, `admin: foto ${fotoNome}`, existing.sha);
+      } catch {
+        await ghPutBinary(fotoNome, fotoBase64, `admin: foto ${fotoNome}`);
+      }
+      fotoPath = fotoNome;
+    }
+
+    const precoNum = parseFloat(preco.replace('R$','').replace('.','').replace(',','.')) || 0;
+
+    if (idVal) {
+      // Editar existente
+      const idx = produtos.findIndex(p => p.id == idVal);
+      if (idx >= 0) {
+        produtos[idx] = { ...produtos[idx], nome, categoria: cat, preco, precoNum, estoque, material, descricao: desc, tamanhos, foto: fotoPath };
+      }
+    } else {
+      // Nova peça
+      const novoId = produtos.length ? Math.max(...produtos.map(p => p.id)) + 1 : 1;
+      produtos.push({ id: novoId, categoria: cat, nome, descricao: desc, material, preco, precoNum, foto: fotoPath, tamanhos, estoque });
+    }
+
+    await salvarJSON();
+    renderLista();
+    cancelarForm();
+    status('ok', '✓ Peça salva com sucesso! O catálogo atualiza em ~1 minuto.');
+  } catch(e) {
+    status('err', 'Erro ao salvar: ' + e.message);
+  }
+  setLoading(false);
+}
+
+async function deletarPeca() {
+  if (!confirm('Tem certeza que quer excluir essa peça?')) return;
+  const idVal = document.getElementById('f-id').value;
+  produtos = produtos.filter(p => p.id != idVal);
+  setLoading(true);
+  try {
+    await salvarJSON();
+    renderLista();
+    cancelarForm();
+    status('ok', '✓ Peça excluída.');
+  } catch(e) {
+    status('err', 'Erro ao excluir: ' + e.message);
+  }
+  setLoading(false);
+}
+
+// ── HELPERS ───────────────────────────────────────────────────────────────────
+function status(type, msg) {
+  const el = document.getElementById('status-bar');
+  el.className = type ? `status-bar ${type}` : 'hidden';
+  el.textContent = msg;
+  if (type === 'ok') setTimeout(() => el.classList.add('hidden'), 4000);
+}
+
+function setLoading(on) {
+  document.getElementById('spinner').classList.toggle('hidden', !on);
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+const saved = localStorage.getItem('dp_token');
+if (saved) { TOKEN = saved; iniciar(); }
+</script>
+</body>
+</html>
