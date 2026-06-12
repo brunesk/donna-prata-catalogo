@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Donna Prata — Catálogo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #F0EDE8;
+      --black: #1A1A1A;
+      --gray:  #888;
+      --lgray: #C8C8C8;
+      --white: #fff;
+    }
+
+    body {
+      background: var(--cream);
+      color: var(--black);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--black);
+      color: var(--white);
+      text-align: center;
+      padding: 40px 20px 32px;
+    }
+
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 8px;
+    }
+
+    .logo-diamond {
+      width: 48px;
+      height: 48px;
+    }
+
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 6vw, 3rem);
+      font-weight: 700;
+      letter-spacing: 4px;
+    }
+
+    header p {
+      font-size: 0.75rem;
+      letter-spacing: 3px;
+      color: var(--lgray);
+      margin-top: 4px;
+    }
+
+    .header-sub {
+      margin-top: 16px;
+      font-size: 0.85rem;
+      color: var(--lgray);
+      letter-spacing: 1px;
+    }
+
+    /* ── NAV FILTROS ── */
+    .filters {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+      padding: 28px 20px 0;
+    }
+
+    .filter-btn {
+      background: none;
+      border: 1.5px solid var(--lgray);
+      color: var(--black);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 1.5px;
+      padding: 8px 20px;
+      cursor: pointer;
+      transition: all .2s;
+      text-transform: uppercase;
+    }
+
+    .filter-btn:hover,
+    .filter-btn.active {
+      background: var(--black);
+      border-color: var(--black);
+      color: var(--white);
+    }
+
+    /* ── GRID ── */
+    .catalog {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2px;
+      padding: 28px 20px 60px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--white);
+      cursor: pointer;
+      transition: transform .2s;
+      position: relative;
+    }
+
+    .card:hover { transform: translateY(-3px); }
+
+    .card-img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      display: block;
+      background: #f5f5f5;
+    }
+
+    .card-img-placeholder {
+      width: 100%;
+      aspect-ratio: 1;
+      background: #f0f0f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--lgray);
+      font-size: 0.75rem;
+      letter-spacing: 1px;
+    }
+
+    .card-body {
+      padding: 20px;
+    }
+
+    .card-tag {
+      font-size: 0.65rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 6px;
+    }
+
+    .card-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      line-height: 1.3;
+    }
+
+    .card-material {
+      font-size: 0.78rem;
+      color: var(--gray);
+      margin-bottom: 12px;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .card-price {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+
+    .card-stock {
+      font-size: 0.7rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 2px;
+    }
+
+    .stock-ok   { background: #f0f0f0; color: var(--gray); }
+    .stock-low  { background: #fff3e0; color: #e65100; }
+    .stock-out  { background: #fce4e4; color: #c62828; }
+
+    /* tamanhos */
+    .card-sizes {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .size-tag {
+      font-size: 0.7rem;
+      border: 1px solid var(--lgray);
+      padding: 3px 9px;
+      color: var(--black);
+    }
+
+    /* ── MODAL ── */
+    .modal-bg {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.6);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-bg.open { display: flex; }
+
+    .modal {
+      background: var(--white);
+      max-width: 520px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    .modal-img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      display: block;
+      background: #f5f5f5;
+    }
+
+    .modal-img-placeholder {
+      width: 100%;
+      aspect-ratio: 1;
+      background: #f0f0f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--lgray);
+    }
+
+    .modal-body { padding: 28px; }
+
+    .modal-tag {
+      font-size: 0.65rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 8px;
+    }
+
+    .modal-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+
+    .modal-price {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .modal-desc {
+      font-size: 0.9rem;
+      color: #444;
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+
+    .modal-info {
+      font-size: 0.8rem;
+      color: var(--gray);
+      margin-bottom: 6px;
+    }
+
+    .modal-info strong { color: var(--black); }
+
+    .modal-sizes {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 16px 0;
+    }
+
+    .modal-size {
+      border: 1.5px solid var(--lgray);
+      padding: 6px 14px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all .2s;
+    }
+
+    .modal-size:hover,
+    .modal-size.selected {
+      border-color: var(--black);
+      background: var(--black);
+      color: var(--white);
+    }
+
+    .btn-whatsapp {
+      display: block;
+      width: 100%;
+      background: var(--black);
+      color: var(--white);
+      text-align: center;
+      padding: 16px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-decoration: none;
+      margin-top: 20px;
+      transition: background .2s;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-whatsapp:hover { background: #333; }
+
+    .modal-close {
+      position: absolute;
+      top: 14px;
+      right: 18px;
+      font-size: 1.6rem;
+      cursor: pointer;
+      color: var(--white);
+      z-index: 10;
+      line-height: 1;
+      background: rgba(0,0,0,.3);
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--black);
+      color: var(--lgray);
+      text-align: center;
+      padding: 32px 20px;
+      font-size: 0.78rem;
+      letter-spacing: 1px;
+    }
+
+    footer a {
+      color: var(--white);
+      text-decoration: none;
+    }
+
+    .empty {
+      grid-column: 1/-1;
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo-wrap">
+    <svg class="logo-diamond" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="50,5 85,50 50,95 15,50" stroke="white" stroke-width="4" fill="none"/>
+      <line x1="15" y1="50" x2="85" y2="50" stroke="white" stroke-width="3"/>
+      <line x1="50" y1="5" x2="35" y2="50" stroke="white" stroke-width="3"/>
+      <line x1="50" y1="5" x2="65" y2="50" stroke="white" stroke-width="3"/>
+      <line x1="35" y1="50" x2="50" y2="95" stroke="white" stroke-width="3"/>
+      <line x1="65" y1="50" x2="50" y2="95" stroke="white" stroke-width="3"/>
+    </svg>
+    <h1>DONNA PRATA</h1>
+  </div>
+  <p>JÓIAS EM PRATA 925</p>
+  <div class="header-sub">Aço Inox · Prata 925 · Semijoias &nbsp;|&nbsp; Ibiúna-SP</div>
+</header>
+
+<!-- FILTROS -->
+<div class="filters">
+  <button class="filter-btn active" onclick="filterCat('todos')">Todos</button>
+  <button class="filter-btn" onclick="filterCat('bracelet')">Braceletes</button>
+  <button class="filter-btn" onclick="filterCat('anel')">Anéis</button>
+  <button class="filter-btn" onclick="filterCat('pulseira')">Pulseiras</button>
+  <button class="filter-btn" onclick="filterCat('brinco')">Brincos</button>
+  <button class="filter-btn" onclick="filterCat('colar')">Colares</button>
+</div>
+
+<!-- CATÁLOGO -->
+<div class="catalog" id="catalog"></div>
+
+<!-- MODAL -->
+<div class="modal-bg" id="modal" onclick="closeModal(event)">
+  <div class="modal" id="modal-box">
+    <span class="modal-close" onclick="closeModalDirect()">×</span>
+    <div id="modal-img-wrap"></div>
+    <div class="modal-body">
+      <div class="modal-tag" id="modal-tag"></div>
+      <div class="modal-name" id="modal-name"></div>
+      <div class="modal-price" id="modal-price"></div>
+      <div class="modal-desc" id="modal-desc"></div>
+      <div class="modal-info" id="modal-material"></div>
+      <div class="modal-info" id="modal-stock-info"></div>
+      <div class="modal-sizes" id="modal-sizes"></div>
+      <a class="btn-whatsapp" id="modal-cta" href="#" target="_blank">
+        💬 QUERO ESSA PEÇA
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p style="margin-bottom:8px">
+    <strong style="color:white;font-family:'Playfair Display',serif;font-size:1.1rem">DONNA PRATA</strong>
+  </p>
+  <p>📍 Ibiúna-SP &nbsp;|&nbsp; Entregas locais e envios para todo o Brasil</p>
+  <p style="margin-top:8px">
+    <a href="https://wa.me/5515996500066">WhatsApp</a> &nbsp;·&nbsp;
+    <a href="https://instagram.com/a.donnaprata">@a.donnaprata</a>
+  </p>
+  <p style="margin-top:16px;font-size:0.7rem;color:#555">Seja Donna Prata ✨</p>
+</footer>
+
+<script>
+// ── PRODUTOS ──────────────────────────────────────────────────────────────────
+// Para adicionar uma peça: copie um objeto e preencha os campos.
+// foto: coloque o nome do arquivo de imagem na pasta /fotos/
+// tamanhos: deixe [] se não tiver (ex: brincos, braceletes)
+// estoque: número de unidades disponíveis
+const produtos = [
+  {
+    id: 1,
+    categoria: "bracelet",
+    nome: "Bracelet Love Prateado",
+    descricao: "O clássico que nunca sai de moda. Design inspirado nas grandes joalherias, feito em aço inox de alta qualidade. Não mancha, não oxida e dura anos.",
+    material: "Aço Inox 316L",
+    preco: "R$79,99",
+    precoNum: 79.99,
+    foto: "fotos/bracelet-love-prata.jpg",
+    tamanhos: [],
+    estoque: 1,
+  },
+  // ADICIONE MAIS PEÇAS AQUI ↓
+  // {
+  //   id: 2,
+  //   categoria: "anel",
+  //   nome: "Anel Minimalista",
+  //   descricao: "Descrição da peça.",
+  //   material: "Aço Inox 316L",
+  //   preco: "R$39,99",
+  //   precoNum: 39.99,
+  //   foto: "fotos/anel-minimalista.jpg",
+  //   tamanhos: ["14", "15", "16", "17", "18", "19", "20"],
+  //   estoque: 5,
+  // },
+];
+
+const WA = "5515996500066";
+
+// ── RENDER ────────────────────────────────────────────────────────────────────
+let currentFilter = "todos";
+let selectedSizes  = {};
+
+function stockLabel(n) {
+  if (n === 0) return { text: "Esgotado",        cls: "stock-out" };
+  if (n === 1) return { text: "Última unidade",  cls: "stock-low" };
+  if (n <= 3)  return { text: `${n} unidades`,   cls: "stock-low" };
+  return               { text: `${n} disponíveis`, cls: "stock-ok" };
+}
+
+function renderCatalog() {
+  const list = produtos.filter(p =>
+    currentFilter === "todos" || p.categoria === currentFilter
+  );
+  const el = document.getElementById("catalog");
+
+  if (list.length === 0) {
+    el.innerHTML = '<div class="empty">Nenhuma peça nessa categoria por enquanto.</div>';
+    return;
+  }
+
+  el.innerHTML = list.map(p => {
+    const s = stockLabel(p.estoque);
+    const imgTag = p.foto
+      ? `<img class="card-img" src="${p.foto}" alt="${p.nome}" loading="lazy">`
+      : `<div class="card-img-placeholder">SEM FOTO</div>`;
+    const sizesTag = p.tamanhos.length
+      ? `<div class="card-sizes">${p.tamanhos.map(t => `<span class="size-tag">${t}</span>`).join('')}</div>`
+      : '';
+    return `
+      <div class="card" onclick="openModal(${p.id})">
+        ${imgTag}
+        <div class="card-body">
+          <div class="card-tag">${catLabel(p.categoria)}</div>
+          <div class="card-name">${p.nome}</div>
+          <div class="card-material">${p.material}</div>
+          <div class="card-footer">
+            <span class="card-price">${p.preco}</span>
+            <span class="card-stock ${s.cls}">${s.text}</span>
+          </div>
+          ${sizesTag}
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function catLabel(c) {
+  const map = { bracelet:"Bracelet", anel:"Anel", pulseira:"Pulseira", brinco:"Brinco", colar:"Colar" };
+  return map[c] || c;
+}
+
+function filterCat(cat) {
+  currentFilter = cat;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  renderCatalog();
+}
+
+// ── MODAL ─────────────────────────────────────────────────────────────────────
+function openModal(id) {
+  const p = produtos.find(x => x.id === id);
+  if (!p) return;
+
+  const s = stockLabel(p.estoque);
+  const imgWrap = document.getElementById('modal-img-wrap');
+  imgWrap.innerHTML = p.foto
+    ? `<img class="modal-img" src="${p.foto}" alt="${p.nome}">`
+    : `<div class="modal-img-placeholder">SEM FOTO</div>`;
+
+  document.getElementById('modal-tag').textContent       = catLabel(p.categoria);
+  document.getElementById('modal-name').textContent      = p.nome;
+  document.getElementById('modal-price').textContent     = p.preco;
+  document.getElementById('modal-desc').textContent      = p.descricao;
+  document.getElementById('modal-material').innerHTML    = `<strong>Material:</strong> ${p.material}`;
+  document.getElementById('modal-stock-info').innerHTML  = `<strong>Estoque:</strong> <span class="card-stock ${s.cls}" style="display:inline">${s.text}</span>`;
+
+  const sizesEl = document.getElementById('modal-sizes');
+  if (p.tamanhos.length) {
+    sizesEl.style.display = 'flex';
+    sizesEl.innerHTML = `<div style="font-size:.75rem;letter-spacing:1px;text-transform:uppercase;color:var(--gray);width:100%;margin-bottom:4px">Tamanho:</div>` +
+      p.tamanhos.map(t =>
+        `<div class="modal-size ${selectedSizes[id]===t?'selected':''}" onclick="selectSize(${id},'${t}',this)">${t}</div>`
+      ).join('');
+  } else {
+    sizesEl.style.display = 'none';
+    sizesEl.innerHTML = '';
+  }
+
+  updateCTA(p);
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function selectSize(id, size, el) {
+  selectedSizes[id] = size;
+  document.querySelectorAll('.modal-size').forEach(e => e.classList.remove('selected'));
+  el.classList.add('selected');
+  const p = produtos.find(x => x.id === id);
+  updateCTA(p);
+}
+
+function updateCTA(p) {
+  const cta  = document.getElementById('modal-cta');
+  const size = selectedSizes[p.id] ? ` — Tamanho ${selectedSizes[p.id]}` : '';
+  const msg  = encodeURIComponent(`Olá! Vi o catálogo da Donna Prata e quero: ${p.nome}${size} (${p.preco}) 💎`);
+  if (p.estoque === 0) {
+    cta.textContent = 'ESGOTADO';
+    cta.style.background = '#ccc';
+    cta.href = '#';
+  } else {
+    cta.textContent = '💬 QUERO ESSA PEÇA';
+    cta.style.background = 'var(--black)';
+    cta.href = `https://wa.me/${WA}?text=${msg}`;
+  }
+}
+
+function closeModal(e) {
+  if (e.target.id === 'modal') closeModalDirect();
+}
+
+function closeModalDirect() {
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalDirect(); });
+
+renderCatalog();
+</script>
+</body>
+</html>
