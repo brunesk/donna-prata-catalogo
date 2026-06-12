@@ -187,6 +187,10 @@
     .stock-low  { background: #fff3e0; color: #e65100; }
     .stock-out  { background: #fce4e4; color: #c62828; }
 
+    .outlet-btn { border-color: #c62828; color: #c62828; }
+    .outlet-btn:hover, .outlet-btn.active { background: #c62828; border-color: #c62828; color: white; }
+    .outlet-tag { background: #c62828; color: white; font-size: 0.65rem; padding: 2px 8px; letter-spacing: 1px; text-transform: uppercase; display: inline-block; margin-bottom: 6px; }
+
     /* tamanhos */
     .card-sizes {
       display: flex;
@@ -394,6 +398,7 @@
   <button class="filter-btn" onclick="filterCat('pulseira')">Pulseiras</button>
   <button class="filter-btn" onclick="filterCat('brinco')">Brincos</button>
   <button class="filter-btn" onclick="filterCat('colar')">Colares</button>
+  <button class="filter-btn outlet-btn" onclick="filterCat('outlet')">🔖 Outlet</button>
 </div>
 
 <!-- CATÁLOGO -->
@@ -516,7 +521,7 @@ function renderCatalog() {
 }
 
 function catLabel(c) {
-  const map = { bracelet:"Bracelet", anel:"Anel", pulseira:"Pulseira", brinco:"Brinco", colar:"Colar" };
+  const map = { bracelet:"Bracelet", anel:"Anel", pulseira:"Pulseira", brinco:"Brinco", colar:"Colar", outlet:"Outlet" };
   return map[c] || c;
 }
 
