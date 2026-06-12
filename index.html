@@ -10,22 +10,18 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:     #111010;
-      --surface:#1A1A1A;
-      --card:   #1E1E1E;
-      --gold:   #C9A96E;
-      --gold2:  #E8D5A3;
-      --white:  #F5F3EE;
-      --muted:  #888;
-      --border: #2A2A2A;
-      --red:    #c62828;
+      --marfim:  #F2EDE4;
+      --marfim2: #EAE4DA;
+      --black:   #1A1A1A;
+      --gray:    #777;
+      --lgray:   #C8C4BC;
+      --white:   #FDFAF6;
+      --red:     #c62828;
     }
 
-    html { scroll-behavior: smooth; }
-
     body {
-      background: var(--bg);
-      color: var(--white);
+      background: var(--marfim);
+      color: var(--black);
       font-family: 'Inter', sans-serif;
       font-weight: 300;
       min-height: 100vh;
@@ -33,66 +29,40 @@
 
     /* ── HEADER ── */
     header {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      background: var(--bg);
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0 24px;
-      height: 80px;
+      background: var(--marfim);
+      text-align: center;
+      padding: 52px 24px 36px;
+      border-bottom: 1px solid var(--lgray);
     }
 
     .logo-img {
-      height: 48px;
-      width: auto;
+      max-width: 280px;
+      width: 70%;
+      height: auto;
       display: block;
-      filter: brightness(0) invert(1);
-    }
-
-    /* ── HERO ── */
-    .hero {
-      text-align: center;
-      padding: 80px 24px 64px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .hero-label {
-      font-size: 0.7rem;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 20px;
-    }
-
-    .hero h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2.4rem, 6vw, 4rem);
-      font-weight: 400;
-      line-height: 1.15;
-      color: var(--white);
-      max-width: 700px;
       margin: 0 auto 20px;
     }
 
-    .hero h1 em {
+    .header-tagline {
+      font-family: 'Playfair Display', serif;
       font-style: italic;
-      color: var(--gold);
+      font-size: clamp(1rem, 3vw, 1.3rem);
+      font-weight: 400;
+      color: var(--black);
+      letter-spacing: 0.5px;
     }
 
-    .hero-sub {
-      font-size: 0.85rem;
-      color: var(--muted);
-      letter-spacing: 2px;
+    .header-sub {
+      margin-top: 10px;
+      font-size: 0.68rem;
+      color: var(--gray);
+      letter-spacing: 3px;
       text-transform: uppercase;
     }
 
     /* ── FILTROS ── */
     .filters-wrap {
-      border-bottom: 1px solid var(--border);
-      padding: 0 24px;
+      border-bottom: 1px solid var(--lgray);
       overflow-x: auto;
       scrollbar-width: none;
     }
@@ -100,7 +70,6 @@
 
     .filters {
       display: flex;
-      gap: 0;
       justify-content: center;
       min-width: max-content;
       margin: 0 auto;
@@ -110,41 +79,41 @@
       background: none;
       border: none;
       border-bottom: 2px solid transparent;
-      color: var(--muted);
+      color: var(--gray);
       font-family: 'Inter', sans-serif;
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       font-weight: 400;
       letter-spacing: 2.5px;
-      padding: 18px 24px;
+      padding: 18px 22px;
       cursor: pointer;
       transition: all .2s;
       text-transform: uppercase;
       white-space: nowrap;
     }
 
-    .filter-btn:hover { color: var(--white); }
+    .filter-btn:hover { color: var(--black); }
 
     .filter-btn.active {
-      color: var(--white);
-      border-bottom-color: var(--gold);
+      color: var(--black);
+      border-bottom-color: var(--black);
     }
 
-    .filter-btn.outlet-btn { color: #e57373; }
-    .filter-btn.outlet-btn.active,
-    .filter-btn.outlet-btn:hover { color: var(--red); border-bottom-color: var(--red); }
+    .filter-btn.outlet-btn { color: #b46060; }
+    .filter-btn.outlet-btn:hover,
+    .filter-btn.outlet-btn.active { color: var(--red); border-bottom-color: var(--red); }
 
     /* ── GRID ── */
     .catalog {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: 1px;
-      background: var(--border);
-      margin: 40px 0;
+      background: var(--lgray);
+      margin: 0;
     }
 
     /* ── CARD ── */
     .card {
-      background: var(--bg);
+      background: var(--marfim);
       cursor: pointer;
       position: relative;
       overflow: hidden;
@@ -161,7 +130,7 @@
       height: 100%;
       object-fit: cover;
       display: block;
-      background: var(--surface);
+      background: var(--marfim2);
       transition: transform .5s ease;
     }
 
@@ -170,37 +139,37 @@
     .card-img-placeholder {
       width: 100%;
       aspect-ratio: 1;
-      background: var(--surface);
+      background: var(--marfim2);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--border);
-      font-size: 0.65rem;
+      color: var(--lgray);
+      font-size: 0.6rem;
       letter-spacing: 2px;
       text-transform: uppercase;
     }
 
     .outlet-ribbon {
       position: absolute;
-      top: 16px;
+      top: 14px;
       left: 0;
       background: var(--red);
       color: #fff;
-      font-size: 0.6rem;
+      font-size: 0.58rem;
       letter-spacing: 2px;
       text-transform: uppercase;
       padding: 4px 12px;
     }
 
     .card-body {
-      padding: 20px 22px 24px;
+      padding: 18px 20px 22px;
     }
 
     .card-tag {
-      font-size: 0.6rem;
+      font-size: 0.58rem;
       letter-spacing: 3px;
       text-transform: uppercase;
-      color: var(--gold);
+      color: var(--gray);
       margin-bottom: 8px;
     }
 
@@ -208,16 +177,16 @@
       font-family: 'Playfair Display', serif;
       font-size: 1.05rem;
       font-weight: 400;
-      color: var(--white);
-      margin-bottom: 6px;
-      line-height: 1.35;
+      color: var(--black);
+      margin-bottom: 5px;
+      line-height: 1.3;
     }
 
     .card-material {
-      font-size: 0.72rem;
-      color: var(--muted);
-      letter-spacing: 1px;
-      margin-bottom: 16px;
+      font-size: 0.7rem;
+      color: var(--gray);
+      letter-spacing: 0.5px;
+      margin-bottom: 14px;
     }
 
     .card-footer {
@@ -228,27 +197,27 @@
 
     .card-price {
       font-family: 'Playfair Display', serif;
-      font-size: 1.25rem;
-      color: var(--white);
+      font-size: 1.2rem;
+      color: var(--black);
     }
 
     .card-stock {
-      font-size: 0.6rem;
+      font-size: 0.58rem;
       letter-spacing: 1.5px;
       text-transform: uppercase;
-      padding: 4px 10px;
+      padding: 3px 9px;
     }
 
-    .stock-ok  { background: transparent; border: 1px solid var(--border); color: var(--muted); }
-    .stock-low { background: rgba(198,40,40,.12); border: 1px solid rgba(198,40,40,.3); color: #e57373; }
-    .stock-out { background: rgba(198,40,40,.2); border: 1px solid rgba(198,40,40,.4); color: #e57373; }
+    .stock-ok  { background: transparent; border: 1px solid var(--lgray); color: var(--gray); }
+    .stock-low { background: #fdf0e0; border: 1px solid #e8c080; color: #a06020; }
+    .stock-out { background: #fce4e4; border: 1px solid #e0a0a0; color: var(--red); }
 
     /* ── MODAL ── */
     .modal-bg {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,.85);
+      background: rgba(26,20,14,.7);
       z-index: 100;
       align-items: center;
       justify-content: center;
@@ -258,8 +227,7 @@
     .modal-bg.open { display: flex; }
 
     .modal {
-      background: var(--bg);
-      border: 1px solid var(--border);
+      background: var(--white);
       max-width: 860px;
       width: 100%;
       max-height: 92vh;
@@ -279,17 +247,17 @@
       min-height: 320px;
       object-fit: cover;
       display: block;
-      background: var(--surface);
+      background: var(--marfim2);
     }
 
     .modal-img-placeholder {
       width: 100%;
       min-height: 320px;
-      background: var(--surface);
+      background: var(--marfim2);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--muted);
+      color: var(--lgray);
     }
 
     .modal-body {
@@ -299,62 +267,62 @@
     }
 
     .modal-tag {
-      font-size: 0.62rem;
+      font-size: 0.6rem;
       letter-spacing: 3px;
       text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 12px;
+      color: var(--gray);
+      margin-bottom: 10px;
     }
 
     .modal-name {
       font-family: 'Playfair Display', serif;
-      font-size: 1.7rem;
+      font-size: 1.65rem;
       font-weight: 400;
-      color: var(--white);
+      color: var(--black);
       margin-bottom: 6px;
       line-height: 1.2;
     }
 
     .modal-price {
       font-family: 'Playfair Display', serif;
-      font-size: 2rem;
-      color: var(--gold);
-      margin-bottom: 24px;
+      font-size: 1.9rem;
+      color: var(--black);
+      margin-bottom: 22px;
     }
 
     .divider {
       height: 1px;
-      background: var(--border);
+      background: var(--lgray);
       margin-bottom: 20px;
     }
 
     .modal-desc {
       font-size: 0.85rem;
-      color: #aaa;
+      color: #666;
       line-height: 1.8;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
       flex: 1;
     }
 
     .modal-info {
       font-size: 0.78rem;
-      color: var(--muted);
-      margin-bottom: 6px;
+      color: var(--gray);
+      margin-bottom: 5px;
     }
 
-    .modal-info strong { color: var(--white); font-weight: 500; }
+    .modal-info strong { color: var(--black); font-weight: 500; }
 
     .modal-sizes {
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
-      margin: 16px 0;
+      margin: 14px 0;
     }
 
     .modal-size {
-      border: 1px solid var(--border);
-      color: var(--muted);
-      padding: 8px 16px;
+      border: 1px solid var(--lgray);
+      color: var(--gray);
+      padding: 7px 15px;
       font-size: 0.78rem;
       cursor: pointer;
       transition: all .2s;
@@ -363,38 +331,38 @@
 
     .modal-size:hover,
     .modal-size.selected {
-      border-color: var(--gold);
-      color: var(--gold);
+      border-color: var(--black);
+      color: var(--black);
+      background: var(--marfim);
     }
 
     .btn-whatsapp {
       display: block;
       width: 100%;
-      background: var(--gold);
-      color: #111;
+      background: var(--black);
+      color: var(--marfim);
       text-align: center;
       padding: 16px;
       font-family: 'Inter', sans-serif;
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       font-weight: 500;
       letter-spacing: 3px;
       text-transform: uppercase;
       text-decoration: none;
-      margin-top: 24px;
+      margin-top: 22px;
       transition: background .2s;
     }
 
-    .btn-whatsapp:hover { background: var(--gold2); }
+    .btn-whatsapp:hover { background: #333; }
 
     .modal-close {
       position: absolute;
       top: 14px;
       right: 16px;
-      font-size: 1.4rem;
+      font-size: 1.1rem;
       cursor: pointer;
-      color: var(--muted);
+      color: var(--gray);
       z-index: 10;
-      line-height: 1;
       width: 32px;
       height: 32px;
       display: flex;
@@ -403,61 +371,61 @@
       transition: color .2s;
     }
 
-    .modal-close:hover { color: var(--white); }
+    .modal-close:hover { color: var(--black); }
 
     /* ── FOOTER ── */
     footer {
-      border-top: 1px solid var(--border);
+      background: var(--black);
+      color: var(--lgray);
       text-align: center;
-      padding: 60px 24px;
+      padding: 52px 24px;
     }
 
     .footer-logo {
       font-family: 'Playfair Display', serif;
-      font-size: 1.5rem;
-      color: var(--white);
-      letter-spacing: 4px;
+      font-size: 1.4rem;
+      color: var(--marfim);
+      letter-spacing: 5px;
       text-transform: uppercase;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
-    .footer-tag {
-      font-size: 0.7rem;
-      letter-spacing: 2px;
-      color: var(--gold);
+    .footer-sub {
+      font-size: 0.62rem;
+      letter-spacing: 3px;
       text-transform: uppercase;
+      color: #666;
       margin-bottom: 28px;
     }
 
     .footer-info {
       font-size: 0.78rem;
-      color: var(--muted);
-      line-height: 2;
+      color: #666;
+      line-height: 2.2;
     }
 
     .footer-info a {
-      color: var(--white);
+      color: var(--lgray);
       text-decoration: none;
       transition: color .2s;
     }
 
-    .footer-info a:hover { color: var(--gold); }
+    .footer-info a:hover { color: var(--marfim); }
 
     .footer-slogan {
-      margin-top: 36px;
+      margin-top: 32px;
       font-family: 'Playfair Display', serif;
       font-style: italic;
-      font-size: 0.95rem;
-      color: var(--muted);
+      font-size: 0.9rem;
+      color: #555;
     }
 
     .empty {
       grid-column: 1/-1;
       text-align: center;
       padding: 80px 24px;
-      color: var(--muted);
-      font-size: 0.9rem;
-      background: var(--bg);
+      color: var(--gray);
+      background: var(--marfim);
     }
   </style>
 </head>
@@ -466,14 +434,9 @@
 <!-- HEADER -->
 <header>
   <img src="logo.png" alt="Donna Prata" class="logo-img">
+  <div class="header-tagline">A peça que faltava no seu look</div>
+  <div class="header-sub">Prata 925 &nbsp;·&nbsp; Aço Inox &nbsp;·&nbsp; Semijoias</div>
 </header>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-label">Nova Coleção · Aço Inox 316L</div>
-  <h1>A peça que faltava<br>no seu <em>look</em></h1>
-  <div class="hero-sub">Prata 925 &nbsp;·&nbsp; Aço Inox &nbsp;·&nbsp; Semijoias</div>
-</section>
 
 <!-- FILTROS -->
 <div class="filters-wrap">
@@ -513,13 +476,13 @@
 <!-- FOOTER -->
 <footer>
   <div class="footer-logo">Donna Prata</div>
-  <div class="footer-tag">Joias em Prata 925 &amp; Aço Inox</div>
+  <div class="footer-sub">Joias em Prata 925 &amp; Aço Inox</div>
   <div class="footer-info">
-    <div>📍 Ibiúna, SP &nbsp;·&nbsp; Entregas locais e envios para todo o Brasil</div>
+    <div>📍 Ibiúna, SP · Entregas locais e envios para todo o Brasil</div>
     <div>
       <a href="https://wa.me/5515996500066">WhatsApp</a>
       &nbsp;·&nbsp;
-      <a href="https://instagram.com/a.donnaprata">Instagram @a.donnaprata</a>
+      <a href="https://instagram.com/a.donnaprata">@a.donnaprata</a>
     </div>
   </div>
   <div class="footer-slogan">Seja Donna Prata ✨</div>
@@ -542,10 +505,10 @@ async function carregarProdutos() {
 }
 
 function stockLabel(n) {
-  if (n === 0) return { text: "Esgotado",         cls: "stock-out" };
-  if (n === 1) return { text: "Última unidade",   cls: "stock-low" };
-  if (n <= 3)  return { text: `${n} unid.`,       cls: "stock-low" };
-  return               { text: `${n} disponíveis`, cls: "stock-ok" };
+  if (n === 0) return { text: "Esgotado",          cls: "stock-out" };
+  if (n === 1) return { text: "Última unidade",    cls: "stock-low" };
+  if (n <= 3)  return { text: `${n} unid.`,        cls: "stock-low" };
+  return               { text: `${n} disponíveis`, cls: "stock-ok"  };
 }
 
 function catLabel(c) {
@@ -595,7 +558,6 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
   });
 });
 
-// ── MODAL ─────────────────────────────────────────────────────────────────────
 function openModal(id) {
   const p = produtos.find(x => x.id === id);
   if (!p) return;
@@ -615,7 +577,7 @@ function openModal(id) {
   const sizesEl = document.getElementById('modal-sizes');
   if (p.tamanhos && p.tamanhos.length) {
     sizesEl.style.display = 'flex';
-    sizesEl.innerHTML = `<div style="font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);width:100%;margin-bottom:6px">Tamanho:</div>` +
+    sizesEl.innerHTML = `<div style="font-size:.58rem;letter-spacing:2px;text-transform:uppercase;color:var(--gray);width:100%;margin-bottom:6px">Tamanho</div>` +
       p.tamanhos.map(t =>
         `<div class="modal-size ${selectedSizes[id]===t?'selected':''}" onclick="selectSize(${id},'${t}',this)">${t}</div>`
       ).join('');
@@ -642,14 +604,12 @@ function updateCTA(p) {
   const msg  = encodeURIComponent(`Olá! Vi o catálogo da Donna Prata e quero: ${p.nome}${size} (${p.preco}) 💎`);
   if (p.estoque === 0) {
     cta.textContent = 'Produto esgotado';
-    cta.style.background = 'var(--border)';
-    cta.style.color = 'var(--muted)';
+    cta.style.background = '#ccc';
     cta.style.cursor = 'default';
     cta.href = '#';
   } else {
     cta.textContent = 'Quero essa peça';
-    cta.style.background = 'var(--gold)';
-    cta.style.color = '#111';
+    cta.style.background = 'var(--black)';
     cta.style.cursor = 'pointer';
     cta.href = `https://wa.me/${WA}?text=${msg}`;
   }
