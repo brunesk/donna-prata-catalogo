@@ -8,6 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    * { -webkit-tap-highlight-color: transparent; }
 
     :root {
       --marfim:  #F2EDE4;
@@ -105,10 +106,14 @@
     /* ── GRID ── */
     .catalog {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
       gap: 1px;
       background: var(--lgray);
       margin: 0;
+    }
+
+    @media (max-width: 480px) {
+      .catalog { grid-template-columns: 1fr 1fr; }
     }
 
     /* ── CARD ── */
@@ -117,6 +122,9 @@
       cursor: pointer;
       position: relative;
       overflow: hidden;
+      touch-action: manipulation;
+      -webkit-user-select: none;
+      user-select: none;
     }
 
     .card-img-wrap {
@@ -196,8 +204,10 @@
     }
 
     .card-price {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.2rem;
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      font-weight: 500;
+      letter-spacing: 0.5px;
       color: var(--black);
     }
 
@@ -238,7 +248,16 @@
     }
 
     @media (max-width: 640px) {
-      .modal { grid-template-columns: 1fr; }
+      .modal {
+        grid-template-columns: 1fr;
+        max-height: 95vh;
+        margin: 0;
+        width: 100%;
+        border-radius: 0;
+      }
+      .modal-img { min-height: 260px; max-height: 50vw; }
+      .modal-body { padding: 24px 20px; }
+      .modal-name { font-size: 1.3rem; }
     }
 
     .modal-img {
@@ -284,8 +303,9 @@
     }
 
     .modal-price {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.9rem;
+      font-family: 'Inter', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 500;
       color: var(--black);
       margin-bottom: 22px;
     }
