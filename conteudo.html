@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conteúdo — Donna Prata</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  :root {
+    --marfim: #F2EDE4;
+    --marfim-dark: #E8E1D6;
+    --preto: #1A1A1A;
+    --cinza: #6B6B6B;
+    --ouro: #C9A96E;
+    --verde: #4CAF7D;
+    --azul: #5B8FBF;
+    --roxo: #9B72CF;
+  }
+
+  body {
+    background: var(--marfim);
+    color: var(--preto);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    padding-bottom: 40px;
+  }
+
+  header {
+    background: var(--preto);
+    padding: 20px 20px 16px;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  header img { height: 32px; width: auto; }
+
+  .subtitle {
+    color: rgba(255,255,255,0.5);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    background: var(--preto);
+    border-top: 1px solid rgba(255,255,255,0.1);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+
+  .tab {
+    flex: 1;
+    min-width: max-content;
+    padding: 12px 16px;
+    color: rgba(255,255,255,0.45);
+    font-size: 12px;
+    font-weight: 500;
+    text-align: center;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+  .tab.active {
+    color: #fff;
+    border-bottom-color: var(--ouro);
+  }
+
+  /* SECTIONS */
+  .section { display: none; padding: 0 16px; }
+  .section.active { display: block; }
+
+  /* SEMANA */
+  .week-header {
+    padding: 20px 0 12px;
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--preto);
+  }
+  .week-header span {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--cinza);
+    display: block;
+    margin-top: 2px;
+  }
+
+  .day-card {
+    background: #fff;
+    border-radius: 14px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+
+  .day-header {
+    display: flex;
+    align-items: center;
+    padding: 14px 16px;
+    cursor: pointer;
+    gap: 12px;
+    user-select: none;
+  }
+
+  .day-badge {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #fff;
+  }
+  .day-badge .num { font-size: 18px; font-weight: 700; line-height: 1; }
+
+  .day-info { flex: 1; }
+  .day-title { font-weight: 600; font-size: 14px; color: var(--preto); }
+  .day-type {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-top: 4px;
+  }
+
+  .day-arrow {
+    font-size: 18px;
+    color: var(--cinza);
+    transition: transform 0.2s;
+  }
+  .day-card.open .day-arrow { transform: rotate(180deg); }
+
+  .day-body {
+    display: none;
+    padding: 0 16px 16px;
+    border-top: 1px solid var(--marfim-dark);
+  }
+  .day-card.open .day-body { display: block; }
+
+  .day-check {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--marfim-dark);
+    cursor: pointer;
+  }
+  .day-check:last-child { border-bottom: none; }
+
+  .day-check input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--preto);
+    flex-shrink: 0;
+    margin-top: 2px;
+    cursor: pointer;
+  }
+
+  .check-label { font-size: 13px; line-height: 1.5; color: var(--preto); }
+  .check-label.done { text-decoration: line-through; color: var(--cinza); }
+
+  .script-box {
+    background: var(--marfim);
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-top: 10px;
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: var(--preto);
+    white-space: pre-wrap;
+    border-left: 3px solid var(--ouro);
+  }
+  .script-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--ouro);
+    margin-bottom: 6px;
+  }
+
+  .gravar-box {
+    background: #FFF8F0;
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-top: 8px;
+    font-size: 12px;
+    color: #8B6000;
+    border-left: 3px solid #F0A500;
+  }
+  .gravar-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #F0A500;
+    margin-bottom: 4px;
+  }
+
+  /* TYPE COLORS */
+  .reels  { background: #FF6B6B; }
+  .story  { background: var(--roxo); }
+  .feed   { background: var(--azul); }
+  .tiktok { background: #1A1A1A; }
+
+  .tag-reels  { background: #FFECEC; color: #FF6B6B; }
+  .tag-story  { background: #F3ECFF; color: var(--roxo); }
+  .tag-feed   { background: #EBF3FF; color: var(--azul); }
+  .tag-tiktok { background: #E8E8E8; color: #1A1A1A; }
+
+  /* IDEIAS */
+  .idea-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .idea-num {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--preto);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    float: left;
+    margin-right: 10px;
+    margin-bottom: 4px;
+    flex-shrink: 0;
+  }
+  .idea-title { font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+  .idea-desc { font-size: 13px; color: var(--cinza); line-height: 1.5; clear: both; }
+  .idea-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 3px 8px;
+    border-radius: 20px;
+    margin-bottom: 8px;
+  }
+
+  /* DICAS */
+  .dica-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .dica-icon { font-size: 24px; margin-bottom: 8px; }
+  .dica-title { font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+  .dica-list { padding-left: 16px; }
+  .dica-list li { font-size: 13px; color: var(--cinza); line-height: 1.8; }
+  .dica-list li strong { color: var(--preto); }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    padding: 20px 0 14px;
+  }
+
+  .progress-bar {
+    background: var(--marfim-dark);
+    border-radius: 4px;
+    height: 4px;
+    margin: 8px 0 0;
+    overflow: hidden;
+  }
+  .progress-fill {
+    background: var(--verde);
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.3s;
+  }
+  .progress-text {
+    font-size: 11px;
+    color: var(--cinza);
+    margin-top: 4px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <img src="logo.png" alt="Donna Prata">
+  <div class="subtitle">Painel de Conteúdo</div>
+</header>
+
+<div class="tabs">
+  <div class="tab active" onclick="showTab('semana')">📅 Semana</div>
+  <div class="tab" onclick="showTab('ideias')">💡 Ideias</div>
+  <div class="tab" onclick="showTab('dicas')">✅ Dicas</div>
+</div>
+
+<!-- ===== SEMANA ===== -->
+<div class="section active" id="tab-semana">
+  <div class="week-header">
+    Semana 12–18 de Junho
+    <span>Clique no dia para ver o script completo</span>
+  </div>
+
+  <!-- SEG -->
+  <div class="day-card" id="day-seg">
+    <div class="day-header" onclick="toggleDay('day-seg')">
+      <div class="day-badge reels"><span class="num">12</span>seg</div>
+      <div class="day-info">
+        <div class="day-title">Apresentação da coleção</div>
+        <span class="day-type tag-reels">Reels</span>
+      </div>
+      <div class="day-arrow">›</div>
+    </div>
+    <div class="day-body">
+      <div class="gravar-box">
+        <div class="gravar-label">Como gravar</div>
+        Mão segurando 3-4 peças novas, close no brilho, luz natural da janela. Fundo bege ou branco. Sem falar — só música.
+      </div>
+      <div style="margin-top:12px">
+        <div class="script-label">Legenda</div>
+        <div class="script-box">Nova coleção chegou ✨
+
+Prata 925 de verdade — não mancha, não oxida, dura anos.
+
+Peças a partir de R$27 🤍
+
+Link na bio pra ver tudo</div>
+      </div>
+      <div style="margin-top:12px">
+        <label class="day-check">
+          <input type="checkbox" onchange="updateCheck(this)">
+          <span class="check-label">Gravar o vídeo</span>
+        </label>
+        <label class="day-check">
+          <input type="checkbox" onchange="updateCheck(this)">
+          <span class="check-label">Escolher música trending</span>
+        </label>
+        <label class="day-check">
+          <input type="checkbox" onchange="updateCheck(this)">
+          <span class="check-label">Postar o Reels</span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- TER -->
+  <div class="day-card" id="day-ter">
+    <div class="day-header" onclick="toggleDay('day-ter')">
+      <div class="day-badge story"><span class="num">13</span>ter</div>
+      <div class="day-info">
+        <div class="day-title">Enquete de produto</div>
+        <span class="day-type tag-story">Stories</span>
+      </div>
+      <div class="day-arrow">›</div>
+    </div>
+    <div class="day-body">
+      <div class="gravar-box">
+        <div class="gravar-label">Como fazer</div>
+        Story 1: foto do Brinco Coração Cravejado com enquete.<br>
+        Story 2: foto do Brinco Luxo Gota com preço e CTA.
+      </div>
+      <div style="margin-top:12px">
+        <div class="script-label">Story 1 — Enquete</div>
+        <div class="script-box">Qual é o seu favorito? 👇
+
+[ENQUETE]
+❤️ Coração   vs   💧 Gota</div>
+      </div>
+      <div style="margin-top:10px">
+        <div class="script-label">Story 2 — Produto com preço</div>
+        <div class="script-box">Esse aqui é pura elegância ✨
+
+Brinco Luxo Gota — Prata 925
+R$75,00 🤍
+
+Me chama no direct pra garantir o seu!</div>
+      </div>
+      <div style="margin-top:12px">
+        <label class="day-check">
+          <input type="checkbox" onchange="updateCheck(this)">
+          <span class="check-label">Postar story com enquete</span>
+        </label>
+        <label class="day-check">
+          <input type="checkbox" onchange="updateCheck(this)">
+          <span class="check-label">Responder quem votou</span>
+        </label>
+        <label class="day-check">
+          <input type="checkbox" onchange="updateCheck(this)">
+          <span class="check-label">Story do produto com preço</span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUA -->
+  <div class="day-card" id="day-qua">
+    <div class="day-header" onclick="toggleDay('day-qua')">
+      <div class="day-badge reels"><span class="num">14</span>qua</div>
+      <div class="day-info">
+        <div class="day-title">Peça sendo usada</div>
+        <span class="day-type tag-reels">Reels</span>
+      </div>
+      <div class="day-arrow">›</div>
+    </div>
+    <div class="day-body">
+      <div class="gravar-box">
+        <div class="gravar-label">Como gravar</div>
+        Coloca o Colar Cristal Gota, vira o pescoço de lado, zoom no pingente balançando. Luz natural. 10–15 segundos.
+      </div>
+      <div style="margin-top:12px">
+        <div class="script-label">Legenda</div>
+        <div class="script-box">Esse pingente não sai do meu pescoço 🤍
+
+Colar Cristal Gota — Prata 925
+R$86,00
+
+Entrega pra todo Brasil 📦
+Link na bio</div>
+      </div>
+      <div style="margin-top:12px">
+        <label class="day-check">
+          <input type="checkbox" onchange="updateCheck(this)">
+          <span class="check-label">Gravar o vídeo com o colar</span>
+        </label>
+        <label class="day-check">
+          <input type="checkbox" onchange="updateCheck(this)">
+          <span class="check-label">Postar o Reels</span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUI -->
+  <div class="day-card" id="day-qui">
+    <div class="day-header" onclick="toggleDay('day-qui')">
+      <div class="day-badge feed"><span class="num">15</span>qui</div>
+      <div class="day-info">
+        <div class="day-title">Flat lay da coleção</div>
+        <span class="day-type tag-feed">Feed</span>
+      </div>
+      <div class="day-arrow">›</div>
+    </div>
+    <div class="day-body">
+      <div class="gravar-box">
+        <div class="gravar-label">Como fotografar</div>
+        Organizar 5–6 peças em cima de pano bege ou papel craft. Foto de cima (câmera paralela ao chão). Luz natural — perto da janela.
+      </div>
+      <div style="margin-top:12px">
+        <div class="script-label">Legenda</div>
+        <div class="script-box">Escolhe a sua favorita 👇
+
+Toda a coleção disponível no catálogo — link na bio 🤍
+
+Prata 925 | Entrega pra todo Brasil</div>
+      </div>
+      <div style="margin-top:12px">
+        <label class="day-check">
+          <input type="checkbox" onchange="updateCheck(this)">
+          <span class="check-label">Fotografar o flat lay</span>
+        </label>
+        <label class="day-check">
+          <input type="checkbox" onchange="updateCheck(this)">
+          <span class="check-label">Postar no feed</span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEX -->
+  <div class="day-card" id="day-sex">
+    <div class="day-header" onclick="toggleDay('day-sex')">
+      <div class="day-badge story"><span class="num">16</span>sex</div>
+      <div class="day-info">
+        <div class="day-title">Conexão com a audiência</div>
+        <span class="day-type tag-story">Stories</span>
+      </div>
+      <div class="day-arrow">›</div>
+    </div>
+    <div class="day-body">
+      <div class="gravar-box">
+        <div class="gravar-label">Como fazer</div>
+        Abrir caixinha de perguntas. Responder todas individualmente — isso cria conexão e aparece nos stories dos seguidores.
+      </div>
+      <div style="margin-top:12px">
+        <div class="script-label">Story — Caixinha</div>
+        <div class="script-box">Me conta uma coisa 👇
+
+Você usa mais prata ou dourado?
+
+[CAIXINHA DE PERGUNTAS]</div>
+      </div>
+      <div style="margin-top:10px">
+        <div class="script-label">Story 2 — Repost / Depoimento</div>
+        <div class="script-box">Quando um cliente marca a gente, o coração esquenta 🤍
+
+[repostar foto/mensagem de cliente]
+
+Obrigada pela confiança! ✨</div>
+      </div>
+      <div style="margin-top:12px">
+        <label class="day-check">
+          <input type="checkbox" onchange="updateCheck(this)">
+          <span class="check-label">Postar caixinha de perguntas</span>
+        </label>
+        <label class="day-check">
+          <input type="checkbox" onchange="updateCheck(this)">
+          <span class="check-label">Responder todas as respostas</span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- SAB -->
+  <div class="day-card" id="day-sab">
+    <div class="day-header" onclick="toggleDay('day-sab')">
+      <div class="day-badge reels"><span class="num">17</span>sáb</div>
+      <div class="day-info">
+        <div class="day-title">Antes e depois com joia</div>
+        <span class="day-type tag-reels">Reels</span>
+      </div>
+      <div class="day-arrow">›</div>
+    </div>
+    <div class="day-body">
+      <div class="gravar-box">
+        <div class="gravar-label">Como gravar</div>
+        Câmera parada. Entra no frame SEM joia, faz uma pausa. Sai do frame, coloca o colar + brinco, volta. Corte rápido na edição. Roupa neutra.
+      </div>
+      <div style="margin-top:12px">
+        <div class="script-label">Legenda</div>
+        <div class="script-box">O detalhe que muda tudo 💫
+
+Prata 925 — elegância que dura
+
+Ver coleção completa → link na bio 🤍</div>
+      </div>
+      <div style="margin-top:12px">
+        <label class="day-check">
+          <input type="checkbox" onchange="updateCheck(this)">
+          <span class="check-label">Gravar os dois momentos</span>
+        </label>
+        <label class="day-check">
+          <input type="checkbox" onchange="updateCheck(this)">
+          <span class="check-label">Editar o corte</span>
+        </label>
+        <label class="day-check">
+          <input type="checkbox" onchange="updateCheck(this)">
+          <span class="check-label">Postar o Reels</span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- DOM -->
+  <div class="day-card" id="day-dom">
+    <div class="day-header" onclick="toggleDay('day-dom')">
+      <div class="day-badge story"><span class="num">18</span>dom</div>
+      <div class="day-info">
+        <div class="day-title">Bastidor + oferta da semana</div>
+        <span class="day-type tag-story">Stories</span>
+      </div>
+      <div class="day-arrow">›</div>
+    </div>
+    <div class="day-body">
+      <div class="gravar-box">
+        <div class="gravar-label">Como fazer</div>
+        Foto rápida das peças organizadas. Story simples com preço de uma peça e link direto no direct.
+      </div>
+      <div style="margin-top:12px">
+        <div class="script-label">Story 1 — Bastidor</div>
+        <div class="script-box">Começando a semana com novidades 🤍
+
+Nova coleção Donna Prata disponível agora</div>
+      </div>
+      <div style="margin-top:10px">
+        <div class="script-label">Story 2 — Oferta</div>
+        <div class="script-box">Última chance de hoje 🤍
+
+Pulseira Cartier Prata 925
+R$46,00 🔥
+
+Me chama no direct pra garantir!</div>
+      </div>
+      <div style="margin-top:12px">
+        <label class="day-check">
+          <input type="checkbox" onchange="updateCheck(this)">
+          <span class="check-label">Foto do bastidor</span>
+        </label>
+        <label class="day-check">
+          <input type="checkbox" onchange="updateCheck(this)">
+          <span class="check-label">Story com oferta da semana</span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /semana -->
+
+<!-- ===== IDEIAS ===== -->
+<div class="section" id="tab-ideias">
+  <div class="section-title">Banco de Ideias</div>
+
+  <div class="idea-card">
+    <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:8px">
+      <div class="idea-num">1</div>
+      <div>
+        <span class="idea-tag tag-reels">Reels</span>
+        <div class="idea-title">Spoiler — Nova Coleção</div>
+      </div>
+    </div>
+    <div class="idea-desc">Vídeo em preto e branco mostrando as peças rapidinho, corta, aparece a legenda "Nova coleção disponível amanhã". Cria antecipação e gera comentários.</div>
+    <div class="script-box" style="margin-top:10px">
+      <div class="script-label">Legenda</div>
+Nova coleção chegando 🖤
+
+Elegância que dura — Prata 925
+
+Amanhã tem novidade 👀</div>
+  </div>
+
+  <div class="idea-card">
+    <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:8px">
+      <div class="idea-num">2</div>
+      <div>
+        <span class="idea-tag tag-reels">Reels</span>
+        <div class="idea-title">Abrindo a caixinha</div>
+      </div>
+    </div>
+    <div class="idea-desc">Você abre a caixa das peças, mostra cada uma rapidinho. Autêntico, gera curiosidade e identidade com a marca. Ótimo para engajamento.</div>
+    <div class="script-box" style="margin-top:10px">
+      <div class="script-label">Legenda</div>
+Chegou a nova coleção 📦✨
+
+São tantas peças lindas que mal consigo escolher uma favorita 🤍
+
+Qual você ficou com olho? Comenta aqui 👇</div>
+  </div>
+
+  <div class="idea-card">
+    <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:8px">
+      <div class="idea-num">3</div>
+      <div>
+        <span class="idea-tag tag-reels">Reels</span>
+        <div class="idea-title">Close no brilho</div>
+      </div>
+    </div>
+    <div class="idea-desc">Câmera bem perto da peça com zircônia, luz batendo, faz pequenos movimentos para o brilho aparecer. Sem falar, só música. Muito compartilhado.</div>
+    <div class="script-box" style="margin-top:10px">
+      <div class="script-label">Legenda</div>
+Esse brilho fala por si só ✨
+
+Prata 925 com zircônia — elegância real
+
+Link na bio 🤍</div>
+  </div>
+
+  <div class="idea-card">
+    <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:8px">
+      <div class="idea-num">4</div>
+      <div>
+        <span class="idea-tag tag-story">Stories</span>
+        <div class="idea-title">"Qual você compraria?"</div>
+      </div>
+    </div>
+    <div class="idea-desc">Foto lado a lado de duas peças com enquete. Além de gerar engajamento, você descobre quais peças têm mais demanda antes de investir em estoque.</div>
+    <div class="script-box" style="margin-top:10px">
+      <div class="script-label">Texto do story</div>
+Se você fosse comprar agora, qual escolhia? 👇
+
+[foto das duas peças lado a lado]
+[ENQUETE: Peça A  /  Peça B]</div>
+  </div>
+
+  <div class="idea-card">
+    <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:8px">
+      <div class="idea-num">5</div>
+      <div>
+        <span class="idea-tag tag-feed">Feed</span>
+        <div class="idea-title">Foto com look completo</div>
+      </div>
+    </div>
+    <div class="idea-desc">Foto sua usando as peças com roupa neutra. Pessoas se identificam com a pessoa que usa, não só com a joia. Humaniza a marca.</div>
+    <div class="script-box" style="margin-top:10px">
+      <div class="script-label">Legenda</div>
+Detalhe que transforma o look 🤍
+
+[nome da peça] — Prata 925
+R$[preço]
+
+Link na bio pra comprar</div>
+  </div>
+
+  <div class="idea-card">
+    <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:8px">
+      <div class="idea-num">6</div>
+      <div>
+        <span class="idea-tag tag-story">Stories</span>
+        <div class="idea-title">Oferta relâmpago</div>
+      </div>
+    </div>
+    <div class="idea-desc">Story com timer de 24h, uma peça com desconto ou frete grátis. Urgência gera ação imediata.</div>
+    <div class="script-box" style="margin-top:10px">
+      <div class="script-label">Texto do story</div>
+⚡ Oferta relâmpago — só hoje!
+
+[foto da peça]
+De R$XX por R$XX
+
+Me chama no direct antes de acabar 👇</div>
+  </div>
+
+  <div class="idea-card">
+    <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:8px">
+      <div class="idea-num">7</div>
+      <div>
+        <span class="idea-tag tag-reels">Reels</span>
+        <div class="idea-title">Kit presente</div>
+      </div>
+    </div>
+    <div class="idea-desc">Mostrar combinações de peças como "kit presente" — brinco + colar + pulseira. Aumenta o ticket médio e facilita a decisão de compra.</div>
+    <div class="script-box" style="margin-top:10px">
+      <div class="script-label">Legenda</div>
+O kit presente perfeito 🎁
+
+[brinco] + [colar] + [pulseira]
+Tudo em Prata 925 🤍
+
+Monta o seu kit — link na bio</div>
+  </div>
+
+</div><!-- /ideias -->
+
+<!-- ===== DICAS ===== -->
+<div class="section" id="tab-dicas">
+  <div class="section-title">Dicas para Vender Mais</div>
+
+  <div class="dica-card">
+    <div class="dica-icon">📸</div>
+    <div class="dica-title">Como fotografar as peças</div>
+    <ul class="dica-list">
+      <li><strong>Fundo:</strong> bege, off-white ou preto</li>
+      <li><strong>Luz:</strong> natural, perto da janela — nunca flash</li>
+      <li><strong>Roupa:</strong> blusa simples, branca, preta ou bege</li>
+      <li>Mova a peça levemente pra capturar o brilho</li>
+      <li>Foto de perto vale mais que foto longe</li>
+    </ul>
+  </div>
+
+  <div class="dica-card">
+    <div class="dica-icon">📲</div>
+    <div class="dica-title">Instagram — o que funciona</div>
+    <ul class="dica-list">
+      <li><strong>Reels</strong> têm muito mais alcance que foto</li>
+      <li>Postar entre <strong>18h e 21h</strong> (maior audiência)</li>
+      <li>Responder comentários nas <strong>primeiras 1h</strong></li>
+      <li>Sempre colocar <strong>link na bio</strong> na legenda</li>
+      <li>Stories todo dia — quem não aparece, é esquecido</li>
+    </ul>
+  </div>
+
+  <div class="dica-card">
+    <div class="dica-icon">💬</div>
+    <div class="dica-title">WhatsApp — lista de transmissão</div>
+    <ul class="dica-list">
+      <li>Criar lista com todos que já compraram</li>
+      <li>Avisar lançamentos em primeira mão</li>
+      <li>Mandar foto da peça + preço direto no WhatsApp</li>
+      <li>Status com foto das peças novas todo dia</li>
+    </ul>
+  </div>
+
+  <div class="dica-card">
+    <div class="dica-icon">🛍️</div>
+    <div class="dica-title">Shopee — como aparecer mais</div>
+    <ul class="dica-list">
+      <li>Foto principal com <strong>fundo branco</strong> (obrigatório)</li>
+      <li>Título: <strong>"brinco prata 925 coração zircônia antialérgico"</strong></li>
+      <li>Participar das campanhas e cupons da plataforma</li>
+      <li>Responder perguntas rápido — melhora o ranking</li>
+      <li>Pedir avaliação pra cada cliente</li>
+    </ul>
+  </div>
+
+  <div class="dica-card">
+    <div class="dica-icon">🤍</div>
+    <div class="dica-title">O que mais converte em venda</div>
+    <ul class="dica-list">
+      <li><strong>Vídeo usando a peça</strong> vende mais que foto</li>
+      <li>Mostrar o brilho da zircônia em movimento</li>
+      <li>Depoimento de cliente com foto usando</li>
+      <li>Preço visível — não força o cliente a perguntar</li>
+      <li>Frete grátis acima de um valor mínimo</li>
+    </ul>
+  </div>
+
+</div><!-- /dicas -->
+
+<script>
+  function showTab(name) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  function toggleDay(id) {
+    document.getElementById(id).classList.toggle('open');
+  }
+
+  function updateCheck(el) {
+    const label = el.nextElementSibling;
+    if (el.checked) {
+      label.classList.add('done');
+    } else {
+      label.classList.remove('done');
+    }
+    saveChecks();
+  }
+
+  function saveChecks() {
+    const checks = {};
+    document.querySelectorAll('input[type="checkbox"]').forEach((el, i) => {
+      checks[i] = el.checked;
+    });
+    localStorage.setItem('dp_checks', JSON.stringify(checks));
+  }
+
+  function loadChecks() {
+    const saved = JSON.parse(localStorage.getItem('dp_checks') || '{}');
+    document.querySelectorAll('input[type="checkbox"]').forEach((el, i) => {
+      if (saved[i]) {
+        el.checked = true;
+        el.nextElementSibling.classList.add('done');
+      }
+    });
+  }
+
+  loadChecks();
+</script>
+</body>
+</html>
