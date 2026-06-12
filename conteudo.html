@@ -300,6 +300,64 @@
     color: var(--cinza);
     margin-top: 4px;
   }
+
+  /* MISSÕES */
+  .missao-group { margin-bottom: 24px; }
+  .missao-group-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--cinza);
+    padding: 18px 0 8px;
+    border-bottom: 1px solid var(--marfim-dark);
+    margin-bottom: 2px;
+  }
+  .missao-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 13px 16px;
+    background: #fff;
+    border-radius: 12px;
+    margin-top: 8px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    cursor: pointer;
+  }
+  .missao-item input[type="checkbox"] {
+    width: 20px; height: 20px;
+    accent-color: var(--preto);
+    flex-shrink: 0;
+    margin-top: 1px;
+    cursor: pointer;
+  }
+  .missao-text { flex: 1; }
+  .missao-title { font-size: 14px; font-weight: 500; line-height: 1.4; color: var(--preto); }
+  .missao-title.done { text-decoration: line-through; color: var(--cinza); }
+  .missao-sub { font-size: 12px; color: var(--cinza); margin-top: 2px; line-height: 1.4; }
+  .missao-badge {
+    font-size: 10px; font-weight: 600;
+    padding: 2px 8px; border-radius: 20px;
+    text-transform: uppercase; letter-spacing: 0.5px;
+    white-space: nowrap; flex-shrink: 0; margin-top: 2px;
+  }
+  .badge-urgente { background: #FFECEC; color: #FF6B6B; }
+  .badge-conteudo { background: #F3ECFF; color: var(--roxo); }
+  .badge-loja { background: #EBF3FF; color: var(--azul); }
+  .badge-feito { background: #E8F5E9; color: #2e7d32; }
+
+  .missao-progress {
+    background: #fff;
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .mp-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .mp-label { font-size: 13px; font-weight: 600; }
+  .mp-count { font-size: 13px; color: var(--cinza); }
+  .mp-bar { background: var(--marfim-dark); border-radius: 6px; height: 8px; overflow: hidden; }
+  .mp-fill { background: var(--verde); height: 100%; border-radius: 6px; transition: width 0.4s; }
 </style>
 </head>
 <body>
@@ -311,9 +369,229 @@
 
 <div class="tabs">
   <div class="tab active" onclick="showTab('semana')">📅 Semana</div>
+  <div class="tab" onclick="showTab('missoes')">🎯 Missões</div>
   <div class="tab" onclick="showTab('ideias')">💡 Ideias</div>
   <div class="tab" onclick="showTab('dicas')">✅ Dicas</div>
 </div>
+
+<!-- ===== MISSÕES ===== -->
+<div class="section" id="tab-missoes">
+  <div class="section-title" style="padding-bottom:4px">Missões da Loja</div>
+  <p style="font-size:13px;color:var(--cinza);padding-bottom:16px">Tudo que combinamos nas nossas sessões. Marque conforme for fazendo 👇</p>
+
+  <div class="missao-progress" id="progress-card">
+    <div class="mp-row">
+      <span class="mp-label">Progresso geral</span>
+      <span class="mp-count" id="prog-count">0 / 0 feitos</span>
+    </div>
+    <div class="mp-bar"><div class="mp-fill" id="prog-bar" style="width:0%"></div></div>
+  </div>
+
+  <!-- CONTEÚDO -->
+  <div class="missao-group">
+    <div class="missao-group-title">📱 Conteúdo &amp; Redes Sociais</div>
+
+    <label class="missao-item">
+      <input type="checkbox" class="m-check" onchange="updateMissao(this)">
+      <div class="missao-text">
+        <div class="missao-title">Postar spoiler da nova coleção</div>
+        <div class="missao-sub">Vídeo preto e branco mostrando as peças rapidinho. Legenda: "Nova coleção disponível amanhã" + "Aço inox — elegância que dura"</div>
+      </div>
+      <span class="missao-badge badge-feito">Feito ✓</span>
+    </label>
+
+    <label class="missao-item">
+      <input type="checkbox" class="m-check" onchange="updateMissao(this)">
+      <div class="missao-text">
+        <div class="missao-title">Gravar Reels — Apresentação da coleção</div>
+        <div class="missao-sub">Mão segurando 3–4 peças, close no brilho, luz natural. Sem fala, só música trending.</div>
+      </div>
+      <span class="missao-badge badge-conteudo">Reels</span>
+    </label>
+
+    <label class="missao-item">
+      <input type="checkbox" class="m-check" onchange="updateMissao(this)">
+      <div class="missao-text">
+        <div class="missao-title">Gravar Reels — Antes e depois com joia</div>
+        <div class="missao-sub">Câmera parada. Entra SEM joia, sai, coloca o colar + brinco, volta. Corte rápido na edição.</div>
+      </div>
+      <span class="missao-badge badge-conteudo">Reels</span>
+    </label>
+
+    <label class="missao-item">
+      <input type="checkbox" class="m-check" onchange="updateMissao(this)">
+      <div class="missao-text">
+        <div class="missao-title">Gravar Reels — Abrindo a caixinha</div>
+        <div class="missao-sub">Abre a caixa das peças, mostra cada uma rapidinho. Autêntico e gera curiosidade.</div>
+      </div>
+      <span class="missao-badge badge-conteudo">Reels</span>
+    </label>
+
+    <label class="missao-item">
+      <input type="checkbox" class="m-check" onchange="updateMissao(this)">
+      <div class="missao-text">
+        <div class="missao-title">Gravar Reels — Close no brilho</div>
+        <div class="missao-sub">Câmera bem perto da zircônia, luz batendo, pequenos movimentos. Sem falar, só música. Muito compartilhado.</div>
+      </div>
+      <span class="missao-badge badge-conteudo">Reels</span>
+    </label>
+
+    <label class="missao-item">
+      <input type="checkbox" class="m-check" onchange="updateMissao(this)">
+      <div class="missao-text">
+        <div class="missao-title">Stories — Enquete "qual você compraria?"</div>
+        <div class="missao-sub">Foto de duas peças + enquete no stories. Gera engajamento e mostra o que tem mais demanda.</div>
+      </div>
+      <span class="missao-badge badge-conteudo">Stories</span>
+    </label>
+
+    <label class="missao-item">
+      <input type="checkbox" class="m-check" onchange="updateMissao(this)">
+      <div class="missao-text">
+        <div class="missao-title">Stories — Caixinha de perguntas</div>
+        <div class="missao-sub">"Você usa mais prata ou dourado?" Responder todas individualmente. Cria conexão e aparece nos stories dos seguidores.</div>
+      </div>
+      <span class="missao-badge badge-conteudo">Stories</span>
+    </label>
+
+    <label class="missao-item">
+      <input type="checkbox" class="m-check" onchange="updateMissao(this)">
+      <div class="missao-text">
+        <div class="missao-title">Foto flat lay da coleção</div>
+        <div class="missao-sub">5–6 peças organizadas em pano bege ou papel craft. Foto de cima, luz natural da janela.</div>
+      </div>
+      <span class="missao-badge badge-conteudo">Feed</span>
+    </label>
+
+    <label class="missao-item">
+      <input type="checkbox" class="m-check" onchange="updateMissao(this)">
+      <div class="missao-text">
+        <div class="missao-title">Reels — Kit presente</div>
+        <div class="missao-sub">Mostrar combinação brinco + colar + pulseira como "kit". Aumenta o ticket médio.</div>
+      </div>
+      <span class="missao-badge badge-conteudo">Reels</span>
+    </label>
+
+    <label class="missao-item">
+      <input type="checkbox" class="m-check" onchange="updateMissao(this)">
+      <div class="missao-text">
+        <div class="missao-title">Stories — Oferta relâmpago</div>
+        <div class="missao-sub">Uma peça com desconto ou frete grátis com timer de 24h. Urgência gera ação imediata.</div>
+      </div>
+      <span class="missao-badge badge-conteudo">Stories</span>
+    </label>
+
+    <label class="missao-item">
+      <input type="checkbox" class="m-check" onchange="updateMissao(this)">
+      <div class="missao-text">
+        <div class="missao-title">Repostar depoimento de cliente</div>
+        <div class="missao-sub">Quando alguém marcar @a.donnaprata ou mandar foto usando — repostar nos stories com agradecimento.</div>
+      </div>
+      <span class="missao-badge badge-conteudo">Stories</span>
+    </label>
+  </div>
+
+  <!-- FOTOS -->
+  <div class="missao-group">
+    <div class="missao-group-title">📸 Fotos das Peças</div>
+
+    <label class="missao-item">
+      <input type="checkbox" class="m-check" onchange="updateMissao(this)">
+      <div class="missao-text">
+        <div class="missao-title">Tirar fotos das peças de aço inox</div>
+        <div class="missao-sub">Fundo bege ou papel creme. Luz natural da janela (sem flash). Roupa neutra — branca, preta ou bege.</div>
+      </div>
+      <span class="missao-badge badge-urgente">Urgente</span>
+    </label>
+
+    <label class="missao-item">
+      <input type="checkbox" class="m-check" onchange="updateMissao(this)">
+      <div class="missao-text">
+        <div class="missao-title">Fotos com fundo branco para o Shopee</div>
+        <div class="missao-sub">A Shopee exige fundo branco na foto principal. Tirar uma versão fundo branco de cada peça.</div>
+      </div>
+      <span class="missao-badge badge-urgente">Shopee</span>
+    </label>
+
+    <label class="missao-item">
+      <input type="checkbox" class="m-check" onchange="updateMissao(this)">
+      <div class="missao-text">
+        <div class="missao-title">Fotos usando as peças (lifestyle)</div>
+        <div class="missao-sub">Blusa básica de alça ou canelada. Pescoço aparecendo para colares, pulso para pulseiras, orelha para brincos.</div>
+      </div>
+      <span class="missao-badge badge-conteudo">Conteúdo</span>
+    </label>
+  </div>
+
+  <!-- LOJA -->
+  <div class="missao-group">
+    <div class="missao-group-title">🛍️ Loja &amp; Catálogo</div>
+
+    <label class="missao-item">
+      <input type="checkbox" class="m-check" onchange="updateMissao(this)">
+      <div class="missao-text">
+        <div class="missao-title">Colocar link do catálogo na bio do Instagram</div>
+        <div class="missao-sub">brunesk.github.io/donna-prata-catalogo — colocar na bio do @a.donnaprata</div>
+      </div>
+      <span class="missao-badge badge-urgente">Urgente</span>
+    </label>
+
+    <label class="missao-item">
+      <input type="checkbox" class="m-check" onchange="updateMissao(this)">
+      <div class="missao-text">
+        <div class="missao-title">Completar os 5 preços que faltam no catálogo</div>
+        <div class="missao-sub">Brinco Coração Cravejado, Brinco Coração Cristal, Pulseira Cristais Pendentes, Brinco Quadrado Cristal, Pulseira Cartier Zircônia</div>
+      </div>
+      <span class="missao-badge badge-urgente">Urgente</span>
+    </label>
+
+    <label class="missao-item">
+      <input type="checkbox" class="m-check" onchange="updateMissao(this)">
+      <div class="missao-text">
+        <div class="missao-title">Criar Destaque "Coleção" no Instagram</div>
+        <div class="missao-sub">Salvar os melhores stories de produto em um Destaque fixo no perfil. Quem visita o perfil vê as peças na hora.</div>
+      </div>
+      <span class="missao-badge badge-loja">Instagram</span>
+    </label>
+
+    <label class="missao-item">
+      <input type="checkbox" class="m-check" onchange="updateMissao(this)">
+      <div class="missao-text">
+        <div class="missao-title">Subir produtos no Shopee</div>
+        <div class="missao-sub">Título com palavras-chave: "brinco prata 925 coração zircônia antialérgico". Foto fundo branco. Participar de campanhas.</div>
+      </div>
+      <span class="missao-badge badge-loja">Shopee</span>
+    </label>
+
+    <label class="missao-item">
+      <input type="checkbox" class="m-check" onchange="updateMissao(this)">
+      <div class="missao-text">
+        <div class="missao-title">Criar lista de transmissão no WhatsApp</div>
+        <div class="missao-sub">Adicionar todos os clientes que já compraram. Avisar lançamentos e promoções em primeira mão pelo status.</div>
+      </div>
+      <span class="missao-badge badge-loja">WhatsApp</span>
+    </label>
+
+    <label class="missao-item">
+      <input type="checkbox" class="m-check" onchange="updateMissao(this)">
+      <div class="missao-text">
+        <div class="missao-title">Pedir avaliação para cada cliente após entrega</div>
+        <div class="missao-sub">No Shopee, avaliações melhoram o ranking. Mandar mensagem carinhosa pedindo avaliação após confirmação de entrega.</div>
+      </div>
+      <span class="missao-badge badge-loja">Shopee</span>
+    </label>
+
+    <label class="missao-item">
+      <input type="checkbox" class="m-check" onchange="updateMissao(this)">
+      <div class="missao-text">
+        <div class="missao-title">Atualizar estoque dos produtos no admin</div>
+        <div class="missao-sub">Todos os produtos estão com estoque 5 por padrão. Atualizar com os números reais pelo painel admin.</div>
+      </div>
+      <span class="missao-badge badge-loja">Admin</span>
+    </label>
+  </div>
+
+</div><!-- /missoes -->
 
 <!-- ===== SEMANA ===== -->
 <div class="section active" id="tab-semana">
@@ -829,12 +1107,25 @@ Monta o seu kit — link na bio</div>
 
   function updateCheck(el) {
     const label = el.nextElementSibling;
-    if (el.checked) {
-      label.classList.add('done');
-    } else {
-      label.classList.remove('done');
-    }
+    if (el.checked) label.classList.add('done');
+    else label.classList.remove('done');
     saveChecks();
+  }
+
+  function updateMissao(el) {
+    const titleEl = el.closest('.missao-item').querySelector('.missao-title');
+    if (el.checked) titleEl.classList.add('done');
+    else titleEl.classList.remove('done');
+    saveChecks();
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const all = document.querySelectorAll('.m-check');
+    const done = [...all].filter(c => c.checked).length;
+    const pct = all.length ? Math.round((done / all.length) * 100) : 0;
+    document.getElementById('prog-count').textContent = done + ' / ' + all.length + ' feitos';
+    document.getElementById('prog-bar').style.width = pct + '%';
   }
 
   function saveChecks() {
@@ -850,9 +1141,15 @@ Monta o seu kit — link na bio</div>
     document.querySelectorAll('input[type="checkbox"]').forEach((el, i) => {
       if (saved[i]) {
         el.checked = true;
-        el.nextElementSibling.classList.add('done');
+        const label = el.nextElementSibling;
+        if (label) {
+          if (label.classList.contains('check-label')) label.classList.add('done');
+          const title = el.closest('.missao-item')?.querySelector('.missao-title');
+          if (title) title.classList.add('done');
+        }
       }
     });
+    updateProgress();
   }
 
   loadChecks();
