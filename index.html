@@ -5,709 +5,1093 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Donna Prata — Joias em Prata 925 e Aço Inox</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    * { -webkit-tap-highlight-color: transparent; }
-
     :root {
-      --black:  #111111;
-      --gray:   #888;
-      --lgray:  #E0E0E0;
-      --mgray:  #555;
+      --ivory:  #F5F0E8;
+      --cream:  #EDE8DE;
+      --black:  #1A1A1A;
+      --mgray:  #666;
+      --lgray:  #D8D3CA;
       --white:  #FFFFFF;
-      --offwht: #F8F8F8;
-      --red:    #c62828;
-      --gold:   #B8954A;
+      --gold:   #C4A052;
+      --dark:   #111111;
     }
-
     html { scroll-behavior: smooth; }
+    body { background: var(--ivory); color: var(--black); font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 300; }
+    a { text-decoration: none; color: inherit; }
+    img { display: block; }
 
-    body {
-      background: var(--white);
-      color: var(--black);
-      font-family: 'Inter', sans-serif;
-      font-weight: 300;
-      min-height: 100vh;
-    }
-
-    /* ── TOP BAR ── */
+    /* ─── TOP BAR ─── */
     .top-bar {
-      background: var(--black);
-      color: rgba(255,255,255,0.75);
-      text-align: center;
-      font-size: 11px;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      padding: 9px 16px;
-      font-weight: 400;
+      background: var(--black); color: rgba(255,255,255,.6);
+      text-align: center; padding: 9px 16px;
+      font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase;
     }
 
-    /* ── HEADER ── */
+    /* ─── HEADER ─── */
     header {
-      background: var(--white);
-      text-align: center;
-      padding: 44px 24px 0;
+      background: var(--ivory);
+      padding: 20px 32px 0;
       border-bottom: 1px solid var(--lgray);
     }
+    .header-top {
+      display: grid; grid-template-columns: 1fr auto 1fr;
+      align-items: center; padding-bottom: 18px;
+    }
+    .header-search {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--mgray); cursor: pointer;
+    }
+    .header-search svg { width: 16px; height: 16px; }
+    .header-logo { text-align: center; }
+    .logo-diamond {
+      font-size: 18px; color: var(--gold); display: block; margin-bottom: 4px; line-height: 1;
+    }
+    .logo-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 400;
+      letter-spacing: 10px; text-transform: uppercase; color: var(--black);
+      line-height: 1;
+    }
+    .logo-sub {
+      font-size: 9px; letter-spacing: 4px; text-transform: uppercase;
+      color: var(--mgray); margin-top: 4px;
+    }
+    .header-icons {
+      display: flex; align-items: center; gap: 20px; justify-content: flex-end;
+    }
+    .header-icons svg { width: 20px; height: 20px; cursor: pointer; color: var(--black); }
+    .header-icons a { color: var(--black); display: flex; }
 
-    .logo-img {
-      max-width: 280px;
-      width: 60%;
-      height: auto;
-      display: block;
-      margin: 0 auto 10px;
+    /* NAV */
+    nav {
+      display: flex; justify-content: center; gap: 36px;
+      padding: 14px 0 15px; overflow-x: auto;
+    }
+    .nav-link {
+      font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--mgray); white-space: nowrap; padding-bottom: 2px;
+      border-bottom: 1px solid transparent; transition: all .2s; cursor: pointer;
+    }
+    .nav-link:hover { color: var(--black); border-bottom-color: var(--black); }
+
+    /* ─── HERO ─── */
+    .hero {
+      display: grid; grid-template-columns: 1fr 1fr;
+      min-height: 88vh; background: var(--ivory);
+    }
+    @media(max-width:768px) {
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero-img { min-height: 55vw; order: -1; }
+    }
+    .hero-text {
+      display: flex; flex-direction: column; justify-content: center;
+      padding: clamp(40px,7vw,100px) clamp(28px,6vw,80px);
+    }
+    .hero-eyebrow {
+      font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+      color: var(--mgray); margin-bottom: 20px;
+    }
+    .hero-h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.8rem, 6vw, 5rem); font-weight: 300;
+      line-height: 1.05; margin-bottom: 20px;
+    }
+    .hero-h1 em {
+      font-style: italic; color: var(--gold); display: block;
+    }
+    .hero-p {
+      font-size: 13.5px; color: var(--mgray); line-height: 1.9;
+      max-width: 420px; margin-bottom: 36px;
+    }
+    .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn-dark {
+      display: inline-block; padding: 14px 28px;
+      background: var(--black); color: var(--white);
+      font-size: 10px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase;
+      cursor: pointer; border: 2px solid var(--black); transition: all .2s;
+    }
+    .btn-dark:hover { background: transparent; color: var(--black); }
+    .btn-outline {
+      display: inline-block; padding: 14px 28px;
+      background: transparent; color: var(--black);
+      font-size: 10px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase;
+      cursor: pointer; border: 2px solid var(--black); transition: all .2s;
+    }
+    .btn-outline:hover { background: var(--black); color: var(--white); }
+    .hero-img {
+      position: relative; overflow: hidden; background: var(--cream);
+    }
+    .hero-img img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .hero-badge {
+      position: absolute; bottom: 32px; left: 32px;
+      background: var(--white); padding: 12px 18px;
+      box-shadow: 0 4px 24px rgba(0,0,0,.12);
+    }
+    .hero-badge-sup {
+      font-size: 8px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 4px;
+    }
+    .hero-badge-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; font-weight: 400; color: var(--black);
+    }
+    .hero-seal {
+      position: absolute; top: 28px; right: 28px;
+      width: 60px; height: 60px; background: rgba(255,255,255,.9);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 9px; letter-spacing: 1px; text-transform: uppercase;
+      text-align: center; font-weight: 500; line-height: 1.3;
+      box-shadow: 0 2px 12px rgba(0,0,0,.1);
     }
 
-    .header-tagline {
-      font-family: 'Playfair Display', serif;
-      font-style: italic;
-      font-size: clamp(0.95rem, 2.5vw, 1.2rem);
-      font-weight: 400;
-      color: var(--mgray);
-      margin-bottom: 32px;
+    /* ─── NOVA COLEÇÃO (DARK) ─── */
+    .nova-colecao {
+      display: grid; grid-template-columns: 1fr 1fr;
+      min-height: 60vh; background: var(--dark);
+    }
+    @media(max-width:768px) {
+      .nova-colecao { grid-template-columns: 1fr; }
+      .nc-img { min-height: 55vw; }
+    }
+    .nc-text {
+      display: flex; flex-direction: column; justify-content: center;
+      padding: clamp(40px,6vw,80px) clamp(28px,6vw,80px);
+    }
+    .nc-eyebrow {
+      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 18px; display: flex; align-items: center; gap: 8px;
+    }
+    .nc-h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4.5vw, 3.5rem); font-weight: 300;
+      line-height: 1.1; color: var(--white); margin-bottom: 12px;
+    }
+    .nc-h2 em { font-style: italic; color: var(--gold); display: block; }
+    .nc-tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; font-style: italic; color: rgba(255,255,255,.6);
+      margin-bottom: 20px;
+    }
+    .nc-p {
+      font-size: 13px; color: rgba(255,255,255,.45);
+      line-height: 1.9; max-width: 400px; margin-bottom: 36px;
+    }
+    .btn-gold-outline {
+      display: inline-block; padding: 14px 28px;
+      background: transparent; color: var(--gold);
+      font-size: 10px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase;
+      border: 1.5px solid var(--gold); cursor: pointer; transition: all .2s;
+    }
+    .btn-gold-outline:hover { background: var(--gold); color: var(--dark); }
+    .nc-img {
+      position: relative; overflow: hidden; background: #2a2a2a;
+    }
+    .nc-img img { width: 100%; height: 100%; object-fit: cover; opacity: .85; }
+    .nc-novo {
+      position: absolute; top: 24px; right: 24px;
+      background: var(--gold); color: var(--dark);
+      font-size: 9px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase;
+      padding: 5px 12px;
     }
 
-    /* ── FILTROS ── */
-    .filters-wrap {
-      overflow-x: auto;
-      scrollbar-width: none;
+    /* ─── CATEGORIAS ─── */
+    .categorias-section {
+      background: var(--ivory); padding: 64px 0;
     }
-    .filters-wrap::-webkit-scrollbar { display: none; }
-
-    .filters {
-      display: flex;
-      justify-content: center;
-      min-width: max-content;
-      gap: 0;
+    .section-label {
+      text-align: center; font-size: 10px; letter-spacing: 4px;
+      text-transform: uppercase; color: var(--mgray); margin-bottom: 12px;
     }
-
-    .filter-btn {
-      background: none;
-      border: none;
-      border-bottom: 2px solid transparent;
-      color: var(--gray);
-      font-family: 'Inter', sans-serif;
-      font-size: 10.5px;
-      font-weight: 500;
-      letter-spacing: 2.5px;
-      padding: 16px 20px;
-      cursor: pointer;
-      transition: all .2s;
-      text-transform: uppercase;
-      white-space: nowrap;
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      text-align: center; font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 300; color: var(--black); margin-bottom: 40px;
     }
-
-    .filter-btn:hover { color: var(--black); }
-    .filter-btn.active { color: var(--black); border-bottom-color: var(--black); }
-    .filter-btn.outlet-btn { color: #c0726060; }
-    .filter-btn.outlet-btn:hover,
-    .filter-btn.outlet-btn.active { color: var(--red); border-bottom-color: var(--red); }
-
-    /* ── HERO STRIP ── */
-    .hero-strip {
-      border-bottom: 1px solid var(--lgray);
-      padding: 28px 24px 26px;
-      text-align: center;
-      background: var(--white);
-    }
-
-    .hero-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2rem, 6vw, 3.8rem);
-      font-weight: 600;
-      letter-spacing: -0.5px;
-      line-height: 1.05;
-      color: var(--black);
-    }
-
-    .hero-title em {
-      font-style: italic;
-      font-weight: 400;
-      color: var(--gold);
-    }
-
-    .hero-sub {
-      margin-top: 10px;
-      font-size: 11px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--gray);
-    }
-
-    /* ── GRID ── */
-    .catalog {
+    .cat-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 0;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 2px; background: var(--lgray);
+    }
+    @media(max-width:900px) { .cat-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media(max-width:500px) { .cat-grid { grid-template-columns: repeat(2, 1fr); } }
+    .cat-tile {
+      position: relative; overflow: hidden; cursor: pointer;
+      aspect-ratio: 2/3; background: var(--cream);
+    }
+    .cat-tile img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform .6s cubic-bezier(.25,.46,.45,.94);
+      filter: brightness(.85);
+    }
+    .cat-tile:hover img { transform: scale(1.07); filter: brightness(.95); }
+    .cat-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,.75) 0%, rgba(0,0,0,.05) 60%, transparent 100%);
+    }
+    .cat-label {
+      position: absolute; bottom: 0; left: 0; right: 0; padding: 18px 14px;
+    }
+    .cat-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; font-weight: 400; color: var(--white); margin-bottom: 4px;
+    }
+    .cat-sub {
+      font-size: 8px; letter-spacing: 2px; text-transform: uppercase;
+      color: rgba(255,255,255,.55);
     }
 
-    @media (max-width: 600px) {
-      .catalog { grid-template-columns: 1fr 1fr; }
+    /* ─── EDITORIAL SPLIT ─── */
+    .editorial {
+      display: grid; grid-template-columns: 1fr 1fr;
+      min-height: 70vh;
     }
-
-    /* ── CARD ── */
-    .card {
-      background: var(--white);
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-      touch-action: manipulation;
-      -webkit-user-select: none;
-      user-select: none;
-      border-right: 1px solid var(--lgray);
+    @media(max-width:768px) {
+      .editorial { grid-template-columns: 1fr; }
+      .editorial-img { min-height: 70vw; }
+    }
+    .editorial-img {
+      overflow: hidden; background: var(--cream);
+    }
+    .editorial-img img { width: 100%; height: 100%; object-fit: cover; }
+    .editorial-text {
+      background: var(--ivory);
+      display: flex; flex-direction: column; justify-content: center;
+      padding: clamp(40px,6vw,80px) clamp(28px,6vw,80px);
+    }
+    .editorial-eyebrow {
+      font-size: 9px; letter-spacing: 4px; text-transform: uppercase;
+      color: var(--mgray); margin-bottom: 16px;
+    }
+    .editorial-h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.2rem, 4vw, 3.5rem); font-weight: 300;
+      line-height: 1.1; margin-bottom: 24px;
+    }
+    .editorial-h2 em { font-style: italic; color: var(--gold); display: block; }
+    .check-list { list-style: none; margin-bottom: 32px; }
+    .check-list li {
+      display: flex; align-items: flex-start; gap: 12px;
+      font-size: 13.5px; color: var(--mgray); padding: 7px 0;
       border-bottom: 1px solid var(--lgray);
+    }
+    .check-list li:last-child { border-bottom: none; }
+    .check-list li::before {
+      content: "✓"; color: var(--gold); font-size: 14px;
+      flex-shrink: 0; margin-top: 1px;
+    }
+
+    /* ─── PRODUTOS ─── */
+    .produtos-section {
+      background: var(--ivory); padding: 72px 0 80px;
+    }
+    .produtos-section .section-label { margin-bottom: 10px; }
+    .produtos-section .section-title { margin-bottom: 8px; }
+    .produtos-sub {
+      text-align: center; font-size: 13px; color: var(--mgray);
+      margin-bottom: 36px; font-style: italic;
+      font-family: 'Cormorant Garamond', serif;
+    }
+
+    /* FILTROS */
+    .filtros {
+      display: flex; justify-content: center; gap: 0;
+      border-bottom: 1px solid var(--lgray); margin-bottom: 40px;
+      overflow-x: auto; -webkit-overflow-scrolling: touch;
+      padding: 0 16px;
+    }
+    .filtro {
+      padding: 12px 20px; cursor: pointer;
+      font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--mgray); white-space: nowrap;
+      border-bottom: 2px solid transparent; transition: all .2s;
+      flex-shrink: 0;
+    }
+    .filtro:hover { color: var(--black); }
+    .filtro.active { color: var(--black); border-bottom-color: var(--black); }
+
+    /* GRID */
+    .produtos-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px; background: var(--lgray);
+      padding: 0 0;
+    }
+    @media(max-width:900px) { .produtos-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media(max-width:600px) { .produtos-grid { grid-template-columns: repeat(2, 1fr); } }
+
+    /* CARD */
+    .card {
+      background: var(--white); cursor: pointer;
       transition: background .2s;
     }
-
-    .card:hover { background: var(--offwht); }
-
+    .card:hover { background: #faf9f6; }
     .card-img-wrap {
-      position: relative;
-      overflow: hidden;
-      aspect-ratio: 1;
-      background: var(--offwht);
+      position: relative; overflow: hidden;
+      aspect-ratio: 1; background: var(--cream);
     }
-
     .card-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: transform .6s cubic-bezier(.25,.46,.45,.94);
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform .55s cubic-bezier(.25,.46,.45,.94);
     }
-
     .card:hover .card-img { transform: scale(1.06); }
-
-    .card-img-placeholder {
-      width: 100%; height: 100%;
-      display: flex; align-items: center; justify-content: center;
-      color: var(--lgray); font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
-    }
-
-    .outlet-ribbon {
-      position: absolute; top: 12px; left: 0;
-      background: var(--red); color: #fff;
-      font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+    .badge-novo {
+      position: absolute; top: 12px; left: 12px;
+      background: var(--gold); color: var(--dark);
+      font-size: 8px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
       padding: 4px 10px;
     }
+    .badge-esgotado {
+      position: absolute; top: 12px; left: 12px;
+      background: #555; color: var(--white);
+      font-size: 8px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+      padding: 4px 10px;
+    }
+    .card-fav {
+      position: absolute; top: 10px; right: 10px;
+      width: 30px; height: 30px; background: var(--white);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 14px; box-shadow: 0 1px 6px rgba(0,0,0,.12);
+      z-index: 2;
+    }
+    .card-body { padding: 14px 16px 18px; }
+    .card-cat {
+      font-size: 9px; letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--mgray); margin-bottom: 5px;
+    }
+    .card-nome {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; font-weight: 400; color: var(--black);
+      line-height: 1.3; margin-bottom: 4px;
+    }
+    .card-preco { font-size: 13.5px; font-weight: 400; color: var(--black); margin-bottom: 12px; }
+    .card-tamanhos {
+      display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 12px;
+    }
+    .card-tam {
+      width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;
+      font-size: 10px; border: 1px solid var(--lgray); color: var(--mgray);
+      cursor: pointer; transition: all .15s;
+    }
+    .card-tam:hover, .card-tam.sel { border-color: var(--black); color: var(--black); background: var(--ivory); }
+    .btn-comprar {
+      display: block; width: 100%; padding: 11px;
+      background: transparent; color: var(--black);
+      font-size: 10px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase;
+      border: 1.5px solid var(--lgray); cursor: pointer; transition: all .2s;
+      text-align: center;
+    }
+    .btn-comprar:hover { border-color: var(--black); }
+    .btn-esgotado {
+      display: block; width: 100%; padding: 11px;
+      background: transparent; color: var(--mgray);
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      border: 1.5px solid var(--lgray); cursor: default; text-align: center;
+    }
+    .btn-avise {
+      display: block; width: 100%; padding: 8px;
+      text-align: center; font-size: 10px; color: var(--gold);
+      letter-spacing: 1.5px; text-transform: uppercase; margin-top: 6px; cursor: pointer;
+    }
 
-    .card-body { padding: 16px 18px 20px; }
+    /* ─── BANNER EDITORIAL ─── */
+    .banner-editorial {
+      position: relative; overflow: hidden;
+      min-height: 55vh; display: flex;
+    }
+    .banner-editorial img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .banner-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to right, rgba(245,240,232,.95) 0%, rgba(245,240,232,.7) 50%, transparent 100%);
+    }
+    @media(max-width:600px) {
+      .banner-overlay {
+        background: linear-gradient(to top, rgba(245,240,232,.95) 0%, rgba(245,240,232,.5) 60%, transparent 100%);
+      }
+    }
+    .banner-text {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: clamp(48px,8vw,100px) clamp(28px,7vw,90px);
+      max-width: 600px;
+    }
+    .banner-eyebrow {
+      font-size: 9px; letter-spacing: 4px; text-transform: uppercase;
+      color: var(--mgray); margin-bottom: 16px;
+    }
+    .banner-h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.4rem, 5vw, 4rem); font-weight: 300;
+      line-height: 1.1; margin-bottom: 20px;
+    }
+    .banner-h2 em { font-style: italic; color: var(--gold); display: block; }
+    .banner-p {
+      font-size: 13.5px; color: var(--mgray); line-height: 1.9;
+      max-width: 400px; margin-bottom: 28px;
+    }
+    .btn-arrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 10px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--black); border: 1.5px solid var(--black);
+      padding: 12px 22px; cursor: pointer; transition: all .2s;
+    }
+    .btn-arrow:hover { background: var(--black); color: var(--white); }
 
-    .card-tag {
+    /* ─── BENEFÍCIOS ─── */
+    .beneficios {
+      background: var(--dark); padding: 32px 16px;
+      display: flex; justify-content: center; gap: 0;
+      flex-wrap: wrap; overflow-x: auto;
+    }
+    .beneficio {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      color: rgba(255,255,255,.55); padding: 8px 24px;
+      border-right: 1px solid rgba(255,255,255,.1);
+      flex-shrink: 0;
+    }
+    .beneficio:last-child { border-right: none; }
+    .beneficio::before { content: "✓"; color: var(--gold); }
+
+    /* ─── INSTAGRAM ─── */
+    .instagram-section {
+      background: var(--ivory); padding: 64px 0 0;
+    }
+    .insta-handle {
+      text-align: center; font-size: 10px; letter-spacing: 4px;
+      text-transform: uppercase; color: var(--mgray); margin-bottom: 12px;
+    }
+    .insta-title {
+      font-family: 'Cormorant Garamond', serif;
+      text-align: center; font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 300; color: var(--black); margin-bottom: 32px;
+    }
+    .insta-grid {
+      display: grid; grid-template-columns: repeat(6, 1fr);
+      gap: 2px; background: var(--lgray);
+    }
+    @media(max-width:600px) { .insta-grid { grid-template-columns: repeat(3, 1fr); } }
+    .insta-photo {
+      aspect-ratio: 1; overflow: hidden; cursor: pointer;
+      background: var(--cream);
+    }
+    .insta-photo img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform .5s; filter: brightness(.9);
+    }
+    .insta-photo:hover img { transform: scale(1.08); filter: brightness(1); }
+
+    /* ─── NEWSLETTER ─── */
+    .newsletter {
+      background: var(--ivory); padding: 80px 24px;
+      text-align: center;
+    }
+    .newsletter-label {
+      font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+      color: var(--mgray); margin-bottom: 12px;
+    }
+    .newsletter-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 300;
+      color: var(--black); margin-bottom: 10px;
+    }
+    .newsletter-sub {
+      font-size: 13px; color: var(--mgray); max-width: 480px;
+      margin: 0 auto 32px; line-height: 1.8;
+    }
+    .newsletter-form {
+      display: flex; max-width: 420px; margin: 0 auto;
+    }
+    @media(max-width:500px) { .newsletter-form { flex-direction: column; gap: 10px; } }
+    .newsletter-form input {
+      flex: 1; padding: 13px 16px;
+      border: 1px solid var(--lgray); background: var(--white);
+      font-size: 13px; font-family: 'Inter', sans-serif;
+      outline: none; color: var(--black);
+    }
+    .newsletter-form input:focus { border-color: var(--black); }
+    .newsletter-form button {
+      padding: 13px 24px; background: var(--black); color: var(--white);
+      font-size: 10px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase;
+      border: none; cursor: pointer; transition: all .2s; white-space: nowrap;
+    }
+    .newsletter-form button:hover { background: #333; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--dark); color: rgba(255,255,255,.45);
+      padding: 56px 32px 32px;
+    }
+    .footer-inner {
+      max-width: 900px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr 1fr;
+      gap: 40px; margin-bottom: 48px;
+    }
+    @media(max-width:600px) { .footer-inner { grid-template-columns: 1fr; } }
+    .footer-logo-area { }
+    .footer-logo-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem; letter-spacing: 6px; text-transform: uppercase;
+      color: rgba(255,255,255,.8); margin-bottom: 6px;
+    }
+    .footer-logo-sub {
       font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
-      color: var(--gray); margin-bottom: 6px;
+      color: rgba(255,255,255,.3); margin-bottom: 18px;
+    }
+    .footer-slogan {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; font-size: 1rem;
+      color: rgba(255,255,255,.25);
+    }
+    .footer-col h4 {
+      font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+      color: rgba(255,255,255,.5); margin-bottom: 16px;
+    }
+    .footer-col p, .footer-col a {
+      font-size: 12px; line-height: 2.2; color: rgba(255,255,255,.35);
+      display: block; transition: color .2s;
+    }
+    .footer-col a:hover { color: rgba(255,255,255,.75); }
+    .footer-bottom {
+      text-align: center; padding-top: 28px;
+      border-top: 1px solid rgba(255,255,255,.08);
+      font-size: 10px; letter-spacing: 1px; color: rgba(255,255,255,.2);
     }
 
-    .card-name {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(0.95rem, 2vw, 1.1rem);
-      font-weight: 400;
-      color: var(--black);
-      line-height: 1.3;
-      margin-bottom: 4px;
-    }
-
-    .card-material { font-size: 11px; color: var(--gray); margin-bottom: 14px; }
-
-    .card-footer { display: flex; align-items: center; justify-content: space-between; }
-
-    .card-price {
-      font-family: 'Inter', sans-serif;
-      font-size: 1rem; font-weight: 600;
-      color: var(--black); letter-spacing: 0.3px;
-    }
-
-    .card-stock {
-      font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase;
-      padding: 3px 8px; border-radius: 2px;
-    }
-
-    .stock-ok  { background: transparent; border: 1px solid var(--lgray); color: var(--gray); }
-    .stock-low { background: #fff8ec; border: 1px solid #e8c080; color: #9a6010; }
-    .stock-out { background: #fce4e4; border: 1px solid #e0a0a0; color: var(--red); }
-
-    /* ── MODAL ── */
+    /* ─── MODAL ─── */
     .modal-bg {
-      display: none;
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,.6);
-      z-index: 200;
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,.6); z-index: 300;
       align-items: center; justify-content: center;
-      padding: 16px;
-      backdrop-filter: blur(4px);
+      padding: 16px; backdrop-filter: blur(6px);
     }
-
     .modal-bg.open { display: flex; }
-
     .modal {
-      background: var(--white);
-      max-width: 900px; width: 100%;
-      max-height: 94vh; overflow-y: auto;
-      position: relative;
-      display: grid;
-      grid-template-columns: 1.1fr 1fr;
-      box-shadow: 0 24px 80px rgba(0,0,0,.18);
+      background: var(--white); max-width: 860px; width: 100%;
+      max-height: 94vh; overflow-y: auto; position: relative;
+      display: grid; grid-template-columns: 1.1fr 1fr;
+      box-shadow: 0 32px 80px rgba(0,0,0,.25);
     }
-
-    @media (max-width: 640px) {
+    @media(max-width:640px) {
       .modal { grid-template-columns: 1fr; max-height: 96vh; }
-      .modal-img { min-height: 240px; max-height: 55vw; }
-      .modal-body { padding: 22px 20px 28px; }
-      .modal-name { font-size: 1.4rem; }
+      .modal-img { min-height: 55vw; }
+      .modal-body { padding: 24px 20px 32px; }
     }
-
     .modal-img {
-      width: 100%; height: 100%; min-height: 360px;
-      object-fit: cover; display: block;
-      background: var(--offwht);
+      width: 100%; min-height: 400px; object-fit: cover;
+      background: var(--cream);
     }
-
-    .modal-img-placeholder {
-      width: 100%; min-height: 360px;
-      background: var(--offwht);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--lgray);
-    }
-
     .modal-body {
-      padding: 44px 40px;
+      padding: 48px 40px;
       display: flex; flex-direction: column;
       border-left: 1px solid var(--lgray);
     }
-
     .modal-tag {
-      font-size: 9px; letter-spacing: 3.5px; text-transform: uppercase;
-      color: var(--gray); margin-bottom: 12px;
+      font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--mgray); margin-bottom: 10px;
     }
-
-    .modal-name {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.75rem; font-weight: 400;
-      color: var(--black); margin-bottom: 8px; line-height: 1.2;
+    .modal-nome {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem; font-weight: 300; line-height: 1.2;
+      color: var(--black); margin-bottom: 8px;
     }
-
-    .modal-price {
-      font-size: 1.55rem; font-weight: 600;
-      color: var(--black); margin-bottom: 24px; letter-spacing: -0.5px;
+    .modal-preco {
+      font-size: 1.4rem; font-weight: 400; color: var(--black);
+      margin-bottom: 24px;
     }
-
-    .divider { height: 1px; background: var(--lgray); margin-bottom: 22px; }
-
+    .divider { height: 1px; background: var(--lgray); margin-bottom: 20px; }
     .modal-desc {
-      font-size: 13.5px; color: var(--mgray);
-      line-height: 1.85; margin-bottom: 20px; flex: 1;
+      font-size: 13px; color: var(--mgray); line-height: 1.9;
+      margin-bottom: 20px; flex: 1;
     }
-
-    .modal-info { font-size: 12px; color: var(--gray); margin-bottom: 5px; }
+    .modal-info { font-size: 12px; color: var(--mgray); margin-bottom: 4px; }
     .modal-info strong { color: var(--black); font-weight: 500; }
-
     .modal-sizes-label {
       font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
-      color: var(--gray); margin: 16px 0 8px;
+      color: var(--mgray); margin: 16px 0 8px;
     }
-
-    .modal-sizes { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 4px; }
-
+    .modal-sizes { display: flex; gap: 7px; flex-wrap: wrap; }
     .modal-size {
-      border: 1px solid var(--lgray); color: var(--gray);
-      padding: 8px 16px; font-size: 12px; cursor: pointer;
-      transition: all .15s; font-family: 'Inter', sans-serif;
-      background: var(--white);
+      width: 38px; height: 38px; display: flex; align-items: center; justify-content: center;
+      font-size: 11px; border: 1px solid var(--lgray); color: var(--mgray);
+      cursor: pointer; transition: all .15s; background: var(--white);
     }
-
-    .modal-size:hover,
-    .modal-size.selected { border-color: var(--black); color: var(--black); background: var(--offwht); }
-
-    .btn-whatsapp {
-      display: block; width: 100%;
+    .modal-size:hover, .modal-size.sel { border-color: var(--black); color: var(--black); }
+    .btn-wa {
+      display: block; width: 100%; padding: 16px;
       background: var(--black); color: var(--white);
-      text-align: center; padding: 17px;
-      font-size: 10px; font-weight: 600;
-      letter-spacing: 3.5px; text-transform: uppercase;
-      text-decoration: none; margin-top: 24px;
-      transition: background .2s;
-      border: 2px solid var(--black);
+      text-align: center; font-size: 10px; font-weight: 600;
+      letter-spacing: 3px; text-transform: uppercase;
+      border: 2px solid var(--black); cursor: pointer; transition: all .2s;
+      margin-top: 24px; text-decoration: none;
     }
-
-    .btn-whatsapp:hover { background: var(--white); color: var(--black); }
-
+    .btn-wa:hover { background: var(--white); color: var(--black); }
     .modal-close {
-      position: absolute; top: 16px; right: 18px;
-      font-size: 18px; cursor: pointer; color: var(--gray);
-      z-index: 10; width: 32px; height: 32px;
+      position: absolute; top: 14px; right: 16px;
+      font-size: 18px; cursor: pointer; color: var(--mgray);
+      z-index: 5; width: 32px; height: 32px;
       display: flex; align-items: center; justify-content: center;
-      transition: color .2s;
     }
     .modal-close:hover { color: var(--black); }
-
-    /* ── FOOTER ── */
-    footer {
-      background: var(--black);
-      color: rgba(255,255,255,.45);
-      padding: 56px 24px;
-      border-top: 1px solid var(--lgray);
-    }
-
-    .footer-inner {
-      max-width: 640px; margin: 0 auto; text-align: center;
-    }
-
-    .footer-logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.5rem; letter-spacing: 6px;
-      text-transform: uppercase; color: #fff;
-      margin-bottom: 4px;
-    }
-
-    .footer-sub {
-      font-size: 9px; letter-spacing: 3.5px; text-transform: uppercase;
-      color: rgba(255,255,255,.3); margin-bottom: 28px;
-    }
-
-    .footer-info {
-      font-size: 12px; line-height: 2.4;
-    }
-
-    .footer-info a {
-      color: rgba(255,255,255,.55); text-decoration: none; transition: color .2s;
-    }
-    .footer-info a:hover { color: #fff; }
-
-    .footer-slogan {
-      margin-top: 32px;
-      font-family: 'Playfair Display', serif;
-      font-style: italic; font-size: 1rem; color: rgba(255,255,255,.25);
-    }
-
-    .empty {
-      grid-column: 1/-1; text-align: center;
-      padding: 100px 24px; color: var(--gray);
-    }
-    .empty p { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-style: italic; }
-
-    /* ── HERO TAG ── */
-    .hero-tag {
-      font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
-      color: var(--gold); margin-bottom: 10px; font-weight: 600;
-    }
-
-    /* ── CATEGORY SECTIONS ── */
-    .cat-section { width: 100%; }
-
-    .cat-header {
-      display: flex; align-items: center; gap: 16px;
-      padding: 20px 24px 16px;
-      border-bottom: 1px solid var(--lgray);
-      border-top: 1px solid var(--lgray);
-      background: var(--offwht);
-    }
-
-    .cat-header-name {
-      font-size: 10px; letter-spacing: 3.5px; text-transform: uppercase;
-      color: var(--black); font-weight: 600;
-    }
-
-    .cat-header-line { flex: 1; height: 1px; background: var(--lgray); }
-    .cat-header-count { font-size: 10px; color: var(--gray); letter-spacing: 1px; }
-
-    .cat-header.destaque-header {
-      background: var(--black);
-      border-color: var(--black);
-    }
-    .cat-header.destaque-header .cat-header-name { color: #fff; }
-    .cat-header.destaque-header .cat-header-line { background: rgba(255,255,255,.2); }
-    .cat-header.destaque-header .cat-header-count { color: rgba(255,255,255,.4); }
-
-    .cat-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    }
-    @media (max-width: 600px) {
-      .cat-grid { grid-template-columns: 1fr 1fr; }
-    }
-
-    /* ── SELO PRATA ── */
-    .selos {
-      display: flex; justify-content: center; gap: 32px;
-      padding: 18px 24px;
-      border-bottom: 1px solid var(--lgray);
-      overflow-x: auto; scrollbar-width: none;
-    }
-    .selos::-webkit-scrollbar { display: none; }
-
-    .selo {
-      display: flex; align-items: center; gap: 7px;
-      white-space: nowrap;
-    }
-    .selo-icon { font-size: 14px; }
-    .selo-text { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--mgray); }
   </style>
 </head>
 <body>
 
 <!-- TOP BAR -->
-<div class="top-bar">Entrega para todo o Brasil &nbsp;·&nbsp; Prata 925 &amp; Aço Inox 316L &nbsp;·&nbsp; Frete Grátis acima de R$150</div>
+<div class="top-bar">Frete Grátis acima de R$199 &nbsp;·&nbsp; Prata 925 Legítima &nbsp;·&nbsp; Aço Inox à Prova D'Água</div>
 
 <!-- HEADER -->
 <header>
-  <img src="logo.png" alt="Donna Prata" class="logo-img">
-  <div class="header-tagline">A peça que faltava no seu look</div>
-
-  <!-- FILTROS dentro do header -->
-  <div class="filters-wrap">
-    <div class="filters">
-      <button class="filter-btn active" data-cat="todos">Todos</button>
-      <button class="filter-btn" data-cat="bracelet">Braceletes</button>
-      <button class="filter-btn" data-cat="anel">Anéis</button>
-      <button class="filter-btn" data-cat="pulseira">Pulseiras</button>
-      <button class="filter-btn" data-cat="brinco">Brincos</button>
-      <button class="filter-btn" data-cat="colar">Colares</button>
-      <button class="filter-btn" data-cat="piercing">Piercings</button>
-      <button class="filter-btn outlet-btn" data-cat="outlet">Outlet</button>
+  <div class="header-top">
+    <div class="header-search">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+        <circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      Buscar
+    </div>
+    <div class="header-logo">
+      <span class="logo-diamond">◇</span>
+      <div class="logo-name">Donna Prata</div>
+      <div class="logo-sub">Joias em Prata 925</div>
+    </div>
+    <div class="header-icons">
+      <a href="https://instagram.com/a.donnaprata" target="_blank">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+          <rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.5"/>
+          <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+        </svg>
+      </a>
+      <a href="https://wa.me/5515996500066" target="_blank">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+          <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+        </svg>
+      </a>
     </div>
   </div>
+  <nav>
+    <span class="nav-link" onclick="filtrarProdutos('colar'); scrollToProducts()">Colares</span>
+    <span class="nav-link" onclick="filtrarProdutos('pulseira'); scrollToProducts()">Pulseiras</span>
+    <span class="nav-link" onclick="filtrarProdutos('prata'); scrollToProducts()">Prata 925</span>
+    <span class="nav-link" onclick="filtrarProdutos('aco'); scrollToProducts()">Aço Inox</span>
+    <span class="nav-link" onclick="filtrarProdutos('outlet'); scrollToProducts()">Outlet</span>
+    <span class="nav-link" onclick="document.getElementById('sobre').scrollIntoView({behavior:'smooth'})">Sobre</span>
+  </nav>
 </header>
 
-<!-- HERO STRIP -->
-<div class="hero-strip">
-  <div class="hero-tag">Em destaque</div>
-  <div class="hero-title">Nova <em>Coleção</em><br>Disponível</div>
-</div>
-
-<!-- SELOS -->
-<div class="selos">
-  <div class="selo"><span class="selo-icon">💎</span><span class="selo-text">Prata 925 Legítima</span></div>
-  <div class="selo"><span class="selo-icon">📦</span><span class="selo-text">Entrega Rápida</span></div>
-  <div class="selo"><span class="selo-icon">✦</span><span class="selo-text">Garantia de Qualidade</span></div>
-</div>
-
-<!-- CATÁLOGO -->
-<div class="catalog" id="catalog"></div>
-
-<!-- MODAL -->
-<div class="modal-bg" id="modal" onclick="closeModal(event)">
-  <div class="modal" id="modal-box">
-    <span class="modal-close" onclick="closeModalDirect()">✕</span>
-    <div id="modal-img-wrap"></div>
-    <div class="modal-body">
-      <div class="modal-tag" id="modal-tag"></div>
-      <div class="modal-name" id="modal-name"></div>
-      <div class="modal-price" id="modal-price"></div>
-      <div class="divider"></div>
-      <div class="modal-desc" id="modal-desc"></div>
-      <div class="modal-info" id="modal-material"></div>
-      <div class="modal-info" id="modal-stock-info"></div>
-      <div id="modal-sizes-wrap" style="display:none">
-        <div class="modal-sizes-label">Tamanho</div>
-        <div class="modal-sizes" id="modal-sizes"></div>
-      </div>
-      <a class="btn-whatsapp" id="modal-cta" href="#" target="_blank">Quero essa peça</a>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <div class="hero-eyebrow">Seja Donna Prata</div>
+    <h1 class="hero-h1">Elegância que <em>permanece</em></h1>
+    <p class="hero-p">Peças em Prata 925 e Aço Inox criadas para acompanhar você em todos os momentos — do dia a dia aos instantes que merecem ser eternos.</p>
+    <div class="hero-btns">
+      <span class="btn-dark" onclick="filtrarProdutos('todos'); scrollToProducts()">Conhecer Coleção</span>
+      <span class="btn-outline" onclick="filtrarProdutos('outlet'); scrollToProducts()">Ver Outlet</span>
     </div>
   </div>
+  <div class="hero-img" id="hero-img">
+    <div class="hero-seal">Prata<br>925</div>
+    <div class="hero-badge" id="hero-badge">
+      <div class="hero-badge-sup">Coleção Essenza</div>
+      <div class="hero-badge-name" id="hero-badge-name">Bracelet Aço Inox</div>
+    </div>
+  </div>
+</section>
+
+<!-- NOVA COLEÇÃO -->
+<section class="nova-colecao">
+  <div class="nc-text">
+    <div class="nc-eyebrow">◇ Lançamento</div>
+    <h2 class="nc-h2">Nova Coleção <em>Aço Inox 316L</em></h2>
+    <p class="nc-tagline">Não mancha. Não oxida. Alta durabilidade.</p>
+    <p class="nc-p">O aço cirúrgico 316L é hipoalergênico e resistente à água, ao suor e ao tempo — brilho impecável que acompanha cada gesto seu, todos os dias.</p>
+    <span class="btn-gold-outline" onclick="filtrarProdutos('aco'); scrollToProducts()">Ver a Coleção</span>
+  </div>
+  <div class="nc-img" id="nc-img">
+    <div class="nc-novo">NOVO</div>
+  </div>
+</section>
+
+<!-- CATEGORIAS EM DESTAQUE -->
+<section class="categorias-section">
+  <div class="section-label">Explore</div>
+  <div class="section-title">Categorias em destaque</div>
+  <div class="cat-grid" id="cat-grid"></div>
+</section>
+
+<!-- EDITORIAL: PRATA 925 -->
+<section class="editorial" id="sobre">
+  <div class="editorial-img" id="editorial-img-prata"></div>
+  <div class="editorial-text">
+    <div class="editorial-eyebrow">A Tradição</div>
+    <h2 class="editorial-h2">Prata 925 <em>legítima</em></h2>
+    <ul class="check-list">
+      <li>Joia de valor acessível</li>
+      <li>Alta durabilidade</li>
+      <li>Elegante e sofisticado</li>
+      <li>Fácil de limpar e restaurar o brilho</li>
+    </ul>
+    <span class="btn-dark" onclick="filtrarProdutos('prata'); scrollToProducts()">Ver Peças em Prata</span>
+  </div>
+</section>
+
+<!-- SELEÇÃO EM DESTAQUE -->
+<section class="produtos-section" id="produtos-section">
+  <div class="section-label">Coleção Lumière</div>
+  <div class="section-title">Seleção em destaque</div>
+  <div class="produtos-sub">Joias atemporais escolhidas a dedo para você</div>
+  <div class="filtros">
+    <div class="filtro active" data-f="todos"    onclick="filtrarProdutos('todos')">Todos</div>
+    <div class="filtro"        data-f="colar"    onclick="filtrarProdutos('colar')">Colares</div>
+    <div class="filtro"        data-f="pulseira" onclick="filtrarProdutos('pulseira')">Pulseiras</div>
+    <div class="filtro"        data-f="prata"    onclick="filtrarProdutos('prata')">Prata 925</div>
+    <div class="filtro"        data-f="aco"      onclick="filtrarProdutos('aco')">Aço Inox</div>
+    <div class="filtro"        data-f="outlet"   onclick="filtrarProdutos('outlet')">Outlet</div>
+  </div>
+  <div class="produtos-grid" id="produtos-grid"></div>
+</section>
+
+<!-- BANNER EDITORIAL -->
+<section class="banner-editorial" id="banner-editorial">
+  <div class="banner-overlay"></div>
+  <div class="banner-text">
+    <div class="banner-eyebrow">Donna Prata</div>
+    <h2 class="banner-h2">Beleza nos <em>detalhes</em></h2>
+    <p class="banner-p">Nossas peças unem qualidade, durabilidade e sofisticação para mulheres que valorizam a elegância em cada detalhe. Prata 925 legítima e aço inox resistente, pensados para durar.</p>
+    <span class="btn-arrow" onclick="document.getElementById('sobre').scrollIntoView({behavior:'smooth'})">Descobrir a marca →</span>
+  </div>
+</section>
+
+<!-- BENEFÍCIOS -->
+<div class="beneficios">
+  <div class="beneficio">Prata 925 legítima</div>
+  <div class="beneficio">Aço inox à prova d'água</div>
+  <div class="beneficio">Envio para todo o Brasil</div>
+  <div class="beneficio">Pagamento 100% seguro</div>
+  <div class="beneficio">Garantia de qualidade</div>
 </div>
+
+<!-- INSTAGRAM -->
+<section class="instagram-section">
+  <div class="insta-handle">@a.donnaprata</div>
+  <div class="insta-title">Siga a Donna Prata</div>
+  <div class="insta-grid" id="insta-grid"></div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="newsletter">
+  <div class="newsletter-label">Newsletter</div>
+  <div class="newsletter-title">Receba novidades exclusivas</div>
+  <div class="newsletter-sub">Cadastre-se e ganhe acesso antecipado a lançamentos, ofertas e edições limitadas da Donna Prata.</div>
+  <form class="newsletter-form" onsubmit="submNewsletter(event)">
+    <input type="email" placeholder="Seu melhor e-mail" required>
+    <button type="submit">Cadastrar</button>
+  </form>
+</section>
 
 <!-- FOOTER -->
 <footer>
   <div class="footer-inner">
-    <div class="footer-logo">Donna Prata</div>
-    <div class="footer-sub">Joias em Prata 925 &amp; Aço Inox</div>
-    <div class="footer-info">
-      <div>📍 Ibiúna, SP · Entregas locais e envios para todo o Brasil</div>
-      <div>
-        <a href="https://wa.me/5515996500066">WhatsApp</a>
-        &nbsp;·&nbsp;
-        <a href="https://instagram.com/a.donnaprata">@a.donnaprata</a>
-      </div>
+    <div class="footer-logo-area">
+      <div class="footer-logo-name">Donna Prata</div>
+      <div class="footer-logo-sub">Joias em Prata 925 &amp; Aço Inox</div>
+      <div class="footer-slogan">A peça que faltava no seu look ✨</div>
     </div>
-    <div class="footer-slogan">Seja Donna Prata ✨</div>
+    <div class="footer-col">
+      <h4>Atendimento</h4>
+      <a href="https://wa.me/5515996500066" target="_blank">WhatsApp</a>
+      <a href="https://instagram.com/a.donnaprata" target="_blank">Instagram</a>
+      <p>Ibiúna, SP</p>
+      <p>Entregas para todo o Brasil</p>
+    </div>
+    <div class="footer-col">
+      <h4>Coleções</h4>
+      <a href="#" onclick="filtrarProdutos('prata');scrollToProducts();return false">Prata 925</a>
+      <a href="#" onclick="filtrarProdutos('aco');scrollToProducts();return false">Aço Inox 316L</a>
+      <a href="#" onclick="filtrarProdutos('outlet');scrollToProducts();return false">Outlet</a>
+      <a href="admin.html">Área Admin</a>
+    </div>
   </div>
+  <div class="footer-bottom">© 2025 Donna Prata · Todos os direitos reservados</div>
 </footer>
+
+<!-- MODAL -->
+<div class="modal-bg" id="modal" onclick="fecharModal(event)">
+  <div class="modal">
+    <span class="modal-close" onclick="fecharModalDireto()">✕</span>
+    <div id="m-img-wrap"></div>
+    <div class="modal-body">
+      <div class="modal-tag"   id="m-tag"></div>
+      <div class="modal-nome"  id="m-nome"></div>
+      <div class="modal-preco" id="m-preco"></div>
+      <div class="divider"></div>
+      <div class="modal-desc"  id="m-desc"></div>
+      <div class="modal-info"  id="m-material"></div>
+      <div class="modal-info"  id="m-estoque"></div>
+      <div id="m-sizes-wrap" style="display:none">
+        <div class="modal-sizes-label">Tamanho</div>
+        <div class="modal-sizes" id="m-sizes"></div>
+      </div>
+      <a class="btn-wa" id="m-cta" href="#" target="_blank">Quero essa peça</a>
+    </div>
+  </div>
+</div>
 
 <script>
 const WA = "5515996500066";
 let produtos = [];
-let currentFilter = "todos";
-let selectedSizes = {};
+let selSizes = {};
+let filtroAtivo = 'todos';
 
-async function carregarProdutos() {
+const CATS = [
+  { key:'prata',    label:'Prata 925',  sub:'Brilho Atemporal',     match: p => p.material.includes('Prata 925') },
+  { key:'aco',      label:'Aço Inox',   sub:'À Prova D\'Água',      match: p => p.material.includes('Aço Inox') },
+  { key:'colar',    label:'Colares',    sub:'Elegância no Colo',    match: p => p.categoria === 'colar' },
+  { key:'pulseira', label:'Pulseiras',  sub:'Delicadeza no Pulso',  match: p => p.categoria === 'pulseira' || p.categoria === 'bracelet' },
+  { key:'anel',     label:'Anéis',      sub:'Símbolos Eternos',     match: p => p.categoria === 'anel' },
+  { key:'brinco',   label:'Brincos',    sub:'Luz no Rosto',         match: p => p.categoria === 'brinco' },
+];
+
+const FILTROS = {
+  todos:    p => true,
+  colar:    p => p.categoria === 'colar',
+  pulseira: p => p.categoria === 'pulseira' || p.categoria === 'bracelet',
+  prata:    p => p.material.includes('Prata 925'),
+  aco:      p => p.material.includes('Aço Inox'),
+  outlet:   p => p.categoria === 'outlet',
+};
+
+async function init() {
   try {
     const r = await fetch(`produtos.json?t=${Date.now()}`);
     produtos = await r.json();
   } catch { produtos = []; }
-  renderCatalog();
+  montarHero();
+  montarCategorias();
+  montarEditorialPrata();
+  montarBanner();
+  renderProdutos();
+  montarInstagram();
 }
 
-function stockLabel(n) {
-  if (n === 0) return { text: "Esgotado",       cls: "stock-out" };
-  if (n === 1) return { text: "Última unidade", cls: "stock-low" };
-  if (n <= 3)  return { text: `${n} unid.`,     cls: "stock-low" };
-  return               { text: "Disponível",    cls: "stock-ok"  };
+/* ── HERO ── */
+function montarHero() {
+  const dest = produtos.find(p => p.destaque && p.foto);
+  const el = document.getElementById('hero-img');
+  if (dest) {
+    const img = document.createElement('img');
+    img.src = dest.foto; img.alt = dest.nome;
+    img.style.cssText = 'width:100%;height:100%;object-fit:cover;position:absolute;inset:0';
+    el.insertBefore(img, el.firstChild);
+    document.getElementById('hero-badge-name').textContent = dest.nome;
+  }
+}
+
+/* ── NOVA COLEÇÃO IMG ── */
+function montarNcImg() {
+  const aco = produtos.filter(p => p.material.includes('Aço Inox') && p.foto);
+  if (aco.length < 2) return;
+  const p = aco[1];
+  const el = document.getElementById('nc-img');
+  const img = document.createElement('img');
+  img.src = p.foto; img.alt = p.nome;
+  img.style.cssText = 'width:100%;height:100%;object-fit:cover;position:absolute;inset:0;opacity:.85';
+  el.insertBefore(img, el.firstChild);
+}
+
+/* ── CATEGORIAS ── */
+function montarCategorias() {
+  montarNcImg();
+  const grid = document.getElementById('cat-grid');
+  grid.innerHTML = CATS.map(c => {
+    const p = produtos.find(x => c.match(x) && x.foto);
+    const img = p ? `<img src="${p.foto}" alt="${c.label}" loading="lazy">` : '';
+    return `
+    <div class="cat-tile" onclick="filtrarProdutos('${c.key}');scrollToProducts()">
+      ${img}
+      <div class="cat-overlay"></div>
+      <div class="cat-label">
+        <div class="cat-name">${c.label}</div>
+        <div class="cat-sub">${c.sub}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ── EDITORIAL PRATA ── */
+function montarEditorialPrata() {
+  const p = produtos.find(x => x.material.includes('Prata 925') && x.categoria === 'colar' && x.foto);
+  if (!p) return;
+  const el = document.getElementById('editorial-img-prata');
+  el.style.cssText += 'background:var(--cream);overflow:hidden';
+  el.innerHTML = `<img src="${p.foto}" alt="${p.nome}" style="width:100%;height:100%;object-fit:cover">`;
+}
+
+/* ── BANNER ── */
+function montarBanner() {
+  const p = produtos.find(x => x.categoria === 'colar' && x.foto && x.id > 5);
+  if (!p) return;
+  const el = document.getElementById('banner-editorial');
+  const img = document.createElement('img');
+  img.src = p.foto; img.alt = p.nome;
+  el.insertBefore(img, el.firstChild);
+}
+
+/* ── PRODUTOS ── */
+function filtrarProdutos(f) {
+  filtroAtivo = f;
+  document.querySelectorAll('.filtro').forEach(el => {
+    el.classList.toggle('active', el.dataset.f === f);
+  });
+  renderProdutos();
+}
+
+function scrollToProducts() {
+  document.getElementById('produtos-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function renderProdutos() {
+  const fn = FILTROS[filtroAtivo] || FILTROS.todos;
+  const lista = produtos.filter(fn);
+  const grid = document.getElementById('produtos-grid');
+  grid.innerHTML = lista.map(renderCard).join('');
 }
 
 function catLabel(c) {
-  return { destaque:"Nova Coleção — Aço Inox 316L / PVD", bracelet:"Braceletes", anel:"Anéis", pulseira:"Pulseiras", brinco:"Brincos", colar:"Colares", piercing:"Piercings", outlet:"Outlet" }[c] || c;
+  const m = { bracelet:'Aço Inox', brinco:'Brincos', anel:'Anéis', pulseira:'Pulseiras', colar:'Colares', piercing:'Piercings', outlet:'Outlet' };
+  return m[c] || c;
 }
 
 function renderCard(p) {
-  const s = stockLabel(p.estoque);
-  const imgTag = p.foto
-    ? `<img class="card-img" src="${p.foto}" alt="${p.nome}" loading="lazy">`
-    : `<div class="card-img-placeholder">—</div>`;
-  const ribbon = p.categoria === 'outlet' ? `<div class="outlet-ribbon">Outlet</div>` : '';
+  const esg = p.estoque === 0;
+  const novo = p.destaque || p.material.includes('Aço Inox');
+  const badge = esg
+    ? `<div class="badge-esgotado">Esgotado</div>`
+    : novo ? `<div class="badge-novo">Novo</div>` : '';
+  const img = p.foto
+    ? `<img class="card-img" src="${p.foto}" alt="${p.nome}" loading="lazy" onclick="abrirModal(${p.id})">`
+    : `<div class="card-img" style="background:var(--cream);width:100%;height:100%"></div>`;
+  const tams = p.tamanhos && p.tamanhos.length
+    ? `<div class="card-tamanhos">${p.tamanhos.map(t =>
+        `<div class="card-tam ${selSizes[p.id]===t?'sel':''}" onclick="selTam(event,${p.id},'${t}')">${t}</div>`
+      ).join('')}</div>` : '';
+  const btn = esg
+    ? `<div class="btn-esgotado">Esgotado</div>
+       <span class="btn-avise" onclick="avisarWA(${p.id})">Me avise quando chegar →</span>`
+    : `<a class="btn-comprar" href="${waLink(p)}" target="_blank">Comprar</a>`;
   return `
-    <div class="card" onclick="openModal(${p.id})">
-      <div class="card-img-wrap">${imgTag}${ribbon}</div>
-      <div class="card-body">
-        <div class="card-tag">${catLabel(p.categoria)}</div>
-        <div class="card-name">${p.nome}</div>
-        <div class="card-material">${p.material}</div>
-        <div class="card-footer">
-          <span class="card-price">${p.preco}</span>
-          <span class="card-stock ${s.cls}">${s.text}</span>
-        </div>
-      </div>
-    </div>`;
+  <div class="card">
+    <div class="card-img-wrap">
+      ${img}${badge}
+      <div class="card-fav" onclick="event.stopPropagation()">♡</div>
+    </div>
+    <div class="card-body" onclick="abrirModal(${p.id})">
+      <div class="card-cat">${p.material.includes('Aço Inox') ? 'Aço Inox' : 'Prata 925'}</div>
+      <div class="card-nome">${p.nome}</div>
+      <div class="card-preco">${p.preco}</div>
+      ${tams}
+    </div>
+    ${btn}
+  </div>`;
 }
 
-function renderCatalog() {
-  const el = document.getElementById("catalog");
-
-  if (currentFilter !== "todos") {
-    const list = produtos.filter(p => p.categoria === currentFilter);
-    if (!list.length) {
-      el.innerHTML = '<div class="empty"><p>Nenhuma peça nessa categoria por enquanto.</p></div>';
-      return;
-    }
-    el.innerHTML = `
-      <div class="cat-section">
-        <div class="cat-header">
-          <span class="cat-header-name">${catLabel(currentFilter)}</span>
-          <span class="cat-header-line"></span>
-          <span class="cat-header-count">${list.length} peças</span>
-        </div>
-        <div class="cat-grid">${list.map(renderCard).join('')}</div>
-      </div>`;
-    return;
-  }
-
-  // Todos: agrupar por categoria
-  const ordem = ['destaque','bracelet','anel','pulseira','brinco','colar','piercing','outlet'];
-  let html = '';
-
-  // Destaque (aço inox)
-  const destaque = produtos.filter(p => p.destaque);
-  if (destaque.length) {
-    html += `
-      <div class="cat-section">
-        <div class="cat-header destaque-header">
-          <span class="cat-header-name">✦ Nova Coleção</span>
-          <span class="cat-header-line"></span>
-          <span class="cat-header-count">${destaque.length} peças</span>
-        </div>
-        <div class="cat-grid">${destaque.map(renderCard).join('')}</div>
-      </div>`;
-  }
-
-  // Demais categorias
-  const cats = ['bracelet','anel','pulseira','brinco','colar','piercing','outlet'];
-  for (const cat of cats) {
-    const list = produtos.filter(p => p.categoria === cat && !p.destaque);
-    if (!list.length) continue;
-    html += `
-      <div class="cat-section" id="sec-${cat}">
-        <div class="cat-header">
-          <span class="cat-header-name">${catLabel(cat)}</span>
-          <span class="cat-header-line"></span>
-          <span class="cat-header-count">${list.length} peças</span>
-        </div>
-        <div class="cat-grid">${list.map(renderCard).join('')}</div>
-      </div>`;
-  }
-
-  el.innerHTML = html || '<div class="empty"><p>Nenhuma peça por enquanto.</p></div>';
+function selTam(e, id, tam) {
+  e.stopPropagation();
+  selSizes[id] = tam;
+  renderProdutos();
 }
 
-document.querySelectorAll('.filter-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    currentFilter = btn.dataset.cat;
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    renderCatalog();
-    const sec = document.getElementById('sec-' + btn.dataset.cat);
-    const target = sec || document.getElementById('catalog');
-    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  });
-});
+function waLink(p) {
+  const tam = selSizes[p.id] ? ` — Tamanho ${selSizes[p.id]}` : '';
+  const msg = encodeURIComponent(`Olá! Vi o site da Donna Prata e quero: ${p.nome}${tam} (${p.preco}) 💎`);
+  return `https://wa.me/${WA}?text=${msg}`;
+}
 
-function openModal(id) {
+function avisarWA(id) {
   const p = produtos.find(x => x.id === id);
   if (!p) return;
+  const msg = encodeURIComponent(`Olá! Quero ser avisada quando "${p.nome}" voltar ao estoque na Donna Prata ✨`);
+  window.open(`https://wa.me/${WA}?text=${msg}`, '_blank');
+}
 
-  const s = stockLabel(p.estoque);
-  document.getElementById('modal-img-wrap').innerHTML = p.foto
+/* ── INSTAGRAM ── */
+function montarInstagram() {
+  const fotos = produtos.filter(p => p.foto).slice(0, 6);
+  document.getElementById('insta-grid').innerHTML = fotos.map(p => `
+    <div class="insta-photo">
+      <img src="${p.foto}" alt="${p.nome}" loading="lazy">
+    </div>`).join('');
+}
+
+/* ── MODAL ── */
+function abrirModal(id) {
+  const p = produtos.find(x => x.id === id);
+  if (!p) return;
+  document.getElementById('m-img-wrap').innerHTML = p.foto
     ? `<img class="modal-img" src="${p.foto}" alt="${p.nome}">`
-    : `<div class="modal-img-placeholder">—</div>`;
-
-  document.getElementById('modal-tag').textContent      = catLabel(p.categoria);
-  document.getElementById('modal-name').textContent     = p.nome;
-  document.getElementById('modal-price').textContent    = p.preco;
-  document.getElementById('modal-desc').textContent     = p.descricao;
-  document.getElementById('modal-material').innerHTML   = `<strong>Material:</strong> ${p.material}`;
-  document.getElementById('modal-stock-info').innerHTML = `<strong>Estoque:</strong> ${s.text}`;
-
-  const sizesWrap = document.getElementById('modal-sizes-wrap');
-  const sizesEl   = document.getElementById('modal-sizes');
+    : `<div class="modal-img" style="background:var(--cream)"></div>`;
+  document.getElementById('m-tag').textContent     = catLabel(p.categoria);
+  document.getElementById('m-nome').textContent    = p.nome;
+  document.getElementById('m-preco').textContent   = p.preco;
+  document.getElementById('m-desc').textContent    = p.descricao;
+  document.getElementById('m-material').innerHTML  = `<strong>Material:</strong> ${p.material}`;
+  const esg = p.estoque === 0;
+  document.getElementById('m-estoque').innerHTML   = `<strong>Estoque:</strong> ${esg ? 'Esgotado' : p.estoque <= 3 ? `${p.estoque} unid.` : 'Disponível'}`;
+  const sw = document.getElementById('m-sizes-wrap');
+  const se = document.getElementById('m-sizes');
   if (p.tamanhos && p.tamanhos.length) {
-    sizesWrap.style.display = 'block';
-    sizesEl.innerHTML = p.tamanhos.map(t =>
-      `<div class="modal-size ${selectedSizes[id]===t?'selected':''}" onclick="selectSize(${id},'${t}',this)">${t}</div>`
+    sw.style.display = 'block';
+    se.innerHTML = p.tamanhos.map(t =>
+      `<div class="modal-size ${selSizes[id]===t?'sel':''}" onclick="selTamModal(${id},'${t}',this)">${t}</div>`
     ).join('');
   } else {
-    sizesWrap.style.display = 'none';
-    sizesEl.innerHTML = '';
+    sw.style.display = 'none';
   }
-
-  updateCTA(p);
+  const cta = document.getElementById('m-cta');
+  if (esg) {
+    cta.textContent = 'Produto esgotado';
+    cta.style.cssText = 'background:#ccc;border-color:#ccc;cursor:default';
+    cta.href = '#';
+  } else {
+    cta.textContent = 'Quero essa peça';
+    cta.style.cssText = '';
+    cta.href = waLink(p);
+  }
   document.getElementById('modal').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
 
-function selectSize(id, size, el) {
-  selectedSizes[id] = size;
-  document.querySelectorAll('.modal-size').forEach(e => e.classList.remove('selected'));
-  el.classList.add('selected');
-  updateCTA(produtos.find(x => x.id === id));
+function selTamModal(id, t, el) {
+  selSizes[id] = t;
+  document.querySelectorAll('.modal-size').forEach(e => e.classList.remove('sel'));
+  el.classList.add('sel');
+  const p = produtos.find(x => x.id === id);
+  if (p) document.getElementById('m-cta').href = waLink(p);
 }
 
-function updateCTA(p) {
-  const cta  = document.getElementById('modal-cta');
-  const size = selectedSizes[p.id] ? ` — Tamanho ${selectedSizes[p.id]}` : '';
-  const msg  = encodeURIComponent(`Olá! Vi o catálogo da Donna Prata e quero: ${p.nome}${size} (${p.preco}) 💎`);
-  if (p.estoque === 0) {
-    cta.textContent = 'Produto esgotado';
-    cta.style.background = '#ccc';
-    cta.style.borderColor = '#ccc';
-    cta.style.cursor = 'default';
-    cta.href = '#';
-  } else {
-    cta.textContent = 'Quero essa peça';
-    cta.style.background = 'var(--black)';
-    cta.style.borderColor = 'var(--black)';
-    cta.style.cursor = 'pointer';
-    cta.href = `https://wa.me/${WA}?text=${msg}`;
-  }
-}
-
-function closeModal(e) { if (e.target.id === 'modal') closeModalDirect(); }
-function closeModalDirect() {
+function fecharModal(e) { if (e.target.id === 'modal') fecharModalDireto(); }
+function fecharModalDireto() {
   document.getElementById('modal').classList.remove('open');
   document.body.style.overflow = '';
 }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') fecharModalDireto(); });
 
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalDirect(); });
+/* ── NEWSLETTER ── */
+function submNewsletter(e) {
+  e.preventDefault();
+  const msg = encodeURIComponent('Olá! Quero receber novidades exclusivas da Donna Prata no WhatsApp 💎');
+  window.open(`https://wa.me/${WA}?text=${msg}`, '_blank');
+}
 
-carregarProdutos();
+init();
 </script>
 </body>
 </html>

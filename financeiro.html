@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Donna Prata — Financeiro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black: #111;
+      --white: #fff;
+      --off:   #F8F8F8;
+      --lgray: #E0E0E0;
+      --mgray: #777;
+      --gold:  #B8954A;
+      --green: #2e7d32;
+      --red:   #c62828;
+      --blue:  #1565c0;
+      --orange:#e65100;
+    }
+    body { font-family: 'Inter', sans-serif; background: var(--off); color: var(--black); font-size: 14px; }
+
+    /* ── TOP BAR ── */
+    .topbar {
+      background: var(--black); color: #fff;
+      padding: 16px 20px 14px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .topbar-logo { font-family: 'Playfair Display', serif; font-size: 1.1rem; letter-spacing: 3px; text-transform: uppercase; }
+    .topbar-sub  { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,.4); margin-top: 2px; }
+    .topbar-links { display: flex; gap: 12px; }
+    .topbar-links a { color: rgba(255,255,255,.5); font-size: 11px; text-decoration: none; letter-spacing: 1px; transition: color .2s; }
+    .topbar-links a:hover { color: #fff; }
+
+    /* ── TABS ── */
+    .tabs {
+      display: flex; background: var(--white);
+      border-bottom: 1px solid var(--lgray);
+      overflow-x: auto; -webkit-overflow-scrolling: touch;
+    }
+    .tab {
+      flex: 0 0 auto; padding: 14px 20px;
+      font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+      cursor: pointer; border-bottom: 2px solid transparent;
+      color: var(--mgray); white-space: nowrap; transition: all .2s;
+    }
+    .tab.active { color: var(--black); border-bottom-color: var(--black); }
+
+    /* ── SECTIONS ── */
+    .section { display: none; padding: 20px; max-width: 800px; margin: 0 auto; }
+    .section.active { display: block; }
+
+    /* ── CARDS ── */
+    .cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 24px; }
+    @media(min-width:600px) { .cards { grid-template-columns: repeat(4, 1fr); } }
+    .card {
+      background: var(--white); padding: 18px 16px;
+      border: 1px solid var(--lgray);
+    }
+    .card-label { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--mgray); margin-bottom: 8px; }
+    .card-val   { font-size: 1.4rem; font-weight: 700; }
+    .card-val.green  { color: var(--green); }
+    .card-val.gold   { color: var(--gold); }
+    .card-val.orange { color: var(--orange); }
+    .card-sub { font-size: 10px; color: var(--mgray); margin-top: 4px; }
+
+    /* ── SECTION TITLE ── */
+    .sec-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem; margin-bottom: 16px; padding-bottom: 10px;
+      border-bottom: 1px solid var(--lgray);
+    }
+
+    /* ── FORM ── */
+    .form { background: var(--white); padding: 20px; border: 1px solid var(--lgray); }
+    .form-row { margin-bottom: 14px; }
+    .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+    label { display: block; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--mgray); margin-bottom: 6px; }
+    input, select, textarea {
+      width: 100%; padding: 11px 13px;
+      border: 1px solid var(--lgray); background: var(--white);
+      font-family: 'Inter', sans-serif; font-size: 14px; color: var(--black);
+      outline: none; transition: border .2s; -webkit-appearance: none; appearance: none;
+    }
+    input:focus, select:focus, textarea:focus { border-color: var(--black); }
+    textarea { resize: vertical; min-height: 70px; }
+
+    .tipo-toggle { display: flex; gap: 0; margin-bottom: 16px; }
+    .tipo-btn {
+      flex: 1; padding: 11px; text-align: center;
+      font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+      cursor: pointer; border: 1px solid var(--lgray); background: var(--white);
+      color: var(--mgray); transition: all .15s;
+    }
+    .tipo-btn:first-child { border-right: none; }
+    .tipo-btn.active { background: var(--black); color: #fff; border-color: var(--black); }
+
+    .btn {
+      width: 100%; padding: 15px;
+      background: var(--black); color: #fff;
+      font-size: 11px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase;
+      border: none; cursor: pointer; transition: all .2s; margin-top: 4px;
+    }
+    .btn:hover { background: #333; }
+    .btn.danger { background: var(--red); }
+    .btn.success { background: var(--green); }
+
+    /* ── LISTA ── */
+    .lista { display: flex; flex-direction: column; gap: 8px; }
+    .item {
+      background: var(--white); padding: 15px 16px;
+      border: 1px solid var(--lgray);
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+    }
+    .item-left { flex: 1; min-width: 0; }
+    .item-nome { font-weight: 600; font-size: 13.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .item-sub  { font-size: 11px; color: var(--mgray); margin-top: 3px; line-height: 1.5; }
+    .item-right { text-align: right; flex-shrink: 0; }
+    .item-preco { font-weight: 700; font-size: 15px; }
+    .item-lucro { font-size: 11px; color: var(--green); margin-top: 2px; }
+    .item-actions { display: flex; gap: 8px; margin-top: 8px; justify-content: flex-end; }
+
+    /* ── STATUS BADGES ── */
+    .badge {
+      display: inline-block; padding: 3px 10px;
+      font-size: 9px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+    }
+    .badge-pendente  { background: #fff3e0; color: var(--orange); border: 1px solid #ffcc80; }
+    .badge-confirmado{ background: #e3f2fd; color: var(--blue);   border: 1px solid #90caf9; }
+    .badge-entregue  { background: #e8f5e9; color: var(--green);  border: 1px solid #a5d6a7; }
+    .badge-cancelado { background: #ffebee; color: var(--red);    border: 1px solid #ef9a9a; }
+    .badge-pago      { background: #e8f5e9; color: var(--green);  border: 1px solid #a5d6a7; }
+    .badge-nao-pago  { background: #ffebee; color: var(--red);    border: 1px solid #ef9a9a; }
+
+    /* ── SMALL BTN ── */
+    .sbtn {
+      padding: 5px 12px; font-size: 10px; font-weight: 600; letter-spacing: 1px;
+      text-transform: uppercase; cursor: pointer; border: 1px solid var(--lgray);
+      background: var(--white); color: var(--black); transition: all .15s;
+    }
+    .sbtn:hover { background: var(--black); color: #fff; border-color: var(--black); }
+    .sbtn.red   { color: var(--red); border-color: #ef9a9a; }
+    .sbtn.red:hover { background: var(--red); color: #fff; border-color: var(--red); }
+    .sbtn.green { color: var(--green); border-color: #a5d6a7; }
+    .sbtn.green:hover { background: var(--green); color: #fff; border-color: var(--green); }
+
+    /* ── FILTRO MÊS ── */
+    .filtro-mes { display: flex; gap: 8px; margin-bottom: 16px; align-items: center; flex-wrap: wrap; }
+    .filtro-mes select { width: auto; flex: 1; min-width: 120px; }
+    .filtro-mes span { font-size: 11px; color: var(--mgray); }
+
+    /* ── VAZIO ── */
+    .vazio { text-align: center; padding: 48px 20px; color: var(--mgray); }
+    .vazio-icon { font-size: 2rem; margin-bottom: 10px; }
+    .vazio-txt  { font-size: 13px; }
+
+    /* ── ALERTA ── */
+    .alerta {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+      background: var(--black); color: #fff; padding: 13px 24px;
+      font-size: 12px; font-weight: 600; letter-spacing: 1px;
+      z-index: 999; opacity: 0; transition: opacity .3s; pointer-events: none;
+      white-space: nowrap;
+    }
+    .alerta.show { opacity: 1; }
+
+    /* ── RESUMO MENSAL ── */
+    .resumo-mes {
+      background: var(--white); padding: 16px; border: 1px solid var(--lgray);
+      margin-bottom: 20px;
+    }
+    .resumo-title { font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--mgray); margin-bottom: 12px; }
+    .resumo-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--lgray); }
+    .resumo-row:last-child { border-bottom: none; }
+    .resumo-row span:first-child { font-size: 13px; color: var(--mgray); }
+    .resumo-row span:last-child  { font-weight: 600; font-size: 14px; }
+    .green { color: var(--green); }
+    .red   { color: var(--red); }
+
+    /* ── EXPORT ── */
+    .export-area { text-align: right; margin-bottom: 12px; }
+    .export-area button {
+      padding: 8px 16px; background: none; border: 1px solid var(--lgray);
+      font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer;
+      color: var(--mgray); transition: all .2s;
+    }
+    .export-area button:hover { background: var(--black); color: #fff; border-color: var(--black); }
+  </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div>
+    <div class="topbar-logo">Donna Prata</div>
+    <div class="topbar-sub">Gestão Financeira</div>
+  </div>
+  <div class="topbar-links">
+    <a href="admin.html">Catálogo</a>
+    <a href="index.html">Site</a>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <div class="tab active" onclick="showTab('resumo')">📊 Resumo</div>
+  <div class="tab" onclick="showTab('nova')">➕ Registrar</div>
+  <div class="tab" onclick="showTab('encomendas')">📦 Encomendas</div>
+  <div class="tab" onclick="showTab('historico')">📋 Histórico</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     TAB: RESUMO
+═══════════════════════════════════════════════ -->
+<div class="section active" id="tab-resumo">
+  <div class="filtro-mes">
+    <select id="resumo-mes" onchange="renderResumo()"></select>
+    <span id="resumo-periodo-label"></span>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <div class="card-label">Faturamento</div>
+      <div class="card-val gold" id="r-faturamento">R$0</div>
+      <div class="card-sub" id="r-fat-sub">0 vendas</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Lucro</div>
+      <div class="card-val green" id="r-lucro">R$0</div>
+      <div class="card-sub" id="r-lucro-sub">margem 0%</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Encomendas</div>
+      <div class="card-val orange" id="r-encomendas">0</div>
+      <div class="card-sub">pendentes</div>
+    </div>
+    <div class="card">
+      <div class="card-label">A Receber</div>
+      <div class="card-val" style="color:var(--blue)" id="r-receber">R$0</div>
+      <div class="card-sub">não pagos</div>
+    </div>
+  </div>
+
+  <div class="resumo-mes" id="resumo-box">
+    <div class="resumo-title">Resumo do período</div>
+    <div id="resumo-detalhes"></div>
+  </div>
+
+  <div class="sec-title" style="margin-top:8px">Últimas vendas</div>
+  <div class="lista" id="ultimas-vendas"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     TAB: NOVA VENDA / ENCOMENDA
+═══════════════════════════════════════════════ -->
+<div class="section" id="tab-nova">
+  <div class="tipo-toggle">
+    <div class="tipo-btn active" id="tipo-venda" onclick="setTipo('venda')">💰 Venda</div>
+    <div class="tipo-btn" id="tipo-encomenda" onclick="setTipo('encomenda')">📦 Encomenda</div>
+  </div>
+
+  <div class="form">
+    <div class="form-row">
+      <label>Produto / Descrição</label>
+      <input type="text" id="f-produto" placeholder="Ex: Bracelet Love, Colar Cristal..." list="produtos-list">
+      <datalist id="produtos-list"></datalist>
+    </div>
+    <div class="form-row-2">
+      <div>
+        <label>Preço cobrado (R$)</label>
+        <input type="number" id="f-preco" placeholder="0,00" step="0.01" min="0">
+      </div>
+      <div>
+        <label>Custo do produto (R$)</label>
+        <input type="number" id="f-custo" placeholder="0,00" step="0.01" min="0">
+      </div>
+    </div>
+    <div class="form-row-2">
+      <div>
+        <label>Quantidade</label>
+        <input type="number" id="f-qtd" value="1" min="1">
+      </div>
+      <div>
+        <label>Forma de pagamento</label>
+        <select id="f-pagamento">
+          <option value="pix">Pix</option>
+          <option value="dinheiro">Dinheiro</option>
+          <option value="cartao">Cartão débito</option>
+          <option value="credito">Cartão crédito</option>
+          <option value="parcelado">Parcelado</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row-2">
+      <div>
+        <label>Data</label>
+        <input type="date" id="f-data">
+      </div>
+      <div>
+        <label>Pago?</label>
+        <select id="f-pago">
+          <option value="sim">✅ Sim</option>
+          <option value="nao">⏳ Não ainda</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row" id="campo-cliente">
+      <label>Nome do cliente (opcional)</label>
+      <input type="text" id="f-cliente" placeholder="Ex: Maria Silva">
+    </div>
+    <div class="form-row" id="campo-entrega" style="display:none">
+      <label>Previsão de entrega</label>
+      <input type="date" id="f-entrega">
+    </div>
+    <div class="form-row">
+      <label>Observações</label>
+      <textarea id="f-obs" placeholder="Ex: Presente, tamanho especial, endereço de entrega..."></textarea>
+    </div>
+    <button class="btn" onclick="salvarRegistro()">Salvar</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     TAB: ENCOMENDAS
+═══════════════════════════════════════════════ -->
+<div class="section" id="tab-encomendas">
+  <div style="display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap;">
+    <button class="sbtn" onclick="filtrarEncomendas('todas')" id="ef-todas" style="background:var(--black);color:#fff;border-color:var(--black)">Todas</button>
+    <button class="sbtn" onclick="filtrarEncomendas('pendente')" id="ef-pendente">Pendentes</button>
+    <button class="sbtn" onclick="filtrarEncomendas('confirmado')" id="ef-confirmado">Confirmadas</button>
+    <button class="sbtn" onclick="filtrarEncomendas('entregue')" id="ef-entregue">Entregues</button>
+  </div>
+  <div class="lista" id="lista-encomendas"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     TAB: HISTÓRICO
+═══════════════════════════════════════════════ -->
+<div class="section" id="tab-historico">
+  <div class="filtro-mes">
+    <select id="hist-mes" onchange="renderHistorico()"></select>
+    <span id="hist-total" style="font-weight:600;color:var(--green)"></span>
+  </div>
+  <div class="export-area">
+    <button onclick="exportarCSV()">⬇ Exportar CSV</button>
+  </div>
+  <div class="lista" id="lista-historico"></div>
+</div>
+
+<!-- ALERTA -->
+<div class="alerta" id="alerta"></div>
+
+<script>
+/* ════════════════════════════════════════════
+   DADOS
+════════════════════════════════════════════ */
+const KEY = 'dp_financeiro_v1';
+
+function load() {
+  try { return JSON.parse(localStorage.getItem(KEY)) || []; }
+  catch { return []; }
+}
+
+function save(data) {
+  localStorage.setItem(KEY, JSON.stringify(data));
+}
+
+function getData() { return load(); }
+
+/* ════════════════════════════════════════════
+   TABS
+════════════════════════════════════════════ */
+function showTab(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.target.classList.add('active');
+  if (id === 'resumo')    renderResumo();
+  if (id === 'encomendas') renderEncomendas('todas');
+  if (id === 'historico') renderHistorico();
+}
+
+/* ════════════════════════════════════════════
+   TIPO TOGGLE
+════════════════════════════════════════════ */
+let tipoAtual = 'venda';
+
+function setTipo(t) {
+  tipoAtual = t;
+  document.getElementById('tipo-venda').classList.toggle('active', t === 'venda');
+  document.getElementById('tipo-encomenda').classList.toggle('active', t === 'encomenda');
+  document.getElementById('campo-entrega').style.display = t === 'encomenda' ? 'block' : 'none';
+}
+
+/* ════════════════════════════════════════════
+   SALVAR REGISTRO
+════════════════════════════════════════════ */
+function salvarRegistro() {
+  const produto  = document.getElementById('f-produto').value.trim();
+  const preco    = parseFloat(document.getElementById('f-preco').value) || 0;
+  const custo    = parseFloat(document.getElementById('f-custo').value) || 0;
+  const qtd      = parseInt(document.getElementById('f-qtd').value) || 1;
+  const pagamento= document.getElementById('f-pagamento').value;
+  const data     = document.getElementById('f-data').value;
+  const pago     = document.getElementById('f-pago').value === 'sim';
+  const cliente  = document.getElementById('f-cliente').value.trim();
+  const entrega  = document.getElementById('f-entrega').value;
+  const obs      = document.getElementById('f-obs').value.trim();
+
+  if (!produto) { alerta('Informe o produto'); return; }
+  if (!preco)   { alerta('Informe o preço'); return; }
+  if (!data)    { alerta('Informe a data'); return; }
+
+  const registro = {
+    id: Date.now(),
+    tipo: tipoAtual,
+    produto, preco, custo, qtd,
+    total: preco * qtd,
+    lucro: (preco - custo) * qtd,
+    pagamento, data, pago,
+    cliente, entrega, obs,
+    status: tipoAtual === 'encomenda' ? 'pendente' : 'concluida'
+  };
+
+  const dados = getData();
+  dados.unshift(registro);
+  save(dados);
+
+  // limpar form
+  ['f-produto','f-preco','f-custo','f-cliente','f-obs','f-entrega'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('f-qtd').value = 1;
+  document.getElementById('f-pago').value = 'sim';
+  document.getElementById('f-data').value = hoje();
+
+  alerta(tipoAtual === 'venda' ? '✓ Venda registrada!' : '✓ Encomenda salva!');
+}
+
+/* ════════════════════════════════════════════
+   RESUMO
+════════════════════════════════════════════ */
+function renderResumo() {
+  preencherSelectMes('resumo-mes');
+  const mes = document.getElementById('resumo-mes').value;
+  const dados = getData().filter(r => r.data && r.data.startsWith(mes) && r.tipo === 'venda');
+  const encomendas = getData().filter(r => r.tipo === 'encomenda' && r.status !== 'entregue' && r.status !== 'cancelado');
+  const nao_pagos  = getData().filter(r => !r.pago && r.tipo === 'venda');
+
+  const fat    = dados.reduce((s,r) => s + r.total, 0);
+  const lucro  = dados.reduce((s,r) => s + r.lucro, 0);
+  const margem = fat > 0 ? Math.round(lucro/fat*100) : 0;
+  const receber= nao_pagos.reduce((s,r) => s + r.total, 0);
+
+  document.getElementById('r-faturamento').textContent = fmt(fat);
+  document.getElementById('r-fat-sub').textContent     = dados.length + (dados.length === 1 ? ' venda' : ' vendas');
+  document.getElementById('r-lucro').textContent       = fmt(lucro);
+  document.getElementById('r-lucro-sub').textContent   = 'margem ' + margem + '%';
+  document.getElementById('r-encomendas').textContent  = encomendas.length;
+  document.getElementById('r-receber').textContent     = fmt(receber);
+
+  // pix, cartao, dinheiro breakdown
+  const porPag = {};
+  dados.forEach(r => {
+    porPag[r.pagamento] = (porPag[r.pagamento] || 0) + r.total;
+  });
+
+  const nomePag = { pix:'Pix', dinheiro:'Dinheiro', cartao:'Débito', credito:'Crédito', parcelado:'Parcelado' };
+  const rows = Object.entries(porPag).map(([k,v]) =>
+    `<div class="resumo-row"><span>${nomePag[k]||k}</span><span>${fmt(v)}</span></div>`
+  ).join('');
+
+  document.getElementById('resumo-detalhes').innerHTML = rows ||
+    '<div style="color:var(--mgray);font-size:12px;padding:8px 0">Nenhuma venda neste período</div>';
+
+  // ultimas vendas
+  const ult = getData().filter(r => r.tipo === 'venda').slice(0, 5);
+  document.getElementById('ultimas-vendas').innerHTML = ult.length
+    ? ult.map(r => renderItem(r, false)).join('')
+    : '<div class="vazio"><div class="vazio-icon">💰</div><div class="vazio-txt">Nenhuma venda registrada ainda</div></div>';
+}
+
+/* ════════════════════════════════════════════
+   ENCOMENDAS
+════════════════════════════════════════════ */
+let filtroEncomenda = 'todas';
+
+function filtrarEncomendas(f) {
+  filtroEncomenda = f;
+  ['todas','pendente','confirmado','entregue'].forEach(x => {
+    const btn = document.getElementById('ef-'+x);
+    if (!btn) return;
+    btn.style.background   = x === f ? 'var(--black)' : '';
+    btn.style.color        = x === f ? '#fff' : '';
+    btn.style.borderColor  = x === f ? 'var(--black)' : '';
+  });
+  renderEncomendas(f);
+}
+
+function renderEncomendas(f) {
+  let dados = getData().filter(r => r.tipo === 'encomenda');
+  if (f !== 'todas') dados = dados.filter(r => r.status === f);
+
+  const el = document.getElementById('lista-encomendas');
+  el.innerHTML = dados.length
+    ? dados.map(r => renderItemEncomenda(r)).join('')
+    : '<div class="vazio"><div class="vazio-icon">📦</div><div class="vazio-txt">Nenhuma encomenda ' + (f === 'todas' ? '' : f) + '</div></div>';
+}
+
+function renderItemEncomenda(r) {
+  const statusOptions = [
+    { v:'pendente',   l:'Pendente' },
+    { v:'confirmado', l:'Confirmado' },
+    { v:'entregue',   l:'Entregue' },
+    { v:'cancelado',  l:'Cancelado' },
+  ];
+
+  const select = `<select class="sbtn" onchange="mudarStatus(${r.id}, this.value)" style="padding:5px 8px;font-size:10px;border:1px solid var(--lgray)">
+    ${statusOptions.map(o => `<option value="${o.v}" ${r.status===o.v?'selected':''}>${o.l}</option>`).join('')}
+  </select>`;
+
+  const pagoBadge = r.pago
+    ? `<span class="badge badge-pago">Pago</span>`
+    : `<span class="badge badge-nao-pago">Não pago</span>`;
+
+  const pagoBtn = !r.pago
+    ? `<button class="sbtn green" onclick="marcarPago(${r.id})">Marcar pago</button>` : '';
+
+  return `
+  <div class="item">
+    <div class="item-left">
+      <div class="item-nome">${r.produto}${r.qtd > 1 ? ' ×'+r.qtd : ''}</div>
+      <div class="item-sub">
+        ${r.cliente ? '👤 ' + r.cliente + ' · ' : ''}📅 ${fmtData(r.data)}
+        ${r.entrega ? ' · Entrega: ' + fmtData(r.entrega) : ''}
+        ${r.obs ? '<br>💬 ' + r.obs : ''}
+      </div>
+      <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+        <span class="badge badge-${r.status}">${r.status.charAt(0).toUpperCase()+r.status.slice(1)}</span>
+        ${pagoBadge}
+      </div>
+      <div class="item-actions">
+        ${select}
+        ${pagoBtn}
+        <button class="sbtn red" onclick="excluir(${r.id})">Excluir</button>
+      </div>
+    </div>
+    <div class="item-right">
+      <div class="item-preco">${fmt(r.total)}</div>
+      ${r.lucro > 0 ? `<div class="item-lucro">lucro ${fmt(r.lucro)}</div>` : ''}
+    </div>
+  </div>`;
+}
+
+function mudarStatus(id, status) {
+  const dados = getData();
+  const idx = dados.findIndex(r => r.id === id);
+  if (idx === -1) return;
+  dados[idx].status = status;
+  save(dados);
+  renderEncomendas(filtroEncomenda);
+  alerta('Status atualizado');
+}
+
+function marcarPago(id) {
+  const dados = getData();
+  const idx = dados.findIndex(r => r.id === id);
+  if (idx === -1) return;
+  dados[idx].pago = true;
+  save(dados);
+  renderEncomendas(filtroEncomenda);
+  renderResumo();
+  alerta('✓ Marcado como pago');
+}
+
+/* ════════════════════════════════════════════
+   HISTÓRICO
+════════════════════════════════════════════ */
+function renderHistorico() {
+  preencherSelectMes('hist-mes');
+  const mes = document.getElementById('hist-mes').value;
+  const dados = getData().filter(r => r.tipo === 'venda' && r.data && r.data.startsWith(mes));
+  const total = dados.reduce((s,r) => s + r.total, 0);
+  document.getElementById('hist-total').textContent = dados.length + ' vendas · ' + fmt(total);
+
+  const el = document.getElementById('lista-historico');
+  el.innerHTML = dados.length
+    ? dados.map(r => renderItem(r, true)).join('')
+    : '<div class="vazio"><div class="vazio-icon">📋</div><div class="vazio-txt">Nenhuma venda neste período</div></div>';
+}
+
+/* ════════════════════════════════════════════
+   RENDER ITEM (venda)
+════════════════════════════════════════════ */
+function renderItem(r, showDelete) {
+  const pagoBadge = r.pago
+    ? `<span class="badge badge-pago">Pago</span>`
+    : `<span class="badge badge-nao-pago">Não pago</span>`;
+
+  return `
+  <div class="item">
+    <div class="item-left">
+      <div class="item-nome">${r.produto}${r.qtd > 1 ? ' ×'+r.qtd : ''}</div>
+      <div class="item-sub">
+        📅 ${fmtData(r.data)} · ${nomePag(r.pagamento)}
+        ${r.cliente ? ' · ' + r.cliente : ''}
+        ${r.obs ? '<br>💬 ' + r.obs : ''}
+      </div>
+      <div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+        ${pagoBadge}
+        ${showDelete ? `<button class="sbtn red" onclick="excluir(${r.id})">Excluir</button>` : ''}
+      </div>
+    </div>
+    <div class="item-right">
+      <div class="item-preco">${fmt(r.total)}</div>
+      ${r.lucro > 0 ? `<div class="item-lucro">lucro ${fmt(r.lucro)}</div>` : ''}
+    </div>
+  </div>`;
+}
+
+/* ════════════════════════════════════════════
+   EXCLUIR
+════════════════════════════════════════════ */
+function excluir(id) {
+  if (!confirm('Excluir este registro?')) return;
+  const dados = getData().filter(r => r.id !== id);
+  save(dados);
+  renderHistorico();
+  renderEncomendas(filtroEncomenda);
+  renderResumo();
+  alerta('Registro excluído');
+}
+
+/* ════════════════════════════════════════════
+   EXPORT CSV
+════════════════════════════════════════════ */
+function exportarCSV() {
+  const mes  = document.getElementById('hist-mes').value;
+  const dados = getData().filter(r => r.data && r.data.startsWith(mes));
+  if (!dados.length) { alerta('Nenhum dado para exportar'); return; }
+
+  const header = 'Data,Tipo,Produto,Qtd,Preço,Custo,Lucro,Pagamento,Cliente,Status,Pago,Obs\n';
+  const rows   = dados.map(r =>
+    [r.data, r.tipo, r.produto, r.qtd, r.preco, r.custo||0, r.lucro||0,
+     r.pagamento, r.cliente||'', r.status, r.pago?'Sim':'Não', (r.obs||'').replace(/,/g,' ')]
+    .join(',')
+  ).join('\n');
+
+  const blob = new Blob([header+rows], { type: 'text/csv;charset=utf-8;' });
+  const a    = document.createElement('a');
+  a.href     = URL.createObjectURL(blob);
+  a.download = 'donna-prata-' + mes + '.csv';
+  a.click();
+}
+
+/* ════════════════════════════════════════════
+   HELPERS
+════════════════════════════════════════════ */
+function fmt(v) {
+  return 'R$' + (v||0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function fmtData(d) {
+  if (!d) return '';
+  const [y,m,dia] = d.split('-');
+  return dia + '/' + m + '/' + y;
+}
+
+function nomePag(p) {
+  return { pix:'Pix', dinheiro:'Dinheiro', cartao:'Débito', credito:'Crédito', parcelado:'Parcelado' }[p] || p;
+}
+
+function hoje() {
+  return new Date().toISOString().slice(0,10);
+}
+
+function alerta(msg) {
+  const el = document.getElementById('alerta');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2500);
+}
+
+function preencherSelectMes(id) {
+  const sel = document.getElementById(id);
+  const val = sel.value;
+  const meses = [];
+  const dados = getData();
+  const set = new Set();
+  dados.forEach(r => { if (r.data) set.add(r.data.slice(0,7)); });
+  const now = hoje().slice(0,7);
+  set.add(now);
+  const arr = Array.from(set).sort().reverse();
+  const nomes = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  sel.innerHTML = arr.map(m => {
+    const [y,mo] = m.split('-');
+    return `<option value="${m}" ${m===val?'selected':''}>${nomes[parseInt(mo)-1]} ${y}</option>`;
+  }).join('');
+  if (!val) sel.value = now;
+}
+
+/* ════════════════════════════════════════════
+   INIT
+════════════════════════════════════════════ */
+function init() {
+  document.getElementById('f-data').value = hoje();
+
+  // popular datalist com produtos do JSON
+  fetch('produtos.json').then(r => r.json()).then(prods => {
+    const dl = document.getElementById('produtos-list');
+    dl.innerHTML = prods.map(p => `<option value="${p.nome}">`).join('');
+  }).catch(() => {});
+
+  renderResumo();
+}
+
+init();
+</script>
+</body>
+</html>
