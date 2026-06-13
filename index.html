@@ -972,7 +972,7 @@ function catLabel(c) {
 
 function renderCard(p) {
   const esg = p.estoque === 0;
-  const novo = p.destaque || p.material.includes('Aço Inox');
+  const novo = p.novo || p.destaque || p.material.includes('Aço Inox');
   const badge = esg
     ? `<div class="badge-esgotado">Esgotado</div>`
     : novo ? `<div class="badge-novo">Novo</div>` : '';

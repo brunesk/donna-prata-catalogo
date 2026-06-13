@@ -7,10 +7,11 @@
     "material": "Aço Inox 316L",
     "preco": "R$79,99",
     "precoNum": 79.99,
-    "foto": "fotos/bracelet-love-prata.jpg",
+    "foto": "",
     "tamanhos": [],
     "estoque": 1,
-    "destaque": true
+    "destaque": true,
+    "novo": true
   },
   {
     "id": 2,
@@ -20,9 +21,10 @@
     "material": "Prata 925",
     "preco": "R$70,00",
     "precoNum": 70.00,
-    "foto": "fotos/brinco-coracao-corrente.jpg",
+    "foto": "",
     "tamanhos": [],
-    "estoque": 5
+    "estoque": 5,
+    "novo": false
   },
   {
     "id": 3,
@@ -32,9 +34,10 @@
     "material": "Prata 925",
     "preco": "R$59,00",
     "precoNum": 59.00,
-    "foto": "fotos/brinco-gota-prata.jpg",
+    "foto": "",
     "tamanhos": [],
-    "estoque": 5
+    "estoque": 5,
+    "novo": false
   },
   {
     "id": 4,
@@ -44,9 +47,10 @@
     "material": "Prata 925",
     "preco": "R$70,00",
     "precoNum": 70.00,
-    "foto": "fotos/anel-canelado-aberto.jpg",
+    "foto": "",
     "tamanhos": [],
-    "estoque": 5
+    "estoque": 5,
+    "novo": false
   },
   {
     "id": 5,
@@ -56,9 +60,10 @@
     "material": "Prata 925",
     "preco": "R$58,00",
     "precoNum": 58.00,
-    "foto": "fotos/colar-pingente-azul.jpg",
+    "foto": "",
     "tamanhos": [],
-    "estoque": 5
+    "estoque": 5,
+    "novo": false
   },
   {
     "id": 6,
@@ -68,9 +73,10 @@
     "material": "Prata 925",
     "preco": "R$62,00",
     "precoNum": 62.00,
-    "foto": "fotos/colar-esferas-uso.jpg",
+    "foto": "",
     "tamanhos": [],
-    "estoque": 5
+    "estoque": 5,
+    "novo": false
   },
   {
     "id": 7,
@@ -80,9 +86,10 @@
     "material": "Prata 925",
     "preco": "R$69,00",
     "precoNum": 69.00,
-    "foto": "fotos/colar-esferas-uso.jpg",
+    "foto": "",
     "tamanhos": [],
-    "estoque": 5
+    "estoque": 5,
+    "novo": false
   },
   {
     "id": 8,
@@ -92,9 +99,10 @@
     "material": "Prata 925",
     "preco": "R$78,00",
     "precoNum": 78.00,
-    "foto": "fotos/colar-esferas-uso.jpg",
+    "foto": "",
     "tamanhos": [],
-    "estoque": 5
+    "estoque": 5,
+    "novo": false
   },
   {
     "id": 9,
@@ -104,9 +112,10 @@
     "material": "Prata 925",
     "preco": "R$52,00",
     "precoNum": 52.00,
-    "foto": "fotos/pulseira-esferas.jpg",
+    "foto": "",
     "tamanhos": [],
-    "estoque": 5
+    "estoque": 5,
+    "novo": false
   },
   {
     "id": 10,
@@ -116,9 +125,10 @@
     "material": "Prata 925",
     "preco": "R$79,00",
     "precoNum": 79.00,
-    "foto": "fotos/anel-solitario-cravejado.jpg",
+    "foto": "",
     "tamanhos": ["18", "19"],
-    "estoque": 5
+    "estoque": 5,
+    "novo": false
   },
   {
     "id": 11,
@@ -128,9 +138,10 @@
     "material": "Prata 925",
     "preco": "R$70,00",
     "precoNum": 70.00,
-    "foto": "fotos/anel-curvo-cravejado.jpg",
+    "foto": "",
     "tamanhos": [],
-    "estoque": 5
+    "estoque": 5,
+    "novo": false
   },
   {
     "id": 12,
@@ -140,9 +151,10 @@
     "material": "Prata 925",
     "preco": "R$65,00",
     "precoNum": 65.00,
-    "foto": "fotos/colar-ponto-luz.jpg",
+    "foto": "",
     "tamanhos": [],
-    "estoque": 5
+    "estoque": 5,
+    "novo": false
   },
   {
     "id": 13,
@@ -152,9 +164,10 @@
     "material": "Prata 925",
     "preco": "R$86,00",
     "precoNum": 86.00,
-    "foto": "fotos/colar-cristal-gota.jpg",
+    "foto": "",
     "tamanhos": [],
-    "estoque": 5
+    "estoque": 5,
+    "novo": false
   },
   {
     "id": 14,
@@ -164,9 +177,10 @@
     "material": "Prata 925",
     "preco": "R$60,00",
     "precoNum": 60.00,
-    "foto": "fotos/colar-pingente-redondo.jpg",
+    "foto": "",
     "tamanhos": [],
-    "estoque": 5
+    "estoque": 5,
+    "novo": false
   },
   {
     "id": 15,
@@ -176,9 +190,10 @@
     "material": "Prata 925",
     "preco": "R$75,00",
     "precoNum": 75.00,
-    "foto": "fotos/brinco-luxo-gota.jpg",
+    "foto": "",
     "tamanhos": [],
-    "estoque": 5
+    "estoque": 5,
+    "novo": false
   },
   {
     "id": 16,
@@ -188,9 +203,10 @@
     "material": "Prata 925",
     "preco": "R$78,00",
     "precoNum": 78.00,
-    "foto": "fotos/anel-pingente-coracao.jpg",
+    "foto": "",
     "tamanhos": ["17"],
-    "estoque": 5
+    "estoque": 5,
+    "novo": false
   },
   {
     "id": 17,
@@ -200,9 +216,10 @@
     "material": "Prata 925",
     "preco": "R$46,00",
     "precoNum": 46.00,
-    "foto": "fotos/brinco-virginia.jpg",
+    "foto": "",
     "tamanhos": [],
-    "estoque": 5
+    "estoque": 5,
+    "novo": false
   },
   {
     "id": 18,
@@ -212,9 +229,10 @@
     "material": "Prata 925",
     "preco": "R$32,00",
     "precoNum": 32.00,
-    "foto": "fotos/brinco-coracao-vazio.jpg",
+    "foto": "",
     "tamanhos": [],
-    "estoque": 5
+    "estoque": 5,
+    "novo": false
   },
   {
     "id": 19,
@@ -224,9 +242,10 @@
     "material": "Prata 925",
     "preco": "Consultar",
     "precoNum": 0,
-    "foto": "fotos/brinco-coracao-cravejado-uso.jpg",
+    "foto": "",
     "tamanhos": [],
-    "estoque": 5
+    "estoque": 5,
+    "novo": false
   },
   {
     "id": 20,
@@ -236,9 +255,10 @@
     "material": "Prata 925",
     "preco": "Consultar",
     "precoNum": 0,
-    "foto": "fotos/brinco-coracao-cristal.jpg",
+    "foto": "",
     "tamanhos": [],
-    "estoque": 5
+    "estoque": 5,
+    "novo": false
   },
   {
     "id": 21,
@@ -248,9 +268,10 @@
     "material": "Prata 925",
     "preco": "Consultar",
     "precoNum": 0,
-    "foto": "fotos/pulseira-cristais.jpg",
+    "foto": "",
     "tamanhos": [],
-    "estoque": 5
+    "estoque": 5,
+    "novo": false
   },
   {
     "id": 22,
@@ -260,9 +281,10 @@
     "material": "Prata 925",
     "preco": "R$65,00",
     "precoNum": 65.00,
-    "foto": "fotos/pulseira-estrela-zirconia.jpg",
+    "foto": "",
     "tamanhos": [],
-    "estoque": 5
+    "estoque": 5,
+    "novo": false
   },
   {
     "id": 23,
@@ -272,9 +294,10 @@
     "material": "Prata 925",
     "preco": "R$28,00",
     "precoNum": 28.00,
-    "foto": "fotos/brinco-solitario-ponta.jpg",
+    "foto": "",
     "tamanhos": [],
-    "estoque": 5
+    "estoque": 5,
+    "novo": false
   },
   {
     "id": 24,
@@ -284,9 +307,10 @@
     "material": "Prata 925",
     "preco": "R$65,00",
     "precoNum": 65.00,
-    "foto": "fotos/pulseira-estrelas.jpg",
+    "foto": "",
     "tamanhos": [],
-    "estoque": 5
+    "estoque": 5,
+    "novo": false
   },
   {
     "id": 25,
@@ -296,9 +320,10 @@
     "material": "Prata 925",
     "preco": "Consultar",
     "precoNum": 0,
-    "foto": "fotos/brinco-quadrado.jpg",
+    "foto": "",
     "tamanhos": [],
-    "estoque": 5
+    "estoque": 5,
+    "novo": false
   },
   {
     "id": 26,
@@ -308,9 +333,10 @@
     "material": "Prata 925",
     "preco": "R$32,00",
     "precoNum": 32.00,
-    "foto": "fotos/brinco-coracao-liso.jpg",
+    "foto": "",
     "tamanhos": [],
-    "estoque": 5
+    "estoque": 5,
+    "novo": false
   },
   {
     "id": 27,
@@ -320,9 +346,10 @@
     "material": "Prata 925",
     "preco": "R$75,00",
     "precoNum": 75.00,
-    "foto": "fotos/colar-veneziana-esferas.jpg",
+    "foto": "",
     "tamanhos": [],
-    "estoque": 5
+    "estoque": 5,
+    "novo": false
   },
   {
     "id": 28,
@@ -332,9 +359,10 @@
     "material": "Prata 925",
     "preco": "R$56,00",
     "precoNum": 56.00,
-    "foto": "fotos/colar-circulo.jpg",
+    "foto": "",
     "tamanhos": [],
-    "estoque": 5
+    "estoque": 5,
+    "novo": false
   },
   {
     "id": 29,
@@ -344,9 +372,10 @@
     "material": "Prata 925",
     "preco": "R$86,00",
     "precoNum": 86.00,
-    "foto": "fotos/anel-solitario-luxo.jpg",
+    "foto": "",
     "tamanhos": [],
-    "estoque": 5
+    "estoque": 5,
+    "novo": false
   },
   {
     "id": 30,
@@ -356,9 +385,10 @@
     "material": "Prata 925",
     "preco": "R$55,00",
     "precoNum": 55.00,
-    "foto": "fotos/anel-meia-alianca.jpg",
+    "foto": "",
     "tamanhos": ["19"],
-    "estoque": 5
+    "estoque": 5,
+    "novo": false
   },
   {
     "id": 31,
@@ -368,9 +398,10 @@
     "material": "Aço Inox / Prata 925",
     "preco": "R$35,00",
     "precoNum": 35.00,
-    "foto": "fotos/piercing-raminho.jpg",
+    "foto": "",
     "tamanhos": [],
-    "estoque": 5
+    "estoque": 5,
+    "novo": true
   },
   {
     "id": 32,
@@ -380,9 +411,10 @@
     "material": "Prata 925",
     "preco": "R$46,00",
     "precoNum": 46.00,
-    "foto": "fotos/pulseira-cartier.jpg",
+    "foto": "",
     "tamanhos": [],
-    "estoque": 5
+    "estoque": 5,
+    "novo": false
   },
   {
     "id": 33,
@@ -392,9 +424,10 @@
     "material": "Prata 925",
     "preco": "R$49,00",
     "precoNum": 49.00,
-    "foto": "fotos/anel-coracoes.jpg",
+    "foto": "",
     "tamanhos": [],
-    "estoque": 5
+    "estoque": 5,
+    "novo": false
   },
   {
     "id": 34,
@@ -404,9 +437,10 @@
     "material": "Prata 925",
     "preco": "R$58,00",
     "precoNum": 58.00,
-    "foto": "fotos/brinco-pandora.jpg",
+    "foto": "",
     "tamanhos": [],
-    "estoque": 5
+    "estoque": 5,
+    "novo": false
   },
   {
     "id": 35,
@@ -416,9 +450,10 @@
     "material": "Prata 925",
     "preco": "R$27,00",
     "precoNum": 27.00,
-    "foto": "fotos/brinco-ponto-luz-redondo.jpg",
+    "foto": "",
     "tamanhos": [],
-    "estoque": 5
+    "estoque": 5,
+    "novo": false
   },
   {
     "id": 36,
@@ -428,8 +463,9 @@
     "material": "Prata 925",
     "preco": "Consultar",
     "precoNum": 0,
-    "foto": "fotos/pulseira-cartier-zirconia.jpg",
+    "foto": "",
     "tamanhos": [],
-    "estoque": 5
+    "estoque": 5,
+    "novo": false
   }
 ]
