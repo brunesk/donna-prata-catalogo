@@ -1022,9 +1022,6 @@ function toArr(v) {
 }
 
 function load(k) {
-  if (k === K.fotos) {
-    try { return JSON.parse(localStorage.getItem(k) || '{}'); } catch { return {}; }
-  }
   return CACHE[k];
 }
 
@@ -1130,10 +1127,6 @@ function aplicarSessao() {
 }
 
 function save(k, d) {
-  if (k === K.fotos) {
-    localStorage.setItem(k, JSON.stringify(d));
-    return;
-  }
   CACHE[k] = d;
   FBDB.ref('dp/' + k).set(d).catch(e => console.warn('Firebase write error:', e));
 }
@@ -1156,6 +1149,7 @@ async function carregarProdutos() {
     CACHE[K.gastos]       = toArr(data[K.gastos]);
     CACHE[K.revendedoras] = toArr(data[K.revendedoras]);
     CACHE[K.estoque]      = data[K.estoque] || {};
+    CACHE[K.fotos]        = data[K.fotos]   || {};
     // PIN owner padrão
     if (!data.config?.pin_owner) FBDB.ref('dp/config/pin_owner').set('1234');
   } catch(e) { console.warn('Firebase:', e); }
@@ -1794,13 +1788,26 @@ function renderLinhaEstoque(p, est) {
     ? `<img class="prod-thumb" src="${src}" alt="${p.nome}" loading="lazy" style="cursor:zoom-in" onclick="verFoto('${src}','${p.nome.replace(/'/g,'\\\'')}')">`
     : `<div class="prod-thumb-placeholder" onclick="abrirModal(${p.id},'${p.nome.replace(/'/g,'').replace(/"/g,'')}')">📷</div>`;
 
+  const vendidos = load(K.vendas)
+    .filter(v => v.itens?.some(i => i.produto_id === p.id) || v.produto_id === p.id)
+    .reduce((s, v) => {
+      const item = v.itens?.find(i => i.produto_id === p.id);
+      return s + (item ? item.qtd : (v.produto_id === p.id ? (v.qtd||1) : 0));
+    }, 0);
+
   return `
-  <div class="stock-row" id="row-${p.id}" style="${qtd===0?'opacity:.45':''}">
+  <div class="stock-row" id="row-${p.id}" style="${qtd===0?'opacity:.55':''}">
     <div>${thumbHtml}</div>
     <div>
       <div class="stock-nome">
         <span id="nome-txt-${p.id}" onclick="editarNomeProduto(${p.id},this)" style="cursor:text;border-bottom:1px dashed var(--lgray)" title="Clique para editar o nome">${nome}</span>
-        ${baixo ? ' <span style="color:var(--red);font-size:10px">⚠</span>' : ''}
+        ${baixo && qtd > 0 ? ' <span style="color:var(--red);font-size:10px">⚠</span>' : ''}
+      </div>
+      <div style="font-size:11px;color:var(--mgray);margin-top:3px;line-height:1.6">
+        ${custo > 0 ? `custo <strong style="color:var(--black)">${fmt(custo)}</strong>` : ''}
+        ${custo > 0 && venda > 0 ? ' · ' : ''}
+        ${venda > 0 ? `venda <strong style="color:var(--black)">${fmt(venda)}</strong>` : ''}
+        ${qtd === 0 && vendidos > 0 ? `<br><span style="color:var(--red);font-weight:600">Fora de estoque · ${vendidos} vendido${vendidos>1?'s':''}</span>` : ''}
       </div>
     </div>
     <div class="col-custo">
@@ -1983,12 +1990,32 @@ function verFoto(src, nome) {
   ov.style.display = 'flex';
 }
 
+function comprimirImagem(file, cb) {
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = new Image();
+    img.onload = () => {
+      const MAX = 700;
+      let w = img.width, h = img.height;
+      if (w > MAX || h > MAX) {
+        if (w > h) { h = Math.round(h * MAX / w); w = MAX; }
+        else       { w = Math.round(w * MAX / h); h = MAX; }
+      }
+      const cv = document.createElement('canvas');
+      cv.width = w; cv.height = h;
+      cv.getContext('2d').drawImage(img, 0, 0, w, h);
+      cb(cv.toDataURL('image/jpeg', 0.75));
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
 function handleFotoUpload(event) {
   const file = event.target.files[0];
   if (!file || !modalProdId) return;
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    const base64 = e.target.result;
+  toast('Salvando foto...', '');
+  comprimirImagem(file, (base64) => {
     const fotos = load(K.fotos);
     fotos[modalProdId] = base64;
     save(K.fotos, fotos);
@@ -1999,9 +2026,8 @@ function handleFotoUpload(event) {
     document.getElementById('modal-foto-placeholder').style.display = 'none';
     document.getElementById('modal-foto-remove').style.display = 'inline-block';
     renderEstoque();
-    toast('✓ Foto salva', 'success');
-  };
-  reader.readAsDataURL(file);
+    toast('✓ Foto salva no servidor', 'success');
+  });
   event.target.value = '';
 }
 
