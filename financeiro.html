@@ -484,6 +484,7 @@
   <div class="tab" data-tab="historico"        data-role="owner">📋 Histórico</div>
   <div class="tab" data-tab="revendedoras"     data-role="owner">👩 Revendedoras</div>
   <div class="tab" data-tab="areceber"         data-role="all">⚠️ A Receber</div>
+  <div class="tab" data-tab="precificar"       data-role="owner">🧮 Precificar</div>
 </div>
 
 <!-- ═══════════════════════════════════════
@@ -854,6 +855,49 @@
     </div>
   </div>
   <div id="lista-areceber"></div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     PRECIFICAR
+═══════════════════════════════════════ -->
+<div class="section" id="tab-precificar">
+
+  <div class="form" style="margin-bottom:20px">
+    <div class="sec-title" style="border:none;padding:0;margin-bottom:16px;font-family:'Playfair Display',serif;font-size:1.1rem">Calculadora de preço</div>
+
+    <!-- Material -->
+    <div class="form-row">
+      <label>Material</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap" id="prec-mat-pills">
+        <div class="cat-pill active" data-mat="aco"   onclick="selecionarPrecMat('aco')">🔩 Aço Inox</div>
+        <div class="cat-pill"        data-mat="prata" onclick="selecionarPrecMat('prata')">✨ Prata 925</div>
+      </div>
+      <div class="hint" id="prec-mat-hint" style="margin-top:6px">Aço Inox → margem de 150% a 200%</div>
+    </div>
+
+    <!-- Custo + Embalagem -->
+    <div class="form-row-2" style="margin-top:4px">
+      <div>
+        <label>Custo da peça (R$)</label>
+        <input type="number" id="prec-custo" placeholder="Ex: 12,50" step="0.01" min="0" oninput="calcularPreco()">
+      </div>
+      <div>
+        <label>Embalagem (R$)</label>
+        <div style="display:flex;gap:6px;margin-bottom:6px;flex-wrap:wrap" id="prec-emb-pills">
+          <div class="cat-pill active" data-emb="5"   onclick="selecionarPrecEmb(5)">R$5</div>
+          <div class="cat-pill"        data-emb="7.5" onclick="selecionarPrecEmb(7.5)">R$7,50</div>
+          <div class="cat-pill"        data-emb="10"  onclick="selecionarPrecEmb(10)">R$10</div>
+        </div>
+        <input type="number" id="prec-emb" value="5" step="0.50" min="0" oninput="calcularPreco()">
+      </div>
+    </div>
+
+    <div class="hint" style="margin-top:-6px">Taxa da maquininha já incluída no cálculo: 6,85% (4×)</div>
+  </div>
+
+  <!-- Resultado -->
+  <div id="prec-resultado" style="display:none"></div>
+
 </div>
 
 <!-- MODAL editar pagamento -->
@@ -2637,6 +2681,120 @@ function renderAReceberRevendedora() {
     </div>`;
   }).join('')}
   </div>`;
+}
+
+/* ══════════════════════════════════════════
+   PRECIFICAR
+══════════════════════════════════════════ */
+let _precMat = 'aco';
+let _precEmb = 5;
+
+const PREC_MARGENS = {
+  aco:   { min: 1.50, max: 2.00, label: 'Aço Inox'  },
+  prata: { min: 1.00, max: 1.50, label: 'Prata 925' }
+};
+const PREC_TAXA = 0.0685;
+
+function selecionarPrecMat(mat) {
+  _precMat = mat;
+  document.querySelectorAll('[data-mat]').forEach(p => p.classList.toggle('active', p.dataset.mat === mat));
+  const hints = { aco: 'Aço Inox → margem de 150% a 200%', prata: 'Prata 925 → margem de 100% a 150%' };
+  document.getElementById('prec-mat-hint').textContent = hints[mat];
+  calcularPreco();
+}
+
+function selecionarPrecEmb(val) {
+  _precEmb = val;
+  document.getElementById('prec-emb').value = val;
+  document.querySelectorAll('[data-emb]').forEach(p => p.classList.toggle('active', parseFloat(p.dataset.emb) === val));
+  calcularPreco();
+}
+
+function calcularPreco() {
+  const custo = parseFloat(document.getElementById('prec-custo').value) || 0;
+  const emb   = parseFloat(document.getElementById('prec-emb').value) || 0;
+  _precEmb = emb;
+  // sync pill highlight if emb matches one
+  document.querySelectorAll('[data-emb]').forEach(p => p.classList.toggle('active', parseFloat(p.dataset.emb) === emb));
+
+  const el = document.getElementById('prec-resultado');
+  if (!custo) { el.style.display = 'none'; return; }
+
+  const { min, max, label } = PREC_MARGENS[_precMat];
+  const mid = (min + max) / 2;
+
+  const cenarios = [
+    { nome: 'Mínimo',   pct: min, cor: 'var(--red)'   },
+    { nome: 'Sugerido', pct: mid, cor: 'var(--gold)'  },
+    { nome: 'Máximo',   pct: max, cor: 'var(--green)' },
+  ];
+
+  // ── Cards de cenário ──
+  let html = `<div class="sec-title" style="margin-bottom:14px">Preços sugeridos — ${label}</div>`;
+  html += '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px">';
+
+  cenarios.forEach(c => {
+    const preco    = custo * (1 + c.pct) + emb;
+    const taxaVal  = preco * PREC_TAXA;
+    const lucroLiq = preco - custo - emb - taxaVal;
+    const margLiq  = preco > 0 ? Math.round(lucroLiq / preco * 100) : 0;
+
+    html += `
+    <div style="background:var(--white);border:1px solid var(--lgray);padding:16px 12px;text-align:center">
+      <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--mgray);margin-bottom:8px">${c.nome}</div>
+      <div style="font-family:'Playfair Display',serif;font-size:1.55rem;font-weight:700;color:${c.cor};line-height:1.1">${fmt(preco)}</div>
+      <div style="font-size:10px;color:var(--mgray);margin-top:8px">lucro líquido</div>
+      <div style="font-weight:700;font-size:1rem;color:${lucroLiq>=0?'var(--green)':'var(--red)'}">${fmt(lucroLiq)}</div>
+      <div style="font-size:10px;color:var(--mgray)">margem ${margLiq}%</div>
+    </div>`;
+  });
+  html += '</div>';
+
+  // ── Detalhamento do preço sugerido ──
+  const precoSug = custo * (1 + mid) + emb;
+  const taxaSug  = precoSug * PREC_TAXA;
+  const lucroSug = precoSug - custo - emb - taxaSug;
+
+  html += `
+  <div style="background:var(--white);border:1px solid var(--lgray);padding:18px 20px;margin-bottom:16px">
+    <div style="font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--mgray);margin-bottom:14px">Detalhamento — preço sugerido</div>
+    <div class="sum-row"><span>Custo da peça</span><span>${fmt(custo)}</span></div>
+    <div class="sum-row"><span>Margem ${Math.round(mid*100)}%</span><span style="color:var(--green)">+ ${fmt(custo * mid)}</span></div>
+    <div class="sum-row"><span>Embalagem</span><span>+ ${fmt(emb)}</span></div>
+    <div class="sum-row" style="font-weight:700"><span>Preço de venda</span><span>${fmt(precoSug)}</span></div>
+    <div class="sum-row"><span>Taxa maquininha 4× (6,85%)</span><span style="color:var(--red)">− ${fmt(taxaSug)}</span></div>
+    <div class="sum-row" style="border-top:2px solid var(--black);padding-top:12px;margin-top:6px">
+      <span style="font-weight:700;font-size:14px">Lucro líquido</span>
+      <span style="font-weight:700;font-size:15px;color:var(--green)">${fmt(lucroSug)}</span>
+    </div>
+  </div>`;
+
+  // ── Tabela comparativa de todas as margens ──
+  html += `
+  <div style="background:var(--white);border:1px solid var(--lgray);overflow:hidden">
+    <div style="background:var(--black);color:#fff;padding:11px 16px;font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase">Tabela completa</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--mgray);padding:9px 14px;background:var(--cream);border-bottom:1px solid var(--lgray)">
+      <span>Margem</span><span style="text-align:right">Preço</span><span style="text-align:right">Taxa cart.</span><span style="text-align:right">Lucro liq.</span>
+    </div>`;
+
+  [min, min + (max-min)*0.25, mid, min + (max-min)*0.75, max].forEach(pct => {
+    const p   = custo * (1 + pct) + emb;
+    const t   = p * PREC_TAXA;
+    const l   = p - custo - emb - t;
+    const ativo = Math.abs(pct - mid) < 0.001;
+    html += `
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;padding:9px 14px;border-bottom:1px solid var(--lgray);${ativo?'background:var(--gold-bg,#FDF6EC);font-weight:700':''}">
+      <span>${Math.round(pct*100)}%</span>
+      <span style="text-align:right">${fmt(p)}</span>
+      <span style="text-align:right;color:var(--red)">− ${fmt(t)}</span>
+      <span style="text-align:right;color:var(--green)">${fmt(l)}</span>
+    </div>`;
+  });
+
+  html += '</div>';
+
+  el.innerHTML = html;
+  el.style.display = 'block';
 }
 
 // ── INICIALIZAÇÃO ─────────────────────────
