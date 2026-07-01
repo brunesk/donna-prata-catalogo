@@ -180,7 +180,12 @@
     .badge-gasto   { background: var(--orange-l); color: var(--orange); border: 1px solid #ffcc80; }
 
     /* ── STOCK TABLE ── */
-    .stock-filters { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+    .stock-filters { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
+    .est-filtros-mat, .est-filtros-cat { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
+    .est-filtro-label { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--mgray); min-width: 60px; }
+    .est-mat-pill, .est-cat-pill { font-size: 11px; padding: 4px 10px; border-radius: 20px; cursor: pointer; border: 1.5px solid var(--lgray); color: var(--mgray); background: #fff; transition: all .15s; white-space: nowrap; }
+    .est-mat-pill.active, .est-cat-pill.active { background: var(--black); color: #fff; border-color: var(--black); }
+    .est-filtros-mat { margin-top: 4px; }
     .stock-table { background: var(--white); border: 1px solid var(--lgray); overflow: hidden; }
     .stock-search { padding: 12px 14px; border-bottom: 1px solid var(--lgray); }
     .stock-search input { padding: 8px 12px; font-size: 13px; }
@@ -726,6 +731,24 @@
     <div class="period-btn" data-stock-filter="sem-estoque">Sem estoque</div>
     <div class="period-btn" data-stock-filter="baixo">Estoque baixo</div>
     <div class="period-btn" data-stock-filter="ocultos">🗑 Excluídos</div>
+  </div>
+
+  <div class="est-filtros-mat">
+    <span class="est-filtro-label">Material:</span>
+    <div class="est-mat-pill active" data-mat-filter="todos">Todos</div>
+    <div class="est-mat-pill" data-mat-filter="Prata 925">✨ Prata 925</div>
+    <div class="est-mat-pill" data-mat-filter="Aço Inox">🔩 Aço Inox</div>
+  </div>
+
+  <div class="est-filtros-cat" id="est-filtros-cat">
+    <span class="est-filtro-label">Categoria:</span>
+    <div class="est-cat-pill active" data-cat-filter="todos">Todas</div>
+    <div class="est-cat-pill" data-cat-filter="anel">Anel</div>
+    <div class="est-cat-pill" data-cat-filter="pulseira">Pulseira</div>
+    <div class="est-cat-pill" data-cat-filter="brinco">Brinco</div>
+    <div class="est-cat-pill" data-cat-filter="colar">Colar</div>
+    <div class="est-cat-pill" data-cat-filter="bracelet">Bracelete</div>
+    <div class="est-cat-pill" data-cat-filter="piercing">Piercing</div>
   </div>
 
   <div class="stock-table">
@@ -1689,6 +1712,8 @@ function registrarVenda() {
    ESTOQUE
 ══════════════════════════════════════════ */
 let stockFilter = 'todos';
+let matFilter   = 'todos';
+let catFilter   = 'todos';
 let modalProdId = null;
 
 document.querySelectorAll('[data-stock-filter]').forEach(btn => {
@@ -1696,6 +1721,24 @@ document.querySelectorAll('[data-stock-filter]').forEach(btn => {
     document.querySelectorAll('[data-stock-filter]').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     stockFilter = btn.dataset.stockFilter;
+    renderEstoque();
+  });
+});
+
+document.querySelectorAll('[data-mat-filter]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('[data-mat-filter]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    matFilter = btn.dataset.matFilter;
+    renderEstoque();
+  });
+});
+
+document.querySelectorAll('[data-cat-filter]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('[data-cat-filter]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    catFilter = btn.dataset.catFilter;
     renderEstoque();
   });
 });
@@ -1722,6 +1765,8 @@ function renderEstoque() {
     if (stockFilter === 'ocultos') return oculto;
     if (oculto) return false;
     if (busca && !p.nome.toLowerCase().includes(busca)) return false;
+    if (matFilter !== 'todos' && getMaterial(p) !== matFilter) return false;
+    if (catFilter !== 'todos' && (p.categoria || 'outro') !== catFilter) return false;
     const qtd = info.quantidade || 0;
     if (stockFilter === 'com-estoque') return qtd > 0;
     if (stockFilter === 'sem-estoque') return qtd === 0;
