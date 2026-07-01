@@ -2767,18 +2767,19 @@ function renderClientes() {
   });
 
   let clientes = Object.values(mapa);
-
-  // filtro de busca
   if (busca) clientes = clientes.filter(c => c.nome.toLowerCase().includes(busca));
 
-  // ordenar por data da última compra
+  // ordenar: quem deve primeiro, depois por última compra
   clientes.sort((a, b) => {
+    const aAberto = a.vendas.filter(v => !v.pago).length > 0;
+    const bAberto = b.vendas.filter(v => !v.pago).length > 0;
+    if (aAberto !== bAberto) return aAberto ? -1 : 1;
     const da = Math.max(...a.vendas.map(v => new Date(v.data).getTime()));
     const db = Math.max(...b.vendas.map(v => new Date(v.data).getTime()));
     return db - da;
   });
 
-  // totais para o summary
+  // totais summary
   const totalGasto  = vendas.reduce((s,v) => s + (v.total||0), 0);
   const totalAberto = vendas.filter(v => !v.pago).reduce((s,v) => s + pendenteDaVenda(v), 0);
   document.getElementById('cli-total-clientes').textContent = clientes.length;
@@ -2791,75 +2792,69 @@ function renderClientes() {
     return;
   }
 
-  el.innerHTML = clientes.map((c, idx) => {
-    const totalCliente  = c.vendas.reduce((s,v) => s + (v.total||0), 0);
-    const aberto        = c.vendas.filter(v => !v.pago).reduce((s,v) => s + pendenteDaVenda(v), 0);
-    const numCompras    = c.vendas.length;
-    const ultimaData    = c.vendas.map(v => v.data).sort().reverse()[0];
-    const emDia         = aberto === 0;
-    const pecasUnicas   = [...new Set(c.vendas.flatMap(v => v.itens ? v.itens.map(i => i.produto) : [v.produto]))];
-
-    const cardId = 'cli-card-' + idx;
+  el.innerHTML = clientes.map(c => {
+    const totalCliente = c.vendas.reduce((s,v) => s + (v.total||0), 0);
+    const aberto       = c.vendas.filter(v => !v.pago).reduce((s,v) => s + pendenteDaVenda(v), 0);
+    const numCompras   = c.vendas.length;
+    const emDia        = aberto === 0;
+    const comprasOrd   = [...c.vendas].sort((a,b) => b.data.localeCompare(a.data));
 
     return `
-    <div style="background:var(--white);border:1px solid var(--lgray);margin-bottom:12px;overflow:hidden">
+    <div style="background:var(--white);border:1px solid var(--lgray);margin-bottom:16px;overflow:hidden">
 
-      <!-- cabeçalho clicável -->
-      <div onclick="toggleCliCard('${cardId}')" style="padding:14px 16px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
-        <div style="flex:1;min-width:0">
-          <div style="font-weight:700;font-size:14px;display:flex;align-items:center;gap:8px">
-            ${c.nome}
+      <!-- CABEÇALHO DA CLIENTE -->
+      <div style="background:var(--black);color:#fff;padding:13px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+        <div>
+          <div style="font-family:'Playfair Display',serif;font-size:1rem;display:flex;align-items:center;gap:8px">
+            👤 ${c.nome}
             ${emDia
-              ? `<span style="background:var(--green-l);color:var(--green);border:1px solid #a5d6a7;font-size:9px;padding:2px 8px;font-weight:600;letter-spacing:1px">EM DIA</span>`
-              : `<span style="background:var(--red-l);color:var(--red);border:1px solid #ef9a9a;font-size:9px;padding:2px 8px;font-weight:600;letter-spacing:1px">DEVE ${fmt(aberto)}</span>`
+              ? `<span style="background:#2a7a3b;color:#fff;font-size:8px;padding:2px 7px;letter-spacing:1px;font-family:'Inter',sans-serif;font-weight:600">EM DIA</span>`
+              : `<span style="background:#c62828;color:#fff;font-size:8px;padding:2px 7px;letter-spacing:1px;font-family:'Inter',sans-serif;font-weight:600">DEVE</span>`
             }
           </div>
-          <div style="font-size:11px;color:var(--mgray);margin-top:4px">
-            ${numCompras} compra${numCompras>1?'s':''} · última em ${fmtData(ultimaData)}
+          <div style="font-size:10px;color:rgba(255,255,255,.45);margin-top:3px">
+            ${numCompras} compra${numCompras>1?'s':''}
           </div>
-          ${pecasUnicas.length ? `<div style="font-size:11px;color:var(--mgray);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${pecasUnicas.slice(0,3).join(', ')}${pecasUnicas.length>3?' +mais...':''}</div>` : ''}
         </div>
-        <div style="text-align:right;flex-shrink:0">
-          <div style="font-weight:700;font-size:15px">${fmt(totalCliente)}</div>
-          <div style="font-size:10px;color:var(--mgray)">total gasto</div>
-          <div style="font-size:11px;margin-top:2px;color:rgba(0,0,0,.35)" id="seta-${cardId}">▼ ver compras</div>
+        <div style="text-align:right">
+          <div style="font-weight:700;font-size:1.15rem">${fmt(totalCliente)}</div>
+          <div style="font-size:10px;color:rgba(255,255,255,.45)">total gasto</div>
+          ${!emDia ? `<div style="font-size:11px;color:#ef9a9a;font-weight:600;margin-top:2px">${fmt(aberto)} em aberto</div>` : ''}
         </div>
       </div>
 
-      <!-- histórico de compras (colapsável) -->
-      <div id="${cardId}" style="display:none;border-top:1px solid var(--lgray)">
-        ${c.vendas.sort((a,b) => b.data.localeCompare(a.data)).map(v => {
-          const pendente = !v.pago ? pendenteDaVenda(v) : 0;
-          return `
-          <div style="padding:12px 16px;border-bottom:1px solid var(--lgray);display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap">
-            <div style="flex:1;min-width:0">
-              <div style="font-weight:600;font-size:13px">${v.produto}${v.qtd>1?' ×'+v.qtd:''}</div>
-              <div style="font-size:11px;color:var(--mgray);margin-top:3px">
-                📅 ${fmtData(v.data)} · ${nomePag(v.pagamento)}${v.parcelas?' '+v.parcelas+'×':''}
-                ${v.obs ? ' · 💬 '+v.obs : ''}
-              </div>
+      <!-- LISTA DE COMPRAS -->
+      ${comprasOrd.map((v, i) => {
+        const pendente = !v.pago ? pendenteDaVenda(v) : 0;
+        const isUlt    = i === comprasOrd.length - 1;
+        return `
+        <div style="padding:12px 16px;${isUlt?'':'border-bottom:1px solid var(--lgray);'}display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap">
+          <div style="flex:1;min-width:0">
+            <div style="font-weight:600;font-size:13px">${v.produto}${v.qtd>1?' ×'+v.qtd:''}</div>
+            <div style="font-size:11px;color:var(--mgray);margin-top:3px;line-height:1.5">
+              📅 ${fmtData(v.data)}
+              · ${nomePag(v.pagamento)}${v.parcelas ? ' '+v.parcelas+'×' : ''}
+              ${v.obs ? '<br>💬 '+v.obs : ''}
             </div>
-            <div style="text-align:right;flex-shrink:0">
-              <div style="font-weight:700;font-size:14px">${fmt(v.total)}</div>
-              ${v.pago
-                ? `<div style="font-size:10px;color:var(--green);font-weight:600">✓ Pago</div>`
-                : `<div style="font-size:10px;color:var(--red);font-weight:600">⚠ ${fmt(pendente)} pendente</div>
-                   <button class="sbtn green" style="margin-top:4px;font-size:10px" onclick="marcarPago(${v.id})">Marcar pago</button>`
-              }
-            </div>
-          </div>`;
-        }).join('')}
+          </div>
+          <div style="text-align:right;flex-shrink:0">
+            <div style="font-weight:700;font-size:14px">${fmt(v.total)}</div>
+            ${v.pago
+              ? `<div style="font-size:10px;color:var(--green);font-weight:600;margin-top:2px">✓ Pago</div>`
+              : `<div style="font-size:10px;color:var(--red);font-weight:600;margin-top:2px">⚠ ${fmt(pendente)} pendente</div>
+                 <button class="sbtn green" style="margin-top:5px;font-size:10px;padding:4px 10px" onclick="marcarPago(${v.id})">Marcar pago</button>`
+            }
+          </div>
+        </div>`;
+      }).join('')}
+
+      <!-- RODAPÉ: TOTAL -->
+      <div style="background:var(--cream);padding:10px 16px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--lgray)">
+        <span style="font-size:11px;color:var(--mgray)">${numCompras} compra${numCompras>1?'s':''} no total</span>
+        <span style="font-weight:700;font-size:14px">${fmt(totalCliente)}</span>
       </div>
     </div>`;
   }).join('');
-}
-
-function toggleCliCard(id) {
-  const el   = document.getElementById(id);
-  const seta = document.getElementById('seta-' + id);
-  const aberto = el.style.display !== 'none';
-  el.style.display = aberto ? 'none' : 'block';
-  if (seta) seta.textContent = aberto ? '▼ ver compras' : '▲ fechar';
 }
 
 /* ══════════════════════════════════════════
