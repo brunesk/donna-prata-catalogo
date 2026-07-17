@@ -8,6 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -706,14 +707,23 @@
      ESTOQUE
 ═══════════════════════════════════════ -->
 <div class="section" id="tab-estoque">
+  <div class="lucro-card" id="invest-card">
+    <div>
+      <div class="lucro-label">Valor investido no estoque</div>
+      <div class="lucro-val" id="est-investido">R$0,00</div>
+      <div class="lucro-margin" id="est-investido-sub">0 peças em estoque</div>
+    </div>
+    <div style="text-align:right">
+      <div class="lucro-label">Retorno do investimento</div>
+      <div style="font-size:1.1rem;font-weight:700" id="est-retorno">R$0,00</div>
+      <div class="lucro-margin" id="est-roi">ROI 0%</div>
+    </div>
+  </div>
+
   <div class="est-summary">
     <div class="est-sum-item">
       <div class="est-sum-label">Total em estoque</div>
       <div class="est-sum-val" id="est-total-pecas">0 peças</div>
-    </div>
-    <div class="est-sum-item">
-      <div class="est-sum-label">Valor em custo</div>
-      <div class="est-sum-val" id="est-total-custo">R$0,00</div>
     </div>
     <div class="est-sum-item">
       <div class="est-sum-label">Valor em venda</div>
@@ -723,6 +733,10 @@
       <div class="est-sum-label">Estoque baixo</div>
       <div class="est-sum-val red" id="est-baixo">0 peças</div>
     </div>
+  </div>
+
+  <div style="display:flex;justify-content:flex-end;margin-bottom:10px">
+    <button class="btn" onclick="abrirModalNovoProduto()">+ Novo produto</button>
   </div>
 
   <div class="stock-filters">
@@ -948,7 +962,7 @@
       </div>
     </div>
 
-    <div class="hint" style="margin-top:-6px">Taxa da maquininha já incluída no cálculo: 6,85% (4×)</div>
+    <div class="hint" style="margin-top:-6px">Taxa da maquininha (6,85%, parcelado 4×) é somada como acréscimo no preço do cartão — não é descontada do seu lucro</div>
   </div>
 
   <!-- Resultado -->
@@ -1033,6 +1047,71 @@
   </div>
 </div>
 
+<!-- MODAL novo produto -->
+<div class="modal-overlay" id="modal-novo-produto-overlay" onclick="fecharModalNovoProduto(event)">
+  <div class="modal" style="max-height:90vh;overflow-y:auto">
+    <h3>Novo produto</h3>
+
+    <div class="form-row">
+      <label>Foto do produto <span style="font-weight:400;color:var(--mgray)">(opcional)</span></label>
+      <div class="modal-foto-area" onclick="document.getElementById('np-foto-input').click()">
+        <img id="np-foto-preview" src="" alt="" style="display:none">
+        <div id="np-foto-placeholder">
+          <div style="font-size:2rem;margin-bottom:6px">📷</div>
+          <div class="modal-foto-label">Clique para adicionar foto</div>
+        </div>
+      </div>
+      <input type="file" id="np-foto-input" accept="image/*" onchange="handleNovoProdFoto(event)">
+    </div>
+
+    <div class="form-row">
+      <label>Nome do produto</label>
+      <input type="text" id="np-nome" placeholder="Ex: Anel Solitário Zircônia">
+    </div>
+
+    <div class="form-row">
+      <label>Material</label>
+      <div class="est-filtros-mat" id="np-mat-pills" style="margin:0">
+        <div class="est-mat-pill active" data-np-mat="Prata 925" onclick="selecionarNovoProdMat('Prata 925',this)">✨ Prata 925</div>
+        <div class="est-mat-pill" data-np-mat="Aço Inox" onclick="selecionarNovoProdMat('Aço Inox',this)">🔩 Aço Inox</div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <label>Categoria</label>
+      <div class="est-filtros-cat" id="np-cat-pills" style="margin:0">
+        <div class="est-cat-pill active" data-np-cat="anel" onclick="selecionarNovoProdCat('anel',this)">Anel</div>
+        <div class="est-cat-pill" data-np-cat="pulseira" onclick="selecionarNovoProdCat('pulseira',this)">Pulseira</div>
+        <div class="est-cat-pill" data-np-cat="brinco" onclick="selecionarNovoProdCat('brinco',this)">Brinco</div>
+        <div class="est-cat-pill" data-np-cat="colar" onclick="selecionarNovoProdCat('colar',this)">Colar</div>
+        <div class="est-cat-pill" data-np-cat="bracelet" onclick="selecionarNovoProdCat('bracelet',this)">Bracelete</div>
+        <div class="est-cat-pill" data-np-cat="piercing" onclick="selecionarNovoProdCat('piercing',this)">Piercing</div>
+      </div>
+    </div>
+
+    <div class="form-row-2">
+      <div>
+        <label>Custo por unidade (R$)</label>
+        <input type="number" id="np-custo" step="0.01" min="0" placeholder="0,00">
+      </div>
+      <div>
+        <label>Preço de venda (R$)</label>
+        <input type="number" id="np-preco" step="0.01" min="0" placeholder="0,00">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <label>Quantidade em estoque</label>
+      <input type="number" id="np-qtd" min="0" step="1" placeholder="0" value="1">
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn" onclick="salvarNovoProduto()">Cadastrar</button>
+      <button class="btn outline" onclick="fecharModalNovoProduto()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
 <!-- Modal visualizar foto -->
 <div id="modal-zoom-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.93);z-index:9999;align-items:center;justify-content:center;flex-direction:column;gap:16px" onclick="fecharZoom(event)">
   <button onclick="fecharZoomBtn()" style="position:absolute;top:16px;right:16px;background:rgba(255,255,255,.15);border:none;color:#fff;font-size:1.6rem;width:44px;height:44px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1">×</button>
@@ -1056,20 +1135,24 @@ const firebaseConfig = {
   appId: "1:285932976835:web:c7e734a513906c76010076"
 };
 firebase.initializeApp(firebaseConfig);
+firebase.auth().signInAnonymously().catch(function(err) {
+  console.error('Falha no login do banco de dados:', err);
+});
 const FBDB = firebase.database();
 
 const K = {
-  vendas:       'dp_vendas_v2',
-  estoque:      'dp_estoque_v2',
-  gastos:       'dp_gastos_v1',
-  fotos:        'dp_fotos_v1',
-  revendedoras: 'dp_revendedoras_v1'
+  vendas:        'dp_vendas_v2',
+  estoque:       'dp_estoque_v2',
+  gastos:        'dp_gastos_v1',
+  fotos:         'dp_fotos_v1',
+  revendedoras:  'dp_revendedoras_v1',
+  produtosExtra: 'dp_produtos_extra_v1'
 };
 
 // Cache local — espelho do Firebase
 const CACHE = {
   [K.vendas]: [], [K.estoque]: {}, [K.gastos]: [],
-  [K.fotos]: {}, [K.revendedoras]: []
+  [K.fotos]: {}, [K.revendedoras]: [], [K.produtosExtra]: []
 };
 
 function toArr(v) {
@@ -1195,18 +1278,20 @@ let PRODUTOS = [];
 
 async function carregarProdutos() {
   try {
-    const r = await fetch('produtos.json');
+    const r = await fetch(`produtos.json?t=${Date.now()}`);
     PRODUTOS = await r.json();
   } catch { PRODUTOS = []; }
 
   try {
     const snap = await FBDB.ref('dp').once('value');
     const data = snap.val() || {};
-    CACHE[K.vendas]       = toArr(data[K.vendas]);
-    CACHE[K.gastos]       = toArr(data[K.gastos]);
-    CACHE[K.revendedoras] = toArr(data[K.revendedoras]);
-    CACHE[K.estoque]      = data[K.estoque] || {};
-    CACHE[K.fotos]        = data[K.fotos]   || {};
+    CACHE[K.vendas]        = toArr(data[K.vendas]);
+    CACHE[K.gastos]        = toArr(data[K.gastos]);
+    CACHE[K.revendedoras]  = toArr(data[K.revendedoras]);
+    CACHE[K.estoque]       = data[K.estoque] || {};
+    CACHE[K.fotos]         = data[K.fotos]   || {};
+    CACHE[K.produtosExtra] = toArr(data[K.produtosExtra]);
+    PRODUTOS = PRODUTOS.concat(CACHE[K.produtosExtra]);
     // PIN owner padrão
     if (!data.config?.pin_owner) FBDB.ref('dp/config/pin_owner').set('1234');
   } catch(e) { console.warn('Firebase:', e); }
@@ -1777,6 +1862,30 @@ function getMaterial(p) {
   return 'Misto';
 }
 
+function atualizarTotaisEstoque(est) {
+  // apenas dados do estoque atual — não usa vendas/gastos do histórico
+  let totalPecas = 0, totalCusto = 0, totalVenda = 0, totalBaixo = 0;
+  PRODUTOS.forEach(p => {
+    const info = est[p.id] || {};
+    if (info.oculto) return;
+    const qtd  = info.quantidade || 0;
+    totalPecas += qtd;
+    totalCusto += qtd * (info.custo || 0);
+    totalVenda += qtd * (info.preco || p.precoNum || 0);
+    if (qtd > 0 && qtd <= 2) totalBaixo++;
+  });
+  const retorno = totalVenda - totalCusto;
+  const roi = totalCusto > 0 ? Math.round(retorno / totalCusto * 100) : 0;
+
+  document.getElementById('est-total-pecas').textContent = totalPecas + ' peças';
+  document.getElementById('est-total-venda').textContent = fmt(totalVenda);
+  document.getElementById('est-baixo').textContent = totalBaixo + ' peças';
+  document.getElementById('est-investido').textContent = fmt(totalCusto);
+  document.getElementById('est-investido-sub').textContent = totalPecas + ' peças em estoque';
+  document.getElementById('est-retorno').textContent = fmt(retorno);
+  document.getElementById('est-roi').textContent = `ROI ${roi}%`;
+}
+
 function renderEstoque() {
   const est   = load(K.estoque);
   const busca = (document.getElementById('est-busca')?.value || '').toLowerCase();
@@ -1797,19 +1906,7 @@ function renderEstoque() {
   });
 
   // Totais
-  let totalPecas = 0, totalCusto = 0, totalVenda = 0, totalBaixo = 0;
-  PRODUTOS.forEach(p => {
-    const info = est[p.id] || { custo: 0, quantidade: 0 };
-    const qtd  = info.quantidade || 0;
-    totalPecas += qtd;
-    totalCusto += qtd * (info.custo || 0);
-    totalVenda += qtd * (info.preco || p.precoNum || 0);
-    if (qtd > 0 && qtd <= 2) totalBaixo++;
-  });
-  document.getElementById('est-total-pecas').textContent = totalPecas + ' peças';
-  document.getElementById('est-total-custo').textContent = fmt(totalCusto);
-  document.getElementById('est-total-venda').textContent = fmt(totalVenda);
-  document.getElementById('est-baixo').textContent = totalBaixo + ' peças';
+  atualizarTotaisEstoque(est);
 
   const el = document.getElementById('est-lista');
   if (!prods.length) {
@@ -1999,18 +2096,7 @@ function salvarCampoEstoque(prodId, campo, valor) {
   }
 
   // atualizar totais do summary
-  let totalPecas = 0, totalCusto = 0, totalVenda = 0, totalBaixo = 0;
-  PRODUTOS.forEach(p => {
-    const i = est[p.id] || { custo: 0, quantidade: 0 };
-    totalPecas += i.quantidade || 0;
-    totalCusto += (i.quantidade || 0) * (i.custo || 0);
-    totalVenda += (i.quantidade || 0) * (i.preco || p.precoNum || 0);
-    if ((i.quantidade || 0) > 0 && (i.quantidade || 0) <= 2) totalBaixo++;
-  });
-  document.getElementById('est-total-pecas').textContent = totalPecas + ' peças';
-  document.getElementById('est-total-custo').textContent = fmt(totalCusto);
-  document.getElementById('est-total-venda').textContent = fmt(totalVenda);
-  document.getElementById('est-baixo').textContent = totalBaixo + ' peças';
+  atualizarTotaisEstoque(est);
 }
 
 const CATS = {
@@ -2169,6 +2255,100 @@ function salvarModal() {
   modalProdId = null;
   renderEstoque();
   toast('✓ Produto atualizado', 'success');
+}
+
+/* ══════════════════════════════════════════
+   NOVO PRODUTO
+══════════════════════════════════════════ */
+let novoProdMat   = 'Prata 925';
+let novoProdCat   = 'anel';
+let novoProdFoto  = null;
+
+function abrirModalNovoProduto() {
+  document.getElementById('np-nome').value  = '';
+  document.getElementById('np-custo').value = '';
+  document.getElementById('np-preco').value = '';
+  document.getElementById('np-qtd').value   = 1;
+  novoProdMat  = 'Prata 925';
+  novoProdCat  = 'anel';
+  novoProdFoto = null;
+  document.querySelectorAll('#np-mat-pills [data-np-mat]').forEach(p => p.classList.toggle('active', p.dataset.npMat === novoProdMat));
+  document.querySelectorAll('#np-cat-pills [data-np-cat]').forEach(p => p.classList.toggle('active', p.dataset.npCat === novoProdCat));
+  document.getElementById('np-foto-preview').style.display = 'none';
+  document.getElementById('np-foto-placeholder').style.display = 'block';
+  document.getElementById('modal-novo-produto-overlay').classList.add('open');
+}
+
+function fecharModalNovoProduto(e) {
+  if (e && e.target !== document.getElementById('modal-novo-produto-overlay')) return;
+  document.getElementById('modal-novo-produto-overlay').classList.remove('open');
+}
+
+function selecionarNovoProdMat(mat, el) {
+  novoProdMat = mat;
+  document.querySelectorAll('#np-mat-pills [data-np-mat]').forEach(p => p.classList.toggle('active', p === el));
+}
+
+function selecionarNovoProdCat(cat, el) {
+  novoProdCat = cat;
+  document.querySelectorAll('#np-cat-pills [data-np-cat]').forEach(p => p.classList.toggle('active', p === el));
+}
+
+function handleNovoProdFoto(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  comprimirImagem(file, (base64) => {
+    novoProdFoto = base64;
+    const preview = document.getElementById('np-foto-preview');
+    preview.src = base64;
+    preview.style.display = 'block';
+    document.getElementById('np-foto-placeholder').style.display = 'none';
+  });
+  event.target.value = '';
+}
+
+function salvarNovoProduto() {
+  const nome  = document.getElementById('np-nome').value.trim();
+  const custo = parseFloat(document.getElementById('np-custo').value) || 0;
+  const preco = parseFloat(document.getElementById('np-preco').value) || 0;
+  const qtd   = parseInt(document.getElementById('np-qtd').value) || 0;
+
+  if (!nome) { toast('Informe o nome do produto', 'error'); return; }
+
+  const id = Date.now();
+  const produto = {
+    id,
+    categoria: novoProdCat,
+    nome,
+    descricao: '',
+    material: novoProdMat === 'Prata 925' ? 'Prata 925' : 'Aço Inox 316L',
+    preco: fmt(preco),
+    precoNum: preco,
+    foto: '',
+    tamanhos: [],
+    estoque: qtd,
+    novo: true
+  };
+
+  const extra = load(K.produtosExtra);
+  extra.push(produto);
+  save(K.produtosExtra, extra);
+  PRODUTOS.push(produto);
+
+  const est = load(K.estoque);
+  est[id] = { custo, preco, quantidade: qtd };
+  save(K.estoque, est);
+
+  if (novoProdFoto) {
+    const fotos = load(K.fotos);
+    fotos[id] = novoProdFoto;
+    save(K.fotos, fotos);
+  }
+
+  document.getElementById('modal-novo-produto-overlay').classList.remove('open');
+  popularDatalist();
+  renderEstoque();
+  toast('✓ Produto cadastrado', 'success');
 }
 
 /* ══════════════════════════════════════════
@@ -3018,15 +3198,16 @@ function calcularPreco() {
   html += '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px">';
 
   cenarios.forEach(c => {
-    const preco    = custo * (1 + c.pct) + emb;
-    const taxaVal  = preco * PREC_TAXA;
-    const lucroLiq = preco - custo - emb - taxaVal;
-    const margLiq  = preco > 0 ? Math.round(lucroLiq / preco * 100) : 0;
+    const preco       = custo * (1 + c.pct) + emb;
+    const precoCartao = preco * (1 + PREC_TAXA);
+    const lucroLiq    = preco - custo - emb;
+    const margLiq     = preco > 0 ? Math.round(lucroLiq / preco * 100) : 0;
 
     html += `
     <div style="background:var(--white);border:1px solid var(--lgray);padding:16px 12px;text-align:center">
       <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--mgray);margin-bottom:8px">${c.nome}</div>
       <div style="font-family:'Playfair Display',serif;font-size:1.55rem;font-weight:700;color:${c.cor};line-height:1.1">${fmt(preco)}</div>
+      <div style="font-size:10px;color:var(--mgray);margin-top:4px">no cartão ${fmt(precoCartao)}</div>
       <div style="font-size:10px;color:var(--mgray);margin-top:8px">lucro líquido</div>
       <div style="font-weight:700;font-size:1rem;color:${lucroLiq>=0?'var(--green)':'var(--red)'}">${fmt(lucroLiq)}</div>
       <div style="font-size:10px;color:var(--mgray)">margem ${margLiq}%</div>
@@ -3035,9 +3216,10 @@ function calcularPreco() {
   html += '</div>';
 
   // ── Detalhamento do preço sugerido ──
-  const precoSug = custo * (1 + mid) + emb;
-  const taxaSug  = precoSug * PREC_TAXA;
-  const lucroSug = precoSug - custo - emb - taxaSug;
+  const precoSug        = custo * (1 + mid) + emb;
+  const acrescimoCartao = precoSug * PREC_TAXA;
+  const precoCartaoSug  = precoSug + acrescimoCartao;
+  const lucroSug        = precoSug - custo - emb;
 
   html += `
   <div style="background:var(--white);border:1px solid var(--lgray);padding:18px 20px;margin-bottom:16px">
@@ -3045,8 +3227,9 @@ function calcularPreco() {
     <div class="sum-row"><span>Custo da peça</span><span>${fmt(custo)}</span></div>
     <div class="sum-row"><span>Margem ${Math.round(mid*100)}%</span><span style="color:var(--green)">+ ${fmt(custo * mid)}</span></div>
     <div class="sum-row"><span>Embalagem</span><span>+ ${fmt(emb)}</span></div>
-    <div class="sum-row" style="font-weight:700"><span>Preço de venda</span><span>${fmt(precoSug)}</span></div>
-    <div class="sum-row"><span>Taxa maquininha 4× (6,85%)</span><span style="color:var(--red)">− ${fmt(taxaSug)}</span></div>
+    <div class="sum-row" style="font-weight:700"><span>Preço à vista</span><span>${fmt(precoSug)}</span></div>
+    <div class="sum-row"><span>Acréscimo cartão parcelado (6,85%)</span><span style="color:var(--orange)">+ ${fmt(acrescimoCartao)}</span></div>
+    <div class="sum-row" style="font-weight:700"><span>Preço no cartão parcelado</span><span>${fmt(precoCartaoSug)}</span></div>
     <div class="sum-row" style="border-top:2px solid var(--black);padding-top:12px;margin-top:6px">
       <span style="font-weight:700;font-size:14px">Lucro líquido</span>
       <span style="font-weight:700;font-size:15px;color:var(--green)">${fmt(lucroSug)}</span>
@@ -3058,19 +3241,19 @@ function calcularPreco() {
   <div style="background:var(--white);border:1px solid var(--lgray);overflow:hidden">
     <div style="background:var(--black);color:#fff;padding:11px 16px;font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase">Tabela completa</div>
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--mgray);padding:9px 14px;background:var(--cream);border-bottom:1px solid var(--lgray)">
-      <span>Margem</span><span style="text-align:right">Preço</span><span style="text-align:right">Taxa cart.</span><span style="text-align:right">Lucro liq.</span>
+      <span>Margem</span><span style="text-align:right">Preço à vista</span><span style="text-align:right">No cartão</span><span style="text-align:right">Lucro liq.</span>
     </div>`;
 
   [min, min + (max-min)*0.25, mid, min + (max-min)*0.75, max].forEach(pct => {
-    const p   = custo * (1 + pct) + emb;
-    const t   = p * PREC_TAXA;
-    const l   = p - custo - emb - t;
+    const p       = custo * (1 + pct) + emb;
+    const pCartao = p * (1 + PREC_TAXA);
+    const l       = p - custo - emb;
     const ativo = Math.abs(pct - mid) < 0.001;
     html += `
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;padding:9px 14px;border-bottom:1px solid var(--lgray);${ativo?'background:var(--gold-bg,#FDF6EC);font-weight:700':''}">
       <span>${Math.round(pct*100)}%</span>
       <span style="text-align:right">${fmt(p)}</span>
-      <span style="text-align:right;color:var(--red)">− ${fmt(t)}</span>
+      <span style="text-align:right;color:var(--orange)">${fmt(pCartao)}</span>
       <span style="text-align:right;color:var(--green)">${fmt(l)}</span>
     </div>`;
   });
