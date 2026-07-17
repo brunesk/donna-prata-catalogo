@@ -1297,7 +1297,7 @@ async function carregarProdutos() {
   } catch(e) { console.warn('Firebase:', e); }
 
   popularDatalist();
-  if (SESSAO?.tipo === 'owner') { seedEstoque(); renderResumo(); renderEstoque(); }
+  if (SESSAO?.tipo === 'owner') { seedEstoque(); renderResumo(); renderEstoque(); popularSelectRevendedoras(); }
   if (SESSAO?.tipo === 'revendedora') {
     popularSelectRevendedoras();
     // auto-seleciona a revendedora logada
