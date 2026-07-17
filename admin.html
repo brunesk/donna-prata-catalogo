@@ -257,6 +257,28 @@
     .v-foto-nome { font-weight: 600; font-size: 13px; }
     .v-foto-cat  { font-size: 11px; color: var(--mgray); margin-top: 2px; }
 
+    /* ── SUGESTÕES DE PRODUTO (buscar no estoque) ── */
+    .v-sugestoes {
+      display: none; position: relative; z-index: 20;
+      border: 1px solid var(--lgray); border-top: none; background: var(--white);
+      max-height: 320px; overflow-y: auto; margin-top: -1px;
+    }
+    .v-sugestoes.show { display: block; }
+    .v-sug-item {
+      display: flex; align-items: center; gap: 10px; padding: 8px 10px;
+      cursor: pointer; border-bottom: 1px solid var(--lgray);
+    }
+    .v-sug-item:last-child { border-bottom: none; }
+    .v-sug-item:hover, .v-sug-item.active { background: var(--cream); }
+    .v-sug-item img, .v-sug-item .v-sug-placeholder {
+      width: 40px; height: 40px; object-fit: cover; border: 1px solid var(--lgray);
+      flex-shrink: 0; background: var(--off); display: flex; align-items: center;
+      justify-content: center; font-size: 16px; color: var(--mgray);
+    }
+    .v-sug-nome { font-weight: 600; font-size: 12.5px; }
+    .v-sug-info { font-size: 11px; color: var(--mgray); margin-top: 2px; }
+    .v-sug-vazio { padding: 14px 10px; font-size: 12px; color: var(--mgray); text-align: center; }
+
     @media(max-width: 600px) {
       .stock-row {
         grid-template-columns: 44px 1fr 55px 70px;
@@ -579,9 +601,10 @@
     <!-- ADICIONAR PRODUTO -->
     <div style="background:var(--off);border:1px solid var(--lgray);border-radius:8px;padding:14px;margin-bottom:14px">
       <div style="font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--mgray);margin-bottom:10px" id="v-add-titulo">Produto</div>
-      <div class="form-row" style="margin-bottom:10px">
-        <input type="text" id="v-produto" placeholder="Digite o nome da peça..." list="v-produtos-list" oninput="produtoSelecionado()">
-        <datalist id="v-produtos-list"></datalist>
+      <div class="form-row" style="margin-bottom:10px;position:relative">
+        <input type="text" id="v-produto" placeholder="Digite o nome ou categoria (ex: brinco)..." autocomplete="off"
+          oninput="produtoSelecionado()" onfocus="produtoSelecionado()" onblur="setTimeout(fecharSugestoesProduto, 150)">
+        <div class="v-sugestoes" id="v-sugestoes"></div>
         <div class="hint" id="v-estoque-hint"></div>
       </div>
       <div class="v-foto-wrap" id="v-foto-wrap">
@@ -1296,7 +1319,6 @@ async function carregarProdutos() {
     if (!data.config?.pin_owner) FBDB.ref('dp/config/pin_owner').set('1234');
   } catch(e) { console.warn('Firebase:', e); }
 
-  popularDatalist();
   if (SESSAO?.tipo === 'owner') { seedEstoque(); renderResumo(); renderEstoque(); popularSelectRevendedoras(); }
   if (SESSAO?.tipo === 'revendedora') {
     popularSelectRevendedoras();
@@ -1334,11 +1356,6 @@ function seedEstoque() {
     }
   });
   if (alterou) save(K.estoque, est);
-}
-
-function popularDatalist() {
-  const dl = document.getElementById('v-produtos-list');
-  dl.innerHTML = PRODUTOS.map(p => `<option value="${p.nome}" data-id="${p.id}" data-preco="${p.precoNum}">`).join('');
 }
 
 function getProduto(nome) {
@@ -1497,6 +1514,58 @@ function produtoSelecionado() {
     wrap.classList.remove('show');
   }
   calcularVenda();
+  renderSugestoesProduto(nome, prod);
+}
+
+function renderSugestoesProduto(query, prodExato) {
+  const el = document.getElementById('v-sugestoes');
+  const q = query.trim().toLowerCase();
+  if (!q || prodExato) { el.classList.remove('show'); el.innerHTML = ''; return; }
+
+  const est = load(K.estoque);
+  const matches = PRODUTOS.filter(p => {
+    const catLabel = (CATS[p.categoria] || p.categoria || '').toLowerCase();
+    return p.nome.toLowerCase().includes(q) || catLabel.includes(q);
+  }).slice(0, 30);
+
+  if (!matches.length) {
+    el.innerHTML = `<div class="v-sug-vazio">Nenhuma peça encontrada no estoque</div>`;
+    el.classList.add('show');
+    return;
+  }
+
+  el.innerHTML = matches.map(p => {
+    const info = est[p.id] || {};
+    const qtd = info.quantidade || 0;
+    const preco = info.preco || p.precoNum || 0;
+    const src = getFotoSrc(p);
+    const thumb = src ? `<img src="${src}" alt="">` : `<div class="v-sug-placeholder">📷</div>`;
+    const qtdTxt = qtd === 0 ? `<span style="color:var(--red)">sem estoque</span>` : `${qtd} un.`;
+    return `
+    <div class="v-sug-item" onmousedown="selecionarProdutoSugestao(${p.id})">
+      ${thumb}
+      <div>
+        <div class="v-sug-nome">${p.nome}</div>
+        <div class="v-sug-info">${CATS[p.categoria] || p.categoria || ''}${preco ? ' · ' + fmt(preco) : ''} · ${qtdTxt}</div>
+      </div>
+    </div>`;
+  }).join('');
+  el.classList.add('show');
+}
+
+function selecionarProdutoSugestao(id) {
+  const p = PRODUTOS.find(x => x.id === id);
+  if (!p) return;
+  document.getElementById('v-produto').value = p.nome;
+  fecharSugestoesProduto();
+  produtoSelecionado();
+  document.getElementById('v-qtd')?.focus();
+}
+
+function fecharSugestoesProduto() {
+  const el = document.getElementById('v-sugestoes');
+  el.classList.remove('show');
+  el.innerHTML = '';
 }
 
 function onRevendedoraChange() {
@@ -1653,6 +1722,7 @@ function adicionarAoCarrinho() {
   document.getElementById('v-total-display').textContent = '—';
   document.getElementById('v-foto-wrap').classList.remove('show');
   document.getElementById('v-add-titulo').textContent = 'Adicionar outra peça';
+  fecharSugestoesProduto();
   renderCarrinho();
   calcularTotalFinal();
   toast(`"${produto}" adicionado`, 'success');
@@ -1780,6 +1850,7 @@ function registrarVenda() {
   document.getElementById('v-desc-valor').value = '';
   document.getElementById('v-cliente').value = '';
   document.getElementById('v-obs').value = '';
+  fecharSugestoesProduto();
   document.getElementById('v-estoque-hint').textContent = '';
   document.getElementById('v-lucro-preview').textContent = '';
   document.getElementById('v-total-display').textContent = '—';
@@ -2346,7 +2417,6 @@ function salvarNovoProduto() {
   }
 
   document.getElementById('modal-novo-produto-overlay').classList.remove('open');
-  popularDatalist();
   renderEstoque();
   toast('✓ Produto cadastrado', 'success');
 }
